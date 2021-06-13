@@ -8,7 +8,6 @@ client.commands = new Discord.Collection();
 const commandsFolder = fs.readdirSync('./comandos');
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
-
 for (const folder of commandsFolder) {
     const commandFiles = fs.readdirSync(`./comandos/${folder}`).filter(file => file.endsWith('.js'));
     for (const file of commandFiles) {

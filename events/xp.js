@@ -10,7 +10,8 @@ module.exports = {
         if (message.author.bot) return;
         if (!message.guild.member(message.author).roles.cache.has('850113696155566161')) return;
 
-        let addxp = Math.floor(Math.random() * (30 - 15)) + 15
+        let addxp = Math.floor(Math.random() * (30 - 15)) + 15;
+        let user = message.author
 
         if(!xp[message.author.id]){
             xp[message.author.id] = {
@@ -20,17 +21,9 @@ module.exports = {
             }
         }
 
-        let curxp = xp[message.author.id].xp
-        let curlvl = xp[message.author.id].level
-        let nextlvl = 600 * Math.round(-2 + 4 * curlvl)
-        let lastlvl = -(nextlvl)
-        if (curlvl == 0){
-            nextlvl = 300
-            lastlvl = -(nextlvl)
-        }else{
-            nextlvl = 300 * Math.round(-2 + 4 * curlvl)
-            lastlvl = -(nextlvl)
-        }
+        let curxp = xpManager.getXp(user.id)
+        let curlvl = xpManager.getLvL(user.id)
+        let nextlvl = xpManager.nextLvL(user.id)
 
         xp[message.author.id].xp = curxp + addxp
 
