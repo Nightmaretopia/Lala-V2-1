@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { nextLvL, getXp, getLvL } = require('../manager');
+const { nextLvL, getXp, getLvL } = require('../../manager');
 
 module.exports = {
     name: 'rank',
