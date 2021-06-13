@@ -1,5 +1,13 @@
 const xp = require('./xp.json')
 
+function reason(reason) {
+    if (!reason) {
+        return "Unknown"
+    } else {
+        return reason
+    }
+}
+
 function getXp(userID) {
     return xp[userID].xp;
 };
@@ -20,6 +28,7 @@ function lastLvL(userID) {
     return -(nextLvL(userID));
 }
 
+module.exports.reason = reason
 module.exports.getXp = getXp
 module.exports.getLvL = getLvL
 module.exports.nextLvL = nextLvL

@@ -12,9 +12,9 @@ const Numb = {
 
 const profileSchema = mongoose.Schema({
     _id: reqString,
-    Name: reqString,
-    XP: Numb,
-    Level: Numb
+    name: reqString,
+    xp: Numb,
+    level: Numb
 })
 
 module.exports = mongoose.model('XP', profileSchema)
