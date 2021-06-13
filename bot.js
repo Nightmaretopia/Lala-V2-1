@@ -5,13 +5,16 @@ const fs = require('fs');
 
 const client = new Discord.Client({partials: ['MESSAGE', 'REACTION']});
 client.commands = new Discord.Collection();
-const commandFiles = fs.readdirSync('./comandos').filter(file => file.endsWith('.js'));
+const commandsFolder = fs.readdirSync('./comandos');
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
 
-for (const file of commandFiles) {
-    const command = require(`./comandos/${file}`);
-    client.commands.set(command.name, command);
+for (const folder of commandsFolder) {
+    const commandFiles = fs.readdirSync(`./comandos/${folder}`).filter(file => file.endsWith('.js'));
+    for (const file of commandFiles) {
+        const command = require(`./comandos/${folder}/${file}`);
+        client.commands.set(command.name, command);
+    }
 }
 
 for (const file of eventFiles) {

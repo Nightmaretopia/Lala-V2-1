@@ -5,7 +5,7 @@ const xp = require('../xp.json');
 
 module.exports = {
     name: 'message',
-    async execute(message,) {
+    async execute(message) {
 
         if (message.author.bot) return;
         if (!message.guild.member(message.author).roles.cache.has('850113696155566161')) return;
