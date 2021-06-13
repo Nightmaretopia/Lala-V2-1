@@ -1,15 +1,22 @@
 const Discord = require('discord.js');
-const client = new Discord.Client({partials: ['MESSAGE', 'REACTION']});
 const { prefix, token } = require('./config.json');
 const mongo = require('./mongo');
 const fs = require('fs');
 
+const client = new Discord.Client({partials: ['MESSAGE', 'REACTION']});
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./comandos').filter(file => file.endsWith('.js'));
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+
 
 for (const file of commandFiles) {
     const command = require(`./comandos/${file}`);
     client.commands.set(command.name, command);
+}
+
+for (const file of eventFiles) {
+    const event = require(`./events/${file}`);
+    client.on(event.name, (...args) => event.execute(...args, client));
 }
 
 client.on('ready', async () => {
