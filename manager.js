@@ -9,7 +9,11 @@ function getLvL(userID) {
 };
 
 function nextLvL(userID) {
-    return 600 * Math.round(-2 + 4 * getLvL(userID));
+    if (getLvL(userID) == 0) {
+        return 300;
+    } else {
+        return 300 * Math.round(-2 +4 * getLvL(userID))
+    }
 }
 
 function lastLvL(userID) {
