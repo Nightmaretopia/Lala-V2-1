@@ -39,19 +39,14 @@ client.on('message', async (message) => {
     const args = message.content.slice(prefix.length).trim().split(/ /g);
     const cmd = args.shift().toLowerCase();
     const target = message.mentions.users.first();
-    let reason = args.slice(1).join(" ")
-    if (!reason){
-        reason = "Unknown"
-    }else{
-        reason = args.slice(1).join(" ")
-    };
+    const reason = args.slice(1).join(" ")
 
     if (message.content.startsWith(prefix)) {
         
         if (!client.commands.has(cmd)) return;
 
         try {
-            client.commands.get(cmd).execute(message, args, target, client);
+            client.commands.get(cmd).execute(message, args, target, reason, client);
         } catch (err) {
             console.error(err);
             message.reply('F')
