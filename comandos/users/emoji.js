@@ -12,7 +12,6 @@ module.exports = {
         if (regexa) {
             eurl = `https://cdn.discordapp.com/emojis/${regex}.gif`
         }
-        
         if (!regex) return message.reply(`${args[0]} não é um emoji válido`)
 
         let emojiembed = new Discord.MessageEmbed()
