@@ -12,12 +12,14 @@ module.exports = {
                 })
         }
         if (message.guild.member(target).roles.highest.position > message.guild.members.resolve(client.user).roles.highest.position) return message.channel.send('Você não pode mutar um moderador');
-
         const muterole = message.guild.roles.cache.find(r => r.name == "Lala Mute");
 
         if (!muterole) {
-            message.guild.roles.create({ data: { name: "Lala Mute"}})
+            message.guild.roles.create({ data: { name: "Lala Mute" }})
+                .then(role => {
+                    role.setPermissions(0)
+                    role.setPosition(1)
+                })
         }
-        await muterole.permissions.remove('SEND_MESSAGES')
     }
 }
