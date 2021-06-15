@@ -17,7 +17,7 @@ module.exports = {
 
         if (!muterole) {
             message.guild.roles.create({ data: { name: "Lala Mute"}})
-            await muterole.permissions.remove('SEND_MESSAGES')
         }
+        await muterole.permissions.remove('SEND_MESSAGES')
     }
 }
