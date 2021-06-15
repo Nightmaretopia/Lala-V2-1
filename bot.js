@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
 const mongo = require('./mongo');
 const fs = require('fs');
+const manager = require('./manager')
 
 const client = new Discord.Client({partials: ['MESSAGE', 'REACTION']});
 client.commands = new Discord.Collection();
@@ -39,14 +40,14 @@ client.on('message', async (message) => {
     const args = message.content.slice(prefix.length).trim().split(/ /g);
     const cmd = args.shift().toLowerCase();
     const target = message.mentions.users.first();
-    const reason = args.slice(1).join(" ")
+    const reasonarg = manager.reason(args.slice(1).join(" "));
 
     if (message.content.startsWith(prefix)) {
         
         if (!client.commands.has(cmd)) return;
 
         try {
-            client.commands.get(cmd).execute(message, args, target, reason, client);
+            client.commands.get(cmd).execute(message, args, target, reasonarg, client);
         } catch (err) {
             console.error(err);
             message.reply('F')

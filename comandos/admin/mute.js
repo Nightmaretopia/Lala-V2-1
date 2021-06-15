@@ -1,10 +1,9 @@
 const Discord = require('discord.js')
-const { reason } = require('../../manager')
 
 module.exports = {
     name: 'mute',
     description: 'Muta o membro mencionado',
-    async execute(message, args, target, client) {
+    async execute(message, args, target, reasonarg, client) {
         if (!message.member.hasPermission('MUTE_MEMBERS')) return message.channel.send('Você não tem permissão para usar este comando');
         if (!target) {
             return message.channel.send("Você não especificou quem quer mutar")

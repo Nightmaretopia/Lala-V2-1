@@ -16,7 +16,7 @@ module.exports = {
                     })
                 })
                 .catch(err => {
-                    message.reply('este membro não está banido')
+                    message.reply('Este membro não está banido')
                         .then(message => {
                             message.delete({timeout: 3000})
                         })
