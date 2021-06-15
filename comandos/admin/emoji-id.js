@@ -9,7 +9,7 @@ module.exports = {
         const regexw = args[0].replace(/^<a?:(\w+):\d+>$/, '$1');
         const regexd = args[0].replace(/^<a?:\w+:(\d+)>$/, '$1');
 
-        console.log(regexa + regexw + regexd)
+        if (regexw == regexd || regexa == regexd) return message.channel.send(`${regexd} não é um emoji válido ou você não tem nitro`)
         message.channel.send(`\\<${regexa}:${regexw}:${regexd}>`);
     }
 }
