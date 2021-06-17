@@ -10,7 +10,7 @@ module.exports = {
             .then(message => {
                 message.delete({timeout: 3000})
             });
-        if (message.guild.member(target).roles.highest.position > message.guild.resolve(client.user).roles.highest.position) return message.channel.send('Você não pode usar este comando em um moderador');
+        if (message.guild.member(target).roles.highest.position > message.guild.members.resolve(client.user).roles.highest.position) return message.channel.send('Você não pode usar este comando em um moderador');
         const muterole = message.guild.roles.cache.find(r => r.name == "Lala Mute");
         if (!muterole) return message.channel.send(`O servidor não tem o mute configurado.\NUse \`${prefix}mute\` para configurar o mute.`);
         if (!message.guild.member(target).roles.cache.has(muterole.id)) return message.channel.send('Este membro não está mutado')
