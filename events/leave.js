@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'guildMemberRemove',
     execute(member) {
-        let bbch = bot.channels.cache.get('831258860857589832');
+        let bbch = client.channels.cache.get('831258860857589832');
         let Leavelog = new Discord.MessageEmbed()
             .setColor(0xf54245)
             .setThumbnail(member.user.displayAvatarURL())
@@ -20,6 +20,6 @@ module.exports = {
             .setTimestamp();
 
         bbch.send(Leavemsg);
-        bot.channels.cache.get('454111723872321536').send(Leavelog);
+        client.channels.cache.get('454111723872321536').send(Leavelog);
     }
 }

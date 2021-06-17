@@ -8,6 +8,6 @@ module.exports = {
             .setAuthor("Purge")
             .setDescription(`Apagadas **${message.size}** mensagens`);
             
-        bot.channels.cache.get('454111723872321536').send(bulkembed);
+        client.channels.cache.get('454111723872321536').send(bulkembed);
     }
 }

@@ -13,9 +13,9 @@ module.exports = {
         var days = a.diff(b, 'days');
 
         if (Date.now() - member.user.createdAt < 1000*60*60*2) return member.ban({days: 7, reason: 'Raid acc?'});
-        let wmch = bot.channels.cache.get('831258860857589832');
-        let chn = bot.channels.cache.get('216708657440620544');
-        let chn2 = bot.channels.cache.get('826988730849296426');
+        let wmch = client.channels.cache.get('831258860857589832');
+        let chn = client.channels.cache.get('216708657440620544');
+        let chn2 = client.channels.cache.get('826988730849296426');
         let Welcomelog = new Discord.MessageEmbed()
             .setColor(0x15d438)
             .setThumbnail(member.user.displayAvatarURL())
@@ -32,7 +32,7 @@ module.exports = {
             .setTimestamp();
 
         wmch.send(Welcomemsg);
-        bot.channels.cache.get('454111723872321536').send(Welcomelog);
+        client.channels.cache.get('454111723872321536').send(Welcomelog);
         member.roles.add('746381043623395359');
     }
 }
