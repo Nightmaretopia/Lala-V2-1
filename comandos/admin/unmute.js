@@ -4,7 +4,7 @@ const { prefix } = require('../../config.json');
 module.exports = {
     name: 'unmute',
     description: 'Tira o mute do membro mencionado',
-    async execute(message, target, client) {
+    execute(message, target, client) {
         if (!message.member.hasPermission('MUTE_MEMBERS')) return message.channel.send('Você não tem permissão para usar este comando');
         if (!target) return message.channel.send('Você não especificou que quer mutar')
             .then(message => {
