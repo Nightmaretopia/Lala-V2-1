@@ -17,7 +17,7 @@ module.exports = {
         let chn = bot.channels.cache.get('216708657440620544');
         let chn2 = bot.channels.cache.get('826988730849296426');
         let Welcomelog = new Discord.MessageEmbed()
-            .setColor("#15d438")
+            .setColor(0x15d438)
             .setThumbnail(member.user.displayAvatarURL())
             .setAuthor(`${member.user.username} | Entrou no servidor`, member.user.displayAvatarURL())
             .setDescription(`${member} ${member.user.tag}\n **Conta criada há**:\n ${years} anos, ${months} meses e ${days} dias`)
@@ -25,7 +25,7 @@ module.exports = {
             .setTimestamp();
 
         let Welcomemsg = new Discord.MessageEmbed()
-            .setColor("#d505ff")
+            .setColor(0xd505ff)
             .setAuthor(`${member.user.username} | Entrou no servidor`, member.user.displayAvatarURL())
             .setDescription(`Seja bem-vindo, <@${member.id}>. Por favor, leia as <#${chn.id}> e se divirta.\n \nPara pegar o cargo de **Lançamentos** e ser pingado quando tiver novo lançamento no site, visite o canal <#${chn2.id}> e reaja com o emoji do(s) cargo(s) desejado(s).`)
             .setImage('https://cdn.discordapp.com/attachments/846471009950367824/846471210391830609/Lala_Bem-vindo.gif')
