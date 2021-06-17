@@ -3,7 +3,7 @@ const moment = require('moment');
 
 module.exports = {
     name: 'guildMemberAdd',
-    execute(member) {
+    execute(member, client) {
         var a = moment();
         var b = moment(member.user.createdAt);
         var years = a.diff(b, 'year');

@@ -3,7 +3,7 @@ const { prefix } = require('../config.json');
 
 module.exports = {
     name: 'messageDelete',
-    execute(message) {
+    execute(message, client) {
         if (message.channel.type == "dm") return;
         if (message.channel.id === '826862921405300786') return;
         if (message.author.bot) return;

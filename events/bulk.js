@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 
 module.exports = {
     name: 'messageDeleteBulk',
-    execute(message) {
+    execute(message, client) {
         let bulkembed = new Discord.MessageEmbed()
             .setColor(0xfc5603)
             .setAuthor("Purge")

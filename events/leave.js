@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 
 module.exports = {
     name: 'guildMemberRemove',
-    execute(member) {
+    execute(member, client) {
         let bbch = client.channels.cache.get('831258860857589832');
         let Leavelog = new Discord.MessageEmbed()
             .setColor(0xf54245)
