@@ -18,6 +18,6 @@ module.exports = {
             .setFooter(`${message.author.username} ID: ${message.author.id} | ID da Mensagem: ${message.id}`)
             .setTimestamp();
 
-        bot.channels.cache.get('454111723872321536').send(deletembed)
+        bot.channels.cache.get('454111723872321536').send(deletembed);
     }
 }
