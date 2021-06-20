@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { prefix, token } = require('./config.json');
+const { prefix, token, Owner, Coder } = require('./config.json');
 const mongo = require('./mongo');
 const fs = require('fs');
 const manager = require('./manager')
@@ -44,6 +44,14 @@ client.on('message', async (message) => {
 
     if (message.content.startsWith(prefix)) {
         
+        if (cmd === "restart") {
+            if (!Coder || !Owner) return message.channel.send("Você não tem permissão para usar este comando");
+            message.channel.send("Reiniciando...")
+                .then(message => client.destroy())
+                .then(() => client.login(token))
+                .then(async () => await message.channel.send("`Reiniciada com sucesso!!!`"))
+        }
+
         if (!client.commands.has(cmd)) return;
 
         try {
