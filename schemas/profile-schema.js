@@ -13,6 +13,7 @@ const Numb = {
 const profileSchema = mongoose.Schema({
     _id: reqString,
     name: reqString,
+    coins: Numb,
     xp: Numb,
     level: Numb
 })
