@@ -8,6 +8,7 @@ const client = new Discord.Client({partials: ['MESSAGE', 'REACTION']});
 client.commands = new Discord.Collection();
 const commandsFolder = fs.readdirSync('./comandos');
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+const moneyFiles = fs.readdirSync('./monetary system').filter(file => file.endsWith('.js'));
 
 for (const folder of commandsFolder) {
     const commandFiles = fs.readdirSync(`./comandos/${folder}`).filter(file => file.endsWith('.js'));
@@ -20,6 +21,12 @@ for (const folder of commandsFolder) {
 for (const file of eventFiles) {
     const event = require(`./events/${file}`);
     client.on(event.name, (...args) => event.execute(...args, client));
+}
+
+for (const file of moneyFiles) {
+    const monetary = require(`./monetary system/${file}`);
+    client.on(monetary.name, (...args) => monetary.execute(...args, client));
+    client.commands.set(monetary.name, monetary)
 }
 
 client.on('ready', async () => {
