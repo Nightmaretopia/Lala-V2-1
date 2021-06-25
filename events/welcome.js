@@ -4,13 +4,13 @@ const moment = require('moment');
 module.exports = {
     name: 'guildMemberAdd',
     execute(member, client) {
-        var a = moment();
-        var b = moment(member.user.createdAt);
-        var years = a.diff(b, 'year');
+        let a = moment();
+        let b = moment(member.user.createdAt);
+        let years = a.diff(b, 'year');
             b.add(years, 'years');
-        var months = a.diff(b, 'months');
+        let months = a.diff(b, 'months');
             b.add(months, 'months');
-        var days = a.diff(b, 'days');
+        let days = a.diff(b, 'days');
 
         if (Date.now() - member.user.createdAt < 1000*60*60*2) return member.ban({days: 7, reason: 'Raid acc?'});
         let wmch = client.channels.cache.get('831258860857589832');
