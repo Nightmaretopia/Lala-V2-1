@@ -34,12 +34,12 @@ function lastLvL(userID) {
 };
 
 function rainbowcall(num, text) {
+    let consoleColorify;
     if (num == "0") {
-        num = "38"
+        consoleColorify = (r, g, b) => str => `\u001B[38;2;${r};${g};${b}m${str}\x1b[0m`;
     } else if (num == "1") {
-        num = "48"
+        consoleColorify = (r, g, b) => str => `\u001B[48;2;${r};${g};${b}m\x1b[30m${str}\x1b[0m`
     }
-    const consoleColorify = (r, g, b) => str => `\u001B[${num};2;${r};${g};${b}m${str}\x1b[0m`
     function HSVtoRGB(hue, saturation, value) {
 
         const chroma = value * saturation;
