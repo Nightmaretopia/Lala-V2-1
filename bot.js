@@ -62,7 +62,7 @@ client.on('message', async (message) => {
         if (!client.commands.has(cmd)) return;
 
         try {
-            client.commands.get(cmd).execute(message, args, target, reasonarg, client);
+            client.commands.get(cmd).execute({message, args, target, reasonarg, client});
         } catch (err) {
             console.error(err);
             message.reply('F')

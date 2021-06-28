@@ -4,7 +4,7 @@ const { prefix } = require('../../config.json');
 module.exports = {
     name: 'unmute',
     description: 'Tira o mute do membro mencionado',
-    execute(message, target, client) {
+    execute({message, target, client}) {
         if (!message.member.hasPermission('MUTE_MEMBERS')) return message.channel.send('Você não tem permissão para usar este comando');
         if (!target) return message.channel.send('Você não especificou que quer mutar')
             .then(message => {
@@ -20,7 +20,7 @@ module.exports = {
         let unmutembed = new Discord.MessageEmbed()
             .setColor(0x0000FF)
             .setTitle(`Desmutado ${target.tag}`)
-            .setDescription(`${target.name} foi desmutado`)
+            .setDescription(`${target.username} foi desmutado`)
             .setTimestamp();
         message.guild.member(target).roles.remove(muterole);
         message.channel.send(unmutembed);
