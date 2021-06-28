@@ -12,7 +12,7 @@ const numb = {
 
 const monthSchema = mongoose.Schema({
     __id: numb,
-    month: reqString + numb,
+    month: reqString,
     usages: numb,
     percentage: numb
 });
