@@ -9,7 +9,19 @@ module.exports = {
             resetstats;
             message.channel.send('Status resetado')
         } else {
-            client.user.setActivity(args.slice(0).join(" "));
+            if(args[0].toLowerCase() == "jogando")
+                client.user.setActivity(args.slice(1).join(" "), {type: "PLAYING"});
+            else if(args[0].toLowerCase() == "transmitindo" || args[0].toLowerCase() == "streamando")
+                client.user.setActivity(args.slice(1).join(" "), {type: "STREAMING"});
+            else if(args[0].toLowerCase() == "ouvindo")
+                client.user.setActivity(args.slice(1).join(" "), {type: "LISTENING"});
+            else if(args[0].toLowerCase() == "assistindo")
+                client.user.setActivity(args.slice(1).join(" "), {type: "WATCHING"});
+            else if(args[0].toLowerCase() == "competindo")
+                client.user.setActivity(args.slice(1).join(" "), {type: "COMPETING"});
+            else
+                client.user.setActivity(args.slice(0).join(" "), {type: "CUSTOM_STATUS"});
+            
             message.channel.send('Status atualizado');
         }
         
