@@ -5,7 +5,7 @@ const reqString = {
     require: true,
 }
 
-const Numb = {
+const numb = {
     type: Number,
     default: 0
 }
@@ -13,9 +13,11 @@ const Numb = {
 const profileSchema = mongoose.Schema({
     _id: reqString,
     name: reqString,
-    coins: Numb,
-    xp: Numb,
-    level: Numb
+    coins: numb,
+    xp: numb,
+    level: numb,
+    reputation: numb,
+    gifts: numb
 })
 
 module.exports = mongoose.model('XP', profileSchema)
