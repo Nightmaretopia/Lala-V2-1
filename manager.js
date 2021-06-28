@@ -7,7 +7,11 @@ function reason(reason) {
     } else {
         return reason
     }
-}
+};
+
+function sleeptime(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+};
 
 function getXp(userID) {
     return xp[userID].xp;
@@ -23,14 +27,15 @@ function nextLvL(userID) {
     } else {
         return 300 * Math.round(-2 +4 * getLvL(userID))
     }
-}
+};
 
 function lastLvL(userID) {
     return -(nextLvL(userID));
-}
+};
 
-module.exports.reason = reason
-module.exports.getXp = getXp
-module.exports.getLvL = getLvL
-module.exports.nextLvL = nextLvL
-module.exports.lastLvL = lastLvL
+module.exports.reason = reason;
+module.exports.sleep = sleeptime;
+module.exports.getXp = getXp;
+module.exports.getLvL = getLvL;
+module.exports.nextLvL = nextLvL;
+module.exports.lastLvL = lastLvL;
