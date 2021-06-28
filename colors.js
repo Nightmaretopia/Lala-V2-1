@@ -87,7 +87,7 @@ function fromHSV(hue, saturation, value) {
 function fromHex(hex) {
 
     // remove any leading formatting characters
-    hex = hex.replace("#", "");
+    hex = hex.replace("#", "").replace("0x", "");
 
     const colorValue = Number.parseInt(hex, 16);
 
