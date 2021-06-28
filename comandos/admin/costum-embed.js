@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'embed',
     description: 'Manda um embed costumizado',
-    execute(message, args) {
+    execute({message, args}) {
         if (!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send("Você não tem permissão para usar este comando");
         if (!args[0]) return message.channel.send('Você não especificou em qual canal quer enviar a mensagem');
 

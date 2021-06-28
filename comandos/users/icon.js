@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'icon',
     description: 'Envia a imagen do servidor',
-    execute(message) {
+    execute({message}) {
         message.delete({timeout: 30})
         let iconEmb = new Discord.MessageEmbed()
             .setColor('#00c5ff')

@@ -4,7 +4,7 @@ const { nextLvL, getXp, getLvL } = require('../../manager');
 module.exports = {
     name: 'rank',
     description: 'Mostra o Level e XP atual',
-    execute(message) {
+    execute({message}) {
         const user = message.mentions.users.first() || message.author;
         const difference = nextLvL(user.id) - getXp(user.id);
         let lvlembed = new Discord.MessageEmbed()

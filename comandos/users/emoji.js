@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'emoji',
     description: 'Obtem a imagem do emoji',
-    execute(message, args, client) {
+    execute({message, args}) {
         message.delete({timeout: 30});
         if (!args[0]) return message.channel.send('Você não não especificou que emoji quer')
         const regexa = args[0].replace(/^<(a?):\w+:\d+>$/, '$1');

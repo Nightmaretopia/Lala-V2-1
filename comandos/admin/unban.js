@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'unban',
     description: 'Desbane o membro por id',
-    execute(message, args) {
+    execute({message, args}) {
         if (!message.member.hasPermission('BAN_MEMBERS')) return message.channel.send('Você não tem permissão para usar este comando');
         let unbantarget = args[0];
         if (!unbantarget) return message.channel.send('Você não disse quem quer desbanir');

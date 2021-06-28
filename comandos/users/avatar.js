@@ -3,7 +3,7 @@ const { MessageEmbed }=require('discord.js');
 module.exports = {
     name: 'avatar',
     description: 'Envia o avatar da(s) pessoa(s) mencionada(s)',
-    execute(message) {
+    execute({message}) {
         message.delete({timeout: 30});
         
         if(message.mentions.users.size){
