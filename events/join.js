@@ -12,7 +12,6 @@ module.exports = {
             b.add(months, 'months');
         let days = a.diff(b, 'days');
 
-        if (Date.now() - member.user.createdAt < 1000*60*60*2) return member.ban({days: 7, reason: 'Raid acc?'});
         let wmch = client.channels.cache.get('831258860857589832');
         let chn = client.channels.cache.get('216708657440620544');
         let chn2 = client.channels.cache.get('826988730849296426');
