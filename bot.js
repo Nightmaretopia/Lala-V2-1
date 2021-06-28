@@ -3,6 +3,7 @@ const { prefix, token, Owner, Coder } = require('./config.json');
 const mongo = require('./mongo');
 const fs = require('fs');
 const manager = require('./manager')
+const colors = require('./colors');
 
 const client = new Discord.Client({partials: ['MESSAGE', 'REACTION']});
 client.commands = new Discord.Collection();
@@ -30,7 +31,8 @@ for (const file of moneyFiles) {
 }
 
 client.on('ready', async () => {
-    manager.rainbow(0, `${client.user.username} iniciou em ${client.guilds.cache.size} servidore(s).`);
+    let msg = colors.rainbow(`${client.user.username} iniciou em ${client.guilds.cache.size} servidore(s).`, true);
+    console.log(colors.colorFG(msg, colors.BLACK));
     client.user.setActivity("To Love-Ru", {type: "WATCHING"});
 
     await mongo().then((mongoose) => {
