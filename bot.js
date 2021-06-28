@@ -30,7 +30,7 @@ for (const file of moneyFiles) {
 }
 
 client.on('ready', async () => {
-    console.log("\x1b[35m\x1b[1m", `${client.user.username} iniciou em ${client.guilds.cache.size} servidore(s).`, "\x1b[0m");
+    manager.rainbow(0, `${client.user.username} iniciou em ${client.guilds.cache.size} servidore(s).`);
     client.user.setActivity("To Love-Ru", {type: "WATCHING"});
 
     await mongo().then((mongoose) => {
