@@ -239,12 +239,8 @@ function fromCXM(hueRegion, chroma, X, m) {
 // generate a Color from a given hex value
 function fromHex(hex) {
     // remove any leading formatting characters
-<<<<<<< Updated upstream
     hex = hex.replace("#", "").replace("0x", "");
 
-=======
-    hex = hex.replace("#", "");
->>>>>>> Stashed changes
     const colorValue = Number.parseInt(hex, 16);
     let r;
     let g;
