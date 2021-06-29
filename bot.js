@@ -7,14 +7,14 @@ const colors = require('./colors');
 
 const client = new Discord.Client({partials: ['MESSAGE', 'REACTION']});
 client.commands = new Discord.Collection();
-const commandsFolder = fs.readdirSync('./comandos');
+const commandsFolder = fs.readdirSync('./commands');
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 const moneyFiles = fs.readdirSync('./monetary system').filter(file => file.endsWith('.js'));
 
 for (const folder of commandsFolder) {
-    const commandFiles = fs.readdirSync(`./comandos/${folder}`).filter(file => file.endsWith('.js'));
+    const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
     for (const file of commandFiles) {
-        const command = require(`./comandos/${folder}/${file}`);
+        const command = require(`./commands/${folder}/${file}`);
         client.commands.set(command.name, command);
     }
 }
@@ -31,7 +31,7 @@ for (const file of moneyFiles) {
 }
 
 client.on('ready', async () => {
-    let msg = colors.rainbow(`${client.user.username} iniciou em ${client.guilds.cache.size} servidore(s).`, true);
+    let msg = colors.rainbow(`${client.user.username} iniciou em ${client.guilds.cache.size} servidore(s).`);
     console.log(colors.colorFG(msg, colors.BLACK));
     client.user.setActivity("To Love-Ru", {type: "WATCHING"});
 

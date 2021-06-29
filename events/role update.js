@@ -5,5 +5,7 @@ module.exports = {
     async execute(oldMemb, newMemb, client) {
         if (!oldMemb.guild) return;
         if (oldMemb.user.bot) return;
+
+        
     }
 }
