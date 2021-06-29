@@ -31,8 +31,8 @@ for (const file of moneyFiles) {
 }
 
 client.on('ready', async () => {
-    let msg = colors.rainbow(`${client.user.username} iniciou em ${client.guilds.cache.size} servidore(s).`);
-    console.log(colors.colorFG(msg, colors.BLACK));
+    let msg = colors.rainbow(`${client.user.username} iniciou em ${client.guilds.cache.size} servidore(s).`, true);
+    console.log(colors.colorFG(msg, colors.Color.BLACK));
     client.user.setActivity("To Love-Ru", {type: "WATCHING"});
 
     await mongo().then((mongoose) => {
