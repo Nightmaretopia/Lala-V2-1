@@ -408,6 +408,7 @@ function gradient(logMsg, startCol, endCol, isBg = false, space = ColorSpace.RGB
 exports.gradient = gradient;
 // color a given string of text based on an interconnected set of gradients
 function segmentedGradient(logMsg, isBg, startingColor, ...segments) {
+    logMsg = logMsg.replace(exports.resetToken, "");
     // determine the length of the entire expression
     let totalLength = 0;
     for (const segment of segments)

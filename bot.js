@@ -3,7 +3,7 @@ const { prefix, token, Owner, Coder } = require('./config.json');
 const mongo = require('./mongo');
 const fs = require('fs');
 const manager = require('./manager')
-const colors = require('./colors');
+const { logs, colors } = require('./color-manager');
 
 const client = new Discord.Client({partials: ['MESSAGE', 'REACTION']});
 client.commands = new Discord.Collection();
@@ -31,13 +31,20 @@ for (const file of moneyFiles) {
 }
 
 client.on('ready', async () => {
-    let msg = colors.rainbow(`${client.user.username} iniciou em ${client.guilds.cache.size} servidore(s).`, true);
-    console.log(colors.colorFG(msg, colors.Color.BLACK));
+    logs.fire(`${client.user.username} iniciou em ${client.guilds.cache.size} servidore(s).`);
     client.user.setActivity("To Love-Ru", {type: "WATCHING"});
+
+    logs.sgradient("This should work (i hope)", false, colors.red, {
+        endCol: colors.gold,
+        interpolationMethod: colors.Cubic
+    }, {
+        endCol: colors.green,
+        colorSpace: colors.RGB
+    })
 
     await mongo().then((mongoose) => {
         try {
-            console.log("\x1b[32m", `${client.user.username} Connected to MONGODB`, "\x1b[0m");
+            logs.gradient(`${client.user.username} Connected to MONGODB`, colors.hex("#1ca800"), colors.hex("#a4faa2"), colors.RGB);
         } finally {
             mongoose.connection.close();
         }
