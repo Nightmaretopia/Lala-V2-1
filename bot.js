@@ -34,14 +34,6 @@ client.on('ready', async () => {
     logs.fire(`${client.user.username} iniciou em ${client.guilds.cache.size} servidore(s).`);
     client.user.setActivity("To Love-Ru", {type: "WATCHING"});
 
-    logs.sgradient("This should work (i hope)", false, colors.red, {
-        endCol: colors.gold,
-        interpolationMethod: colors.Cubic
-    }, {
-        endCol: colors.green,
-        colorSpace: colors.RGB
-    })
-
     await mongo().then((mongoose) => {
         try {
             logs.gradient(`${client.user.username} Connected to MONGODB`, colors.hex("#1ca800"), colors.hex("#a4faa2"), colors.RGB);
