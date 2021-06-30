@@ -497,11 +497,13 @@ function gradientColorText(text, gradient, isBg = false) {
     }
     return result;
 }
+
 exports.gradientColorText = gradientColorText;
 // color a given string using multiple consecutive gradients defined using segments
 function manyGradientColorText(text, isBg = false, startingColor, ...segments) {
     text = text.replace(exports.resetToken, "");
     // determine the length of the entire expression & create the gradients for each segment
+
     let totalLength = 0;
     let gradients = [];
     let lengths = [];
