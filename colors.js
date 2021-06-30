@@ -1,7 +1,7 @@
 "use strict";
 //#region color
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.rainbow = exports.segmentedGradient = exports.gradient = exports.fromHex = exports.fromHSI = exports.fromHSL = exports.fromHSV = exports.colorFG = exports.colorBG = exports.resetToken = exports.colorFGToken = exports.colorBGToken = exports.InterpolationMethod = exports.cyclicalCubicInterpolate_derivativeBased = exports.cyclicalLerp = exports.cubicInterpolate_pointBased = exports.cubicInterpolate_derivativeBased = exports.lerp = exports.ColorSpace = exports.Color = void 0;
+exports.rainbow = exports.manyGradientColorText = exports.gradientColorText = exports.cycleColorText = exports.colorText = exports.fromHex = exports.fromHSI = exports.fromHSL = exports.fromHSV = exports.resetToken = exports.colorFGToken = exports.colorBGToken = exports.Gradient = exports.InterpMethod = exports.cyclicCubicInterp_derivBased = exports.cyclicQerp_1 = exports.cyclicQerp_0 = exports.cyclicLerp = exports.cubicInterp_ptBased = exports.cubicInterp_derivBased = exports.qerp_1 = exports.qerp_0 = exports.lerp = exports.ColorSpace = exports.Color = void 0;
 class Color {
     constructor(r, g, b) {
         this.r = Math.min(Math.max(r, 0), 1);
@@ -30,6 +30,13 @@ class Color {
     get b_8b() { return Math.floor(this.b * 0xFF); }
     get chroma() {
         return Math.max(this.r, this.g, this.b) - Math.min(this.r, this.g, this.b);
+    }
+    set chroma(c) {
+        let i = this.intensity;
+        let oc = this.chroma;
+        this.r = (this.r - i) * c / oc + i;
+        this.g = (this.g - i) * c / oc + i;
+        this.b = (this.b - i) * c / oc + i;
     }
     get hue() {
         if (this.chroma == 0)
@@ -84,7 +91,7 @@ Color.GOLD = new Color(0.5, 0.5, 0);
 Color.ORANGE = new Color(1, 0.5, 0);
 Color.BROWN = new Color(0.5, 0.25, 0);
 Color.PURPLE = new Color(0.5, 0, 1);
-Color.SILVER = new Color(0.8, 0.8, 0.8);
+Color.SILVER = new Color(0.75, 0.75, 0.75);
 Color.PINK = new Color(1, 0.6, 0.8);
 var ColorSpace;
 (function (ColorSpace) {
@@ -106,19 +113,33 @@ function sum(...values) {
 }
 //#endregion
 //#region interpolation
+// linear interpolation
 function lerp(t, a, b) {
     return (b - a) * t + a;
 }
 exports.lerp = lerp;
-function cubicInterpolate_derivativeBased(t, a, b, aprime = 0, bprime = 0) {
+// quadratic interpolation which starts at its turning point
+function qerp_0(t, a, b) {
+    return (b - a) * t * t + a;
+}
+exports.qerp_0 = qerp_0;
+// quadratic interpolation which ends at its turning point
+function qerp_1(t, a, b) {
+    return (b - a) * (2 - t) * t + a;
+}
+exports.qerp_1 = qerp_1;
+// cubic interpolation using derivatives
+function cubicInterp_derivBased(t, a, b, aprime = 0, bprime = 0) {
     return a + aprime * t + (3 * b - 3 * a - 2 * aprime - bprime) * t * t + (2 * a - 2 * b + aprime + bprime) * t * t * t;
 }
-exports.cubicInterpolate_derivativeBased = cubicInterpolate_derivativeBased;
-function cubicInterpolate_pointBased(t, p0, p1, p2, p3) {
+exports.cubicInterp_derivBased = cubicInterp_derivBased;
+// cubic interpolation using points
+function cubicInterp_ptBased(t, p0, p1, p2, p3) {
     return p1 + (0.5 * p2 - 0.5 * p0) * t + (p0 - 2.5 * p1 + 2 * p2 - 0.5 * p3) * t * t + (-0.5 * p0 + 1.5 * p1 - 1.5 * p2 + 0.5 * p3) * t * t * t;
 }
-exports.cubicInterpolate_pointBased = cubicInterpolate_pointBased;
-function cyclicalLerp(t, a, b) {
+exports.cubicInterp_ptBased = cubicInterp_ptBased;
+// cyclical linear interpolation
+function cyclicLerp(t, a, b) {
     const diff = b - a;
     if (diff > 0.5) {
         return ((b - a - 1) * t + a + 1) % 1;
@@ -130,25 +151,158 @@ function cyclicalLerp(t, a, b) {
         return (b - a) * t + a;
     }
 }
-exports.cyclicalLerp = cyclicalLerp;
-function cyclicalCubicInterpolate_derivativeBased(t, a, b, aprime = 0, bprime = 0) {
+exports.cyclicLerp = cyclicLerp;
+// cyclical quadratic interpolation which starts at its turning point
+function cyclicQerp_0(t, a, b) {
+    const diff = b - a;
+    if (diff > 0.5)
+        return qerp_0(t, a + 1, b) % 1;
+    else if (diff < -0.5)
+        return qerp_0(t, a, b + 1) % 1;
+    else
+        return qerp_0(t, a, b);
+}
+exports.cyclicQerp_0 = cyclicQerp_0;
+// cyclical quadratic interpolation which ends at its turning point
+function cyclicQerp_1(t, a, b) {
+    const diff = b - a;
+    if (diff > 0.5)
+        return qerp_1(t, a + 1, b) % 1;
+    else if (diff < -0.5)
+        return qerp_1(t, a, b + 1) % 1;
+    else
+        return qerp_1(t, a, b);
+}
+exports.cyclicQerp_1 = cyclicQerp_1;
+// cyclical cubic interpolation using derivatives
+function cyclicCubicInterp_derivBased(t, a, b, aprime = 0, bprime = 0) {
     const diff = b - a;
     if (diff > 0.5) {
-        return cubicInterpolate_derivativeBased(t, a + 1, b, aprime, bprime) % 1;
+        return cubicInterp_derivBased(t, a + 1, b, aprime, bprime) % 1;
     }
     else if (diff < -0.5) {
-        return cubicInterpolate_derivativeBased(t, a, b + 1, aprime, bprime) % 1;
+        return cubicInterp_derivBased(t, a, b + 1, aprime, bprime) % 1;
     }
     else {
-        return cubicInterpolate_derivativeBased(t, a, b, aprime, bprime);
+        return cubicInterp_derivBased(t, a, b, aprime, bprime);
     }
 }
-exports.cyclicalCubicInterpolate_derivativeBased = cyclicalCubicInterpolate_derivativeBased;
-var InterpolationMethod;
-(function (InterpolationMethod) {
-    InterpolationMethod[InterpolationMethod["linear"] = 0] = "linear";
-    InterpolationMethod[InterpolationMethod["cubic"] = 1] = "cubic";
-})(InterpolationMethod = exports.InterpolationMethod || (exports.InterpolationMethod = {}));
+exports.cyclicCubicInterp_derivBased = cyclicCubicInterp_derivBased;
+var InterpMethod;
+(function (InterpMethod) {
+    InterpMethod[InterpMethod["linear"] = 0] = "linear";
+    InterpMethod[InterpMethod["inc_quadratic"] = 1] = "inc_quadratic";
+    InterpMethod[InterpMethod["dec_quadratic"] = 2] = "dec_quadratic";
+    InterpMethod[InterpMethod["cubic"] = 3] = "cubic";
+})(InterpMethod = exports.InterpMethod || (exports.InterpMethod = {}));
+// represents a gradient between two colors
+class Gradient {
+    constructor(startColor, endColor, space = ColorSpace.RGB, interpolation = InterpMethod.linear) {
+        this.colorSpace = space;
+        this.interpMethod = interpolation;
+        let { fromColor, toColor } = getCastingFtns(space);
+        let { interpFtn, cyclicInterpFtn } = getInterpFtns(interpolation);
+        this.toColor = toColor;
+        this.fromColor = fromColor;
+        this.interpFtn = interpFtn;
+        this.cyclicInterpFtn = cyclicInterpFtn;
+        [this.s1, this.s2, this.s3] = fromColor(startColor);
+        [this.e1, this.e2, this.e3] = fromColor(endColor);
+        this.cyclicArg = getCyclicArg(space);
+    }
+    getAt(t) {
+        return this.toColor(0b100 & this.cyclicArg ? this.cyclicInterpFtn(t, this.s1, this.e1) : this.interpFtn(t, this.s1, this.e1), 0b010 & this.cyclicArg ? this.cyclicInterpFtn(t, this.s2, this.e2) : this.interpFtn(t, this.s2, this.e2), 0b001 & this.cyclicArg ? this.cyclicInterpFtn(t, this.s3, this.e3) : this.interpFtn(t, this.s3, this.e3));
+    }
+    get startColor() {
+        return this.toColor(this.s1, this.s2, this.s3);
+    }
+    get endColor() {
+        return this.toColor(this.s1, this.s2, this.s3);
+    }
+    set startColor(c) {
+        [this.s1, this.s2, this.s3] = this.fromColor(c);
+    }
+    set endColor(c) {
+        [this.e1, this.e2, this.e3] = this.fromColor(c);
+    }
+    get interpolation() {
+        return this.interpMethod;
+    }
+    get space() {
+        return this.colorSpace;
+    }
+    set interpolation(interpolation) {
+        this.interpMethod = interpolation;
+        let { interpFtn, cyclicInterpFtn } = getInterpFtns(interpolation);
+        this.interpFtn = interpFtn;
+        this.cyclicInterpFtn = cyclicInterpFtn;
+    }
+    set space(space) {
+        this.colorSpace = space;
+        let s = this.startColor, e = this.endColor;
+        let { fromColor, toColor } = getCastingFtns(space);
+        this.fromColor = fromColor;
+        this.toColor = toColor;
+        this.cyclicArg = getCyclicArg(space);
+        this.startColor = s, this.endColor = e;
+    }
+}
+exports.Gradient = Gradient;
+// collects the appropriate casting functions for a given color space
+function getCastingFtns(space) {
+    let fromColor;
+    let toColor;
+    switch (space) {
+        case ColorSpace.RGB:
+            fromColor = (c) => c.toRGB();
+            toColor = (r, g, b) => new Color(r, g, b);
+            break;
+        case ColorSpace.HSV:
+            fromColor = (c) => c.toHSV();
+            toColor = (h, s, v) => fromHSV(h, s, v);
+            break;
+        case ColorSpace.HSL:
+            fromColor = (c) => c.toHSL();
+            toColor = (h, s, l) => fromHSL(h, s, l);
+            break;
+        case ColorSpace.HSI:
+            fromColor = (c) => c.toHSI();
+            toColor = (h, s, i) => fromHSI(h, s, i);
+            break;
+        default:
+            throw new Error("That color space is not yet supported within in this function.");
+    }
+    return { toColor, fromColor };
+}
+// collects the appropriate interpolation functions for a given interpolation method
+function getInterpFtns(interpolation) {
+    let interpFtn;
+    let cyclicInterpFtn;
+    switch (interpolation) {
+        case InterpMethod.linear:
+            interpFtn = lerp;
+            cyclicInterpFtn = cyclicLerp;
+            break;
+        case InterpMethod.inc_quadratic:
+            interpFtn = qerp_0;
+            cyclicInterpFtn = cyclicQerp_0;
+            break;
+        case InterpMethod.dec_quadratic:
+            interpFtn = qerp_1;
+            cyclicInterpFtn = cyclicQerp_1;
+        case InterpMethod.cubic:
+            interpFtn = cubicInterp_derivBased;
+            cyclicInterpFtn = cyclicCubicInterp_derivBased;
+            break;
+        default:
+            throw new Error("That interpolation method is not yet supported within this function");
+    }
+    return { interpFtn, cyclicInterpFtn };
+}
+// returns a number which indicates which components of a given color system are cyclical
+function getCyclicArg(space) {
+    return space == ColorSpace.RGB ? 0 : 0b100;
+}
 //#endregion
 //#region console color tokens
 // generates the token used in a console message to color the background
@@ -163,20 +317,6 @@ function colorFGToken(color) {
 exports.colorFGToken = colorFGToken;
 // constant for resetting the console color
 exports.resetToken = "\x1b[0m";
-//#endregion
-//#region uniform text coloring
-// color a given string of text a given color
-function colorBG(logMsg, color) {
-    logMsg = logMsg.replace(exports.resetToken, "");
-    return colorBGToken(color) + logMsg + exports.resetToken;
-}
-exports.colorBG = colorBG;
-// color a given string of text a given color
-function colorFG(logMsg, color) {
-    logMsg = logMsg.replace(exports.resetToken, "");
-    return colorFGToken(color) + logMsg + exports.resetToken;
-}
-exports.colorFG = colorFG;
 //#endregion
 //#region generate color
 // all inputs and outputs are in the range [0, 1]
@@ -289,102 +429,7 @@ function fromHex(hex) {
 }
 exports.fromHex = fromHex;
 //#endregion
-//#region non-uniform text coloring helpers
-function getCyclicalArg(space) {
-    return space == ColorSpace.RGB ? 0 : 0b100;
-}
-// fetches the appropriate functions for a given choice of color space and interpolation method
-function getFunctions(space, interpolation) {
-    // which color space?
-    let toColorSpace;
-    let fromColorSpace;
-    switch (space) {
-        case ColorSpace.RGB:
-            toColorSpace = (c) => c.toRGB();
-            fromColorSpace = (r, g, b) => new Color(r, g, b);
-            break;
-        case ColorSpace.HSV:
-            toColorSpace = (c) => c.toHSV();
-            fromColorSpace = (h, s, v) => fromHSV(h, s, v);
-            break;
-        case ColorSpace.HSL:
-            toColorSpace = (c) => c.toHSL();
-            fromColorSpace = (h, s, l) => fromHSL(h, s, l);
-            break;
-        case ColorSpace.HSI:
-            toColorSpace = (c) => c.toHSI();
-            fromColorSpace = (h, s, i) => fromHSI(h, s, i);
-            break;
-        default:
-            throw new Error("That color space is not yet supported within in this function.");
-    }
-    // which interpolation method?
-    let interpolationFtn;
-    let cyclicalInterpolationFtn;
-    switch (interpolation) {
-        case InterpolationMethod.linear:
-            interpolationFtn = lerp;
-            cyclicalInterpolationFtn = cyclicalLerp;
-            break;
-        case InterpolationMethod.cubic:
-            interpolationFtn = cubicInterpolate_derivativeBased;
-            cyclicalInterpolationFtn = cyclicalCubicInterpolate_derivativeBased;
-            break;
-        default:
-            throw new Error("That interpolation method is not yet supported within this function");
-    }
-    return { toColorSpace, fromColorSpace, interpolationFtn, cyclicalInterpolationFtn };
-}
-// responsible for generating the base gradient 
-function partialGradient(logMsg, startCol, endCol, isBg, 
-// the function we use to interpolate
-interpolationFtn, 
-// a cyclical version of the same function
-cyclicalInterpolationFtn, 
-// bit mask to determine which arguments are cyclical
-cyclicalArguments, 
-// the function to generate the intermediate form from the Color class
-toColorSpace, 
-// the function to recreate the Color from the calculated mean
-fromColorSpace) {
-    // we need to figure out how to break up the domain
-    let colorableCount = getColorableCount(logMsg);
-    // convert to the form used for our interpolation
-    const s = toColorSpace(startCol);
-    const e = toColorSpace(endCol);
-    let result = "";
-    let t = 0;
-    // we walk through the message, skipping any already existing color modifiers
-    for (let i = 0; i < logMsg.length; i++) {
-        if (logMsg[i] == '\u001B') {
-            do {
-                result += logMsg[i];
-                i++;
-            } while (logMsg[i] != 'm');
-            result += logMsg[i];
-            i++;
-        }
-        // generate the color using the functions we got in the arguments
-        const color = getInterpolatedColor(s, e, t / colorableCount, interpolationFtn, cyclicalInterpolationFtn, cyclicalArguments, fromColorSpace);
-        // add the current character colored with the color we created earlier
-        result += isBg ? colorBGToken(color) : colorFGToken(color);
-        result += logMsg[i];
-        t++;
-    }
-    return result;
-}
-// interpolate between two colors using functions given as arguments
-function getInterpolatedColor(startCol, endCol, t, 
-// the function we use to interpolate
-interpolationFtn, 
-// a cyclical version of the same function
-cyclicalInterpolationFtn, 
-// bit mask to determine which arguments are cyclical
-cyclicalArguments, 
-// the function to recreate the Color from the calculated mean
-fromColorSpace) {
-    return fromColorSpace(0b100 & cyclicalArguments ? cyclicalInterpolationFtn(t, startCol[0], endCol[0]) : interpolationFtn(t, startCol[0], endCol[0]), 0b010 & cyclicalArguments ? cyclicalInterpolationFtn(t, startCol[1], endCol[1]) : interpolationFtn(t, startCol[1], endCol[1]), 0b001 & cyclicalArguments ? cyclicalInterpolationFtn(t, startCol[2], endCol[2]) : interpolationFtn(t, startCol[2], endCol[2]));
-}
+//#region text coloring helpers
 // calculates the number of characters within the given string that may be colored
 function getColorableCount(logMsg) {
     let colorableCount = 0;
@@ -399,72 +444,115 @@ function getColorableCount(logMsg) {
     }
     return colorableCount;
 }
-// color a given string of text based on a gradient
-function gradient(logMsg, startCol, endCol, isBg = false, space = ColorSpace.RGB, interpolation = InterpolationMethod.linear) {
-    logMsg = logMsg.replace(exports.resetToken, "");
-    let { interpolationFtn, cyclicalInterpolationFtn, toColorSpace, fromColorSpace } = getFunctions(space, interpolation);
-    return partialGradient(logMsg, startCol, endCol, isBg, interpolationFtn, cyclicalInterpolationFtn, getCyclicalArg(space), toColorSpace, fromColorSpace) + exports.resetToken;
+// color a given string of text a given color
+function colorText(text, color, isBg = false) {
+    text = text.replace(exports.resetToken, "");
+    return (isBg ? colorBGToken(color) : colorFGToken(color)) + text + exports.resetToken;
 }
-exports.gradient = gradient;
-// color a given string of text based on an interconnected set of gradients
-function segmentedGradient(logMsg, isBg, startingColor, ...segments) {
-    // determine the length of the entire expression
+exports.colorText = colorText;
+// color a given string a given sequence of colors in a cyclical order
+function cycleColorText(text, segmentLength, isBg, ...colors) {
+    text = text.replace(exports.resetToken, "");
+    let result = "";
+    let c = 0;
+    let getToken = isBg ? colorBGToken : colorFGToken;
+    for (let i = 0; i < text.length; i++) {
+        // skip characters used for recoloring
+        if (text[i] == '\u001B') {
+            do {
+                result += text[i];
+                i++;
+            } while (text[i] != 'm');
+            result += text[i];
+            i++;
+        }
+        result += getToken(colors[Math.round(c / segmentLength) % colors.length]) + text[i];
+        c++;
+    }
+    return result + exports.resetToken;
+}
+exports.cycleColorText = cycleColorText;
+// color a given string according to a given gradient
+function gradientColorText(text, gradient, isBg = false) {
+    text = text.replace(exports.resetToken, "");
+    let colorableCount = getColorableCount(text);
+    let result = "";
+    let t = 0;
+    // we walk through the message, skipping any already existing color modifiers
+    for (let i = 0; i < text.length; i++) {
+        if (text[i] == '\u001B') {
+            do {
+                result += text[i];
+                i++;
+            } while (text[i] != 'm');
+            result += text[i];
+            i++;
+        }
+        // generate the color using the functions we got in the arguments
+        const color = gradient.getAt(t / colorableCount);
+        // add the current character colored with the color we created earlier
+        result += isBg ? colorBGToken(color) : colorFGToken(color);
+        result += text[i];
+        t++;
+    }
+    return result;
+}
+exports.gradientColorText = gradientColorText;
+// color a given string using multiple consecutive gradients defined using segments
+function manyGradientColorText(text, isBg = false, startingColor, ...segments) {
+    text = text.replace(exports.resetToken, "");
+    // determine the length of the entire expression & create the gradients for each segment
     let totalLength = 0;
-    for (const segment of segments)
-        totalLength += segment.length && segment.length > 0 ? segment.length : 1;
-    let colorableCount = getColorableCount(logMsg);
+    let gradients = [];
+    let lengths = [];
+    for (let i = 0; i < segments.length; i++) {
+        const segment = segments[i];
+        lengths.push(segment.length && segment.length > 0 ? segment.length : 1);
+        totalLength += lengths[lengths.length - 1];
+        if (i == 0)
+            gradients.push(new Gradient(startingColor, segment.color, segment.colorSpace, segment.interpMethod));
+        else
+            gradients.push(new Gradient(segments[i - 1].color, segment.color, segment.colorSpace, segment.interpMethod));
+    }
+    let colorableCount = getColorableCount(text);
     let result = "";
     // global t value
     let gt = 0;
     const increment = totalLength / colorableCount;
-    for (let i = 0; i < logMsg.length; i++) {
+    for (let i = 0; i < text.length; i++) {
         // skip characters used for recoloring
-        if (logMsg[i] == '\u001B') {
+        if (text[i] == '\u001B') {
             do {
-                result += logMsg[i];
+                result += text[i];
                 i++;
-            } while (logMsg[i] != 'm');
-            result += logMsg[i];
+            } while (text[i] != 'm');
+            result += text[i];
             i++;
         }
         // local t value for current segment
         let lt = gt;
         let currentIndex;
-        let currentSegment = segments[0];
+        let currentLength = lengths[0];
+        let currentGradient = gradients[0];
         // determine which segment we are in for this iteration, and how far through it
         for (currentIndex = 0; currentIndex < segments.length; currentIndex++) {
-            currentSegment = segments[currentIndex];
-            if (!currentSegment.length)
-                currentSegment.length = 1;
+            currentLength = lengths[currentIndex];
+            currentGradient = gradients[currentIndex];
             // we've found our current segment
-            if (lt < currentSegment.length)
+            if (lt < currentLength)
                 break;
-            lt -= currentSegment.length;
+            lt -= currentLength;
         }
         // we need lt to be in a range of [0, 1]
-        if (currentSegment.length)
-            lt /= currentSegment.length;
-        // if color space or interpolation method isn't given, use appropriate defaults
-        currentSegment.colorSpace = currentSegment.colorSpace ? currentSegment.colorSpace : ColorSpace.RGB;
-        currentSegment.interpolationMethod = currentSegment.interpolationMethod ? currentSegment.interpolationMethod : InterpolationMethod.linear;
-        const { interpolationFtn, cyclicalInterpolationFtn, fromColorSpace, toColorSpace } = getFunctions(currentSegment.colorSpace, currentSegment.interpolationMethod);
-        // our starting color comes from the previous iteration, or startingColor if we've just begun
-        let sc;
-        if (currentIndex == 0) {
-            sc = toColorSpace(startingColor);
-        }
-        else {
-            sc = toColorSpace(segments[currentIndex - 1].endCol);
-        }
-        let ec = toColorSpace(currentSegment.endCol);
-        const color = getInterpolatedColor(sc, ec, lt, interpolationFtn, cyclicalInterpolationFtn, getCyclicalArg(currentSegment.colorSpace), fromColorSpace);
+        lt /= currentLength;
+        const color = currentGradient.getAt(lt);
         result += isBg ? colorBGToken(color) : colorFGToken(color);
-        result += logMsg[i];
+        result += text[i];
         gt += increment;
     }
     return result + exports.resetToken;
 }
-exports.segmentedGradient = segmentedGradient;
+exports.manyGradientColorText = manyGradientColorText;
 // color a given string of text in a rainbow style
 function rainbow(logMsg, isBg = false, speed = 0.05) {
     let result = "";
@@ -492,23 +580,17 @@ exports.rainbow = rainbow;
 //#region test
 if (process.argv[1] == __filename) {
     let myColor;
+    let myGradient;
     let msg;
-    // the constructor expects values between 0 and 1, representing red, green and blue
-    myColor = new Color(0.1, 0.7, 0.3);
-    // gradients can be produced between pairs of colors
-    msg = gradient("Colors can blend beautifully", Color.CYAN, Color.ORANGE, false, ColorSpace.HSV);
+    myColor = new Color(0.33, 0.22, 0.37);
+    msg = colorText("Hello World!", myColor, true);
     console.log(msg);
-    // multiple gradients can be used together for a more complex pattern gradient
-    msg = segmentedGradient("This gradient is made up of multiple parts!", false, Color.WHITE, {
-        endCol: Color.GRAY
-    }, {
-        endCol: Color.PINK,
-        interpolationMethod: InterpolationMethod.cubic,
-        length: 2
-    }, {
-        endCol: Color.GOLD,
-        colorSpace: ColorSpace.HSL
-    });
+    msg = cycleColorText("This has multiple colors!", 3, false, Color.MAGENTA, Color.ORANGE, Color.CYAN);
+    console.log(msg);
+    myGradient = new Gradient(Color.GREEN, Color.RED, ColorSpace.HSV);
+    msg = gradientColorText("This has a smooth gradient!", myGradient, false);
+    console.log(msg);
+    msg = manyGradientColorText("This uses multiple gradients combined together!", true, Color.BLACK, { color: Color.BLUE, interpMethod: InterpMethod.inc_quadratic }, { color: Color.PURPLE, length: 2 }, { color: Color.PINK, colorSpace: ColorSpace.HSV, interpMethod: InterpMethod.dec_quadratic });
     console.log(msg);
 }
 //#endregion
