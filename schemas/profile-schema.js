@@ -13,6 +13,7 @@ const numb = {
 const profileSchema = mongoose.Schema({
     _id: reqString,
     name: reqString,
+    warns: numb,
     xp: numb,
     level: numb,
     reputation: numb,
