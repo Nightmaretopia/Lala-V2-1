@@ -1,16 +1,16 @@
 "use strict";
 //#region color
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.rainbow = exports.manyGradientColorText = exports.gradientColorText = exports.cycleColorText = exports.colorText = exports.fromHex = exports.fromHSI = exports.fromHSL = exports.fromHSV = exports.resetToken = exports.colorFGToken = exports.colorBGToken = exports.Gradient = exports.InterpMethod = exports.cyclicCubicInterp_derivBased = exports.cyclicQerp_1 = exports.cyclicQerp_0 = exports.cyclicLerp = exports.cubicInterp_ptBased = exports.cubicInterp_derivBased = exports.qerp_1 = exports.qerp_0 = exports.lerp = exports.ColorSpace = exports.Color = void 0;
+exports.rainbow = exports.manyGradientColorText_2 = exports.manyGradientColorText = exports.gradientColorText = exports.cycleColorText = exports.colorText = exports.fromHex = exports.fromHSI = exports.fromHSL = exports.fromHSV = exports.resetToken = exports.colorFGToken = exports.colorBGToken = exports.Gradient = exports.InterpMethod = exports.cyclicCubicInterp_deriv_long = exports.cyclicCubicInterp_deriv_short = exports.cyclicQerp_1_long = exports.cyclicQerp_1_short = exports.cyclicQerp_0_long = exports.cyclicQerp_0_short = exports.cyclicLerp_long = exports.cyclicLerp_short = exports.cubicInterp_pt = exports.cubicInterp_deriv = exports.qerp_1 = exports.qerp_0 = exports.lerp = exports.ColorSpace = exports.Color = void 0;
 class Color {
     constructor(r, g, b) {
-        this.r = Math.min(Math.max(r, 0), 1);
-        this.g = Math.min(Math.max(g, 0), 1);
-        this.b = Math.min(Math.max(b, 0), 1);
+        this._r = Math.min(Math.max(r, 0), 1);
+        this._g = Math.min(Math.max(g, 0), 1);
+        this._b = Math.min(Math.max(b, 0), 1);
     }
     // exports as a simple array
     toRGB() {
-        return [this.r, this.g, this.b];
+        return [this._r, this._g, this._b];
     }
     // exports as an array of 3 RGB values
     to24Bit() {
@@ -25,32 +25,52 @@ class Color {
     toHSI() {
         return [this.hue, this.saturation_I, this.intensity];
     }
-    get r_8b() { return Math.floor(this.r * 0xFF); }
-    get g_8b() { return Math.floor(this.g * 0xFF); }
-    get b_8b() { return Math.floor(this.b * 0xFF); }
+    get r() {
+        return this._r;
+    }
+    get g() {
+        return this._g;
+    }
+    get b() {
+        return this._b;
+    }
+    set r(r) {
+        this._r = Math.min(Math.max(r, 0), 1);
+    }
+    set g(g) {
+        this._g = Math.min(Math.max(g, 0), 1);
+    }
+    set b(b) {
+        this._b = Math.min(Math.max(b, 0), 1);
+    }
+    get r_8b() { return Math.floor(this._r * 0xFF); }
+    get g_8b() { return Math.floor(this._g * 0xFF); }
+    get b_8b() { return Math.floor(this._b * 0xFF); }
     get chroma() {
-        return Math.max(this.r, this.g, this.b) - Math.min(this.r, this.g, this.b);
+        return Math.max(this._r, this._g, this._b) - Math.min(this._r, this._g, this._b);
     }
     set chroma(c) {
+        if (c < 0)
+            c = 0;
         let i = this.intensity;
         let oc = this.chroma;
-        this.r = (this.r - i) * c / oc + i;
-        this.g = (this.g - i) * c / oc + i;
-        this.b = (this.b - i) * c / oc + i;
+        this._r = (this._r - i) * c / oc + i;
+        this._g = (this._g - i) * c / oc + i;
+        this._b = (this._b - i) * c / oc + i;
     }
     get hue() {
         if (this.chroma == 0)
             return 0;
         let hprime;
-        switch (Math.max(this.r, this.g, this.b)) {
-            case this.r:
-                hprime = ((this.g - this.b) / this.chroma + 6) % 6;
+        switch (Math.max(this._r, this._g, this._b)) {
+            case this._r:
+                hprime = ((this._g - this._b) / this.chroma + 6) % 6;
                 break;
-            case this.g:
-                hprime = (this.b - this.r) / this.chroma + 2;
+            case this._g:
+                hprime = (this._b - this._r) / this.chroma + 2;
                 break;
-            case this.b:
-                hprime = (this.r - this.g) / this.chroma + 4;
+            case this._b:
+                hprime = (this._r - this._g) / this.chroma + 4;
                 break;
             default:
                 hprime = 0;
@@ -58,23 +78,65 @@ class Color {
         }
         return hprime / 6;
     }
+    set hue(h) {
+        let replacements = fromHSV(h, this.saturation_V, this.value);
+        this._r = replacements._r;
+        this._g = replacements._g;
+        this._b = replacements._b;
+    }
     get intensity() {
-        return avg(this.r, this.g, this.b);
+        return avg(this._r, this._g, this._b);
+    }
+    set intensity(i) {
+        let replacements = fromHSI(this.hue, this.saturation_I, i);
+        this._r = replacements._r;
+        this._g = replacements._g;
+        this._b = replacements._b;
     }
     get value() {
-        return Math.max(this.r, this.g, this.b);
+        return Math.max(this._r, this._g, this._b);
+    }
+    set value(v) {
+        let replacements = fromHSV(this.hue, this.saturation_V, v);
+        this._r = replacements._r;
+        this._g = replacements._g;
+        this._b = replacements._b;
     }
     get lightness() {
-        return mid(this.r, this.g, this.b);
+        return mid(this._r, this._g, this._b);
+    }
+    set lightness(l) {
+        let replacements = fromHSL(this.hue, this.saturation_L, l);
+        this._r = replacements._r;
+        this._g = replacements._g;
+        this._b = replacements._b;
     }
     get saturation_V() {
         return this.value == 0 ? 0 : this.chroma / this.value;
     }
+    set saturation_V(s) {
+        let replacements = fromHSV(this.hue, s, this.value);
+        this._r = replacements._r;
+        this._g = replacements._g;
+        this._b = replacements._b;
+    }
     get saturation_L() {
         return this.lightness % 1 == 0 ? 0 : this.chroma / (1 - Math.abs(2 * this.lightness - 1));
     }
+    set saturation_L(s) {
+        let replacements = fromHSL(this.hue, s, this.lightness);
+        this._r = replacements._r;
+        this._g = replacements._g;
+        this._b = replacements._b;
+    }
     get saturation_I() {
-        return this.intensity == 0 ? 0 : 1 - Math.min(this.r, this.g, this.b) / this.intensity;
+        return this.intensity == 0 ? 0 : 1 - Math.min(this._r, this._g, this._b) / this.intensity;
+    }
+    set saturation_I(s) {
+        let replacements = fromHSI(this.hue, s, this.intensity);
+        this._r = replacements._r;
+        this._g = replacements._g;
+        this._b = replacements._b;
     }
 }
 exports.Color = Color;
@@ -129,65 +191,147 @@ function qerp_1(t, a, b) {
 }
 exports.qerp_1 = qerp_1;
 // cubic interpolation using derivatives
-function cubicInterp_derivBased(t, a, b, aprime = 0, bprime = 0) {
-    return a + aprime * t + (3 * b - 3 * a - 2 * aprime - bprime) * t * t + (2 * a - 2 * b + aprime + bprime) * t * t * t;
+function cubicInterp_deriv(t, a, b, aprime = 0, bprime = 0) {
+    return (2 * a - 2 * b + aprime + bprime) * t * t * t + (3 * b - 3 * a - 2 * aprime - bprime) * t * t + aprime * t + a;
 }
-exports.cubicInterp_derivBased = cubicInterp_derivBased;
+exports.cubicInterp_deriv = cubicInterp_deriv;
 // cubic interpolation using points
-function cubicInterp_ptBased(t, p0, p1, p2, p3) {
-    return p1 + (0.5 * p2 - 0.5 * p0) * t + (p0 - 2.5 * p1 + 2 * p2 - 0.5 * p3) * t * t + (-0.5 * p0 + 1.5 * p1 - 1.5 * p2 + 0.5 * p3) * t * t * t;
+function cubicInterp_pt(t, p0, p1, p2, p3) {
+    return (-0.5 * p0 + 1.5 * p1 - 1.5 * p2 + 0.5 * p3) * t * t * t + (p0 - 2.5 * p1 + 2 * p2 - 0.5 * p3) * t * t + (0.5 * p2 - 0.5 * p0) * t + p1;
 }
-exports.cubicInterp_ptBased = cubicInterp_ptBased;
+exports.cubicInterp_pt = cubicInterp_pt;
 // cyclical linear interpolation
-function cyclicLerp(t, a, b) {
+function cyclicLerp_short(t, a, b, cycles = 0) {
     const diff = b - a;
     if (diff > 0.5) {
-        return ((b - a - 1) * t + a + 1) % 1;
+        return ((diff - 1 - cycles) * t + a + 1 + cycles) % 1;
     }
     else if (diff < -0.5) {
-        return ((b - a + 1) * t + a + 1) % 1;
+        return ((diff + 1 + cycles) * t + a) % 1;
+    }
+    else if (diff > 0) {
+        return ((diff + cycles) * t + a) % 1;
     }
     else {
-        return (b - a) * t + a;
+        return ((diff - cycles) * t + a + cycles) % 1;
     }
 }
-exports.cyclicLerp = cyclicLerp;
+exports.cyclicLerp_short = cyclicLerp_short;
+function cyclicLerp_long(t, a, b, cycles = 0) {
+    const diff = b - a;
+    if (diff > 0.5) {
+        return ((diff + cycles) * t + a) % 1;
+    }
+    else if (diff < -0.5) {
+        return ((diff - cycles) * t + a + cycles) % 1;
+    }
+    else if (diff > 0) {
+        return ((diff - 1 - cycles) * t + a + 1 + cycles) % 1;
+    }
+    else {
+        return ((diff + 1 + cycles) * t + a) % 1;
+    }
+}
+exports.cyclicLerp_long = cyclicLerp_long;
 // cyclical quadratic interpolation which starts at its turning point
-function cyclicQerp_0(t, a, b) {
-    const diff = b - a;
-    if (diff > 0.5)
-        return qerp_0(t, a + 1, b) % 1;
-    else if (diff < -0.5)
-        return qerp_0(t, a, b + 1) % 1;
-    else
-        return qerp_0(t, a, b);
-}
-exports.cyclicQerp_0 = cyclicQerp_0;
-// cyclical quadratic interpolation which ends at its turning point
-function cyclicQerp_1(t, a, b) {
-    const diff = b - a;
-    if (diff > 0.5)
-        return qerp_1(t, a + 1, b) % 1;
-    else if (diff < -0.5)
-        return qerp_1(t, a, b + 1) % 1;
-    else
-        return qerp_1(t, a, b);
-}
-exports.cyclicQerp_1 = cyclicQerp_1;
-// cyclical cubic interpolation using derivatives
-function cyclicCubicInterp_derivBased(t, a, b, aprime = 0, bprime = 0) {
+function cyclicQerp_0_short(t, a, b, cycles = 0) {
     const diff = b - a;
     if (diff > 0.5) {
-        return cubicInterp_derivBased(t, a + 1, b, aprime, bprime) % 1;
+        return ((diff - 1 - cycles) * t * t + a + 1 + cycles) % 1;
     }
     else if (diff < -0.5) {
-        return cubicInterp_derivBased(t, a, b + 1, aprime, bprime) % 1;
+        return ((diff + 1 + cycles) * t * t + a) % 1;
+    }
+    else if (diff > 0) {
+        return ((diff + cycles) * t * t + a) % 1;
     }
     else {
-        return cubicInterp_derivBased(t, a, b, aprime, bprime);
+        return ((diff - cycles) * t * t + a + cycles) % 1;
     }
 }
-exports.cyclicCubicInterp_derivBased = cyclicCubicInterp_derivBased;
+exports.cyclicQerp_0_short = cyclicQerp_0_short;
+function cyclicQerp_0_long(t, a, b, cycles = 0) {
+    const diff = b - a;
+    if (diff > 0.5) {
+        return ((diff + cycles) * t * t + a) % 1;
+    }
+    else if (diff < -0.5) {
+        return ((diff - cycles) * t * t + a + cycles) % 1;
+    }
+    else if (diff > 0) {
+        return ((diff - 1 - cycles) * t * t + a + 1 + cycles) % 1;
+    }
+    else {
+        return ((diff + 1 + cycles) * t * t + a) % 1;
+    }
+}
+exports.cyclicQerp_0_long = cyclicQerp_0_long;
+// cyclical quadratic interpolation which ends at its turning point
+function cyclicQerp_1_short(t, a, b, cycles = 0) {
+    const diff = b - a;
+    if (diff > 0.5) {
+        return ((diff - 1 - cycles) * (2 - t) * t + a + 1 + cycles) % 1;
+    }
+    else if (diff < -0.5) {
+        return ((diff + 1 + cycles) * (2 - t) * t + a) % 1;
+    }
+    else if (diff > 0) {
+        return ((diff + cycles) * (2 - t) * t + a) % 1;
+    }
+    else {
+        return ((diff - cycles) * (2 - t) * t + a + cycles) % 1;
+    }
+}
+exports.cyclicQerp_1_short = cyclicQerp_1_short;
+function cyclicQerp_1_long(t, a, b, cycles = 0) {
+    const diff = b - a;
+    if (diff > 0.5) {
+        return ((diff + cycles) * (2 - t) * t + a) % 1;
+    }
+    else if (diff < -0.5) {
+        return ((diff - cycles) * (2 - t) * t + a + cycles) % 1;
+    }
+    else if (diff > 0) {
+        return ((diff - 1 - cycles) * (2 - t) * t + a + 1 + cycles) % 1;
+    }
+    else {
+        return ((diff + 1 + cycles) * (2 - t) * t + a) % 1;
+    }
+}
+exports.cyclicQerp_1_long = cyclicQerp_1_long;
+// cyclical cubic interpolation using derivatives
+function cyclicCubicInterp_deriv_short(t, a, b, aprime = 0, bprime = 0, cycles = 0) {
+    const diff = b - a;
+    if (diff > 0.5) {
+        return ((-2 * (diff - 1 - cycles) + aprime + bprime) * t * t * t + (3 * (diff - 1 - cycles) - 2 * aprime - bprime) * t * t + aprime * t + a + 1 + cycles) % 1;
+    }
+    else if (diff < -0.5) {
+        return ((-2 * (diff + 1 + cycles) + aprime + bprime) * t * t * t + (3 * (diff + 1 + cycles) - 2 * aprime - bprime) * t * t + aprime * t + a) % 1;
+    }
+    else if (diff > 0) {
+        return ((-2 * (diff + cycles) + aprime + bprime) * t * t * t + (3 * (diff + cycles) - 2 * aprime - bprime) * t * t + aprime * t + a) % 1;
+    }
+    else {
+        return ((-2 * (diff - cycles) + aprime + bprime) * t * t * t + (3 * (diff - cycles) - 2 * aprime - bprime) * t * t + aprime * t + a + cycles) % 1;
+    }
+}
+exports.cyclicCubicInterp_deriv_short = cyclicCubicInterp_deriv_short;
+function cyclicCubicInterp_deriv_long(t, a, b, aprime = 0, bprime = 0, cycles = 0) {
+    const diff = b - a;
+    if (diff > 0.5) {
+        return ((-2 * (diff + cycles) + aprime + bprime) * t * t * t + (3 * (diff + cycles) - 2 * aprime - bprime) * t * t + aprime * t + a) % 1;
+    }
+    else if (diff < -0.5) {
+        return ((-2 * (diff - cycles) + aprime + bprime) * t * t * t + (3 * (diff - cycles) - 2 * aprime - bprime) * t * t + aprime * t + a + cycles) % 1;
+    }
+    else if (diff > 0) {
+        return ((-2 * (diff - 1 - cycles) + aprime + bprime) * t * t * t + (3 * (diff - 1 - cycles) - 2 * aprime - bprime) * t * t + aprime * t + a + 1 + cycles) % 1;
+    }
+    else {
+        return ((-2 * (diff + 1 + cycles) + aprime + bprime) * t * t * t + (3 * (diff + 1 + cycles) - 2 * aprime - bprime) * t * t + aprime * t + a) % 1;
+    }
+}
+exports.cyclicCubicInterp_deriv_long = cyclicCubicInterp_deriv_long;
 var InterpMethod;
 (function (InterpMethod) {
     InterpMethod[InterpMethod["linear"] = 0] = "linear";
@@ -197,11 +341,12 @@ var InterpMethod;
 })(InterpMethod = exports.InterpMethod || (exports.InterpMethod = {}));
 // represents a gradient between two colors
 class Gradient {
-    constructor(startColor, endColor, space = ColorSpace.RGB, interpolation = InterpMethod.linear) {
+    constructor(startColor, endColor, space = ColorSpace.RGB, interpolation = InterpMethod.linear, longRoute = false, cycles = 0) {
         this.colorSpace = space;
         this.interpMethod = interpolation;
         let { fromColor, toColor } = getCastingFtns(space);
-        let { interpFtn, cyclicInterpFtn } = getInterpFtns(interpolation);
+        let { interpFtn, cyclicInterpFtn } = getInterpFtns(interpolation, longRoute);
+        this._longRoute = longRoute;
         this.toColor = toColor;
         this.fromColor = fromColor;
         this.interpFtn = interpFtn;
@@ -209,15 +354,16 @@ class Gradient {
         [this.s1, this.s2, this.s3] = fromColor(startColor);
         [this.e1, this.e2, this.e3] = fromColor(endColor);
         this.cyclicArg = getCyclicArg(space);
+        this.cycles = cycles;
     }
     getAt(t) {
-        return this.toColor(0b100 & this.cyclicArg ? this.cyclicInterpFtn(t, this.s1, this.e1) : this.interpFtn(t, this.s1, this.e1), 0b010 & this.cyclicArg ? this.cyclicInterpFtn(t, this.s2, this.e2) : this.interpFtn(t, this.s2, this.e2), 0b001 & this.cyclicArg ? this.cyclicInterpFtn(t, this.s3, this.e3) : this.interpFtn(t, this.s3, this.e3));
+        return this.toColor(0b100 & this.cyclicArg ? this.cyclicInterpFtn(t, this.s1, this.e1, this.cycles) : this.interpFtn(t, this.s1, this.e1), 0b010 & this.cyclicArg ? this.cyclicInterpFtn(t, this.s2, this.e2, this.cycles) : this.interpFtn(t, this.s2, this.e2), 0b001 & this.cyclicArg ? this.cyclicInterpFtn(t, this.s3, this.e3, this.cycles) : this.interpFtn(t, this.s3, this.e3));
     }
     get startColor() {
         return this.toColor(this.s1, this.s2, this.s3);
     }
     get endColor() {
-        return this.toColor(this.s1, this.s2, this.s3);
+        return this.toColor(this.e1, this.e2, this.e3);
     }
     set startColor(c) {
         [this.s1, this.s2, this.s3] = this.fromColor(c);
@@ -233,7 +379,7 @@ class Gradient {
     }
     set interpolation(interpolation) {
         this.interpMethod = interpolation;
-        let { interpFtn, cyclicInterpFtn } = getInterpFtns(interpolation);
+        let { interpFtn, cyclicInterpFtn } = getInterpFtns(interpolation, this._longRoute);
         this.interpFtn = interpFtn;
         this.cyclicInterpFtn = cyclicInterpFtn;
     }
@@ -245,6 +391,15 @@ class Gradient {
         this.toColor = toColor;
         this.cyclicArg = getCyclicArg(space);
         this.startColor = s, this.endColor = e;
+    }
+    get longRoute() {
+        return this._longRoute;
+    }
+    set longRoute(longRoute) {
+        this._longRoute = longRoute;
+        let { interpFtn, cyclicInterpFtn } = getInterpFtns(this.interpMethod, longRoute);
+        this.interpFtn = interpFtn;
+        this.cyclicInterpFtn = cyclicInterpFtn;
     }
 }
 exports.Gradient = Gradient;
@@ -275,24 +430,25 @@ function getCastingFtns(space) {
     return { toColor, fromColor };
 }
 // collects the appropriate interpolation functions for a given interpolation method
-function getInterpFtns(interpolation) {
+function getInterpFtns(interpolation, longRoute = false) {
     let interpFtn;
     let cyclicInterpFtn;
     switch (interpolation) {
         case InterpMethod.linear:
             interpFtn = lerp;
-            cyclicInterpFtn = cyclicLerp;
+            cyclicInterpFtn = longRoute ? cyclicLerp_long : cyclicLerp_short;
             break;
         case InterpMethod.inc_quadratic:
             interpFtn = qerp_0;
-            cyclicInterpFtn = cyclicQerp_0;
+            cyclicInterpFtn = longRoute ? cyclicQerp_0_long : cyclicQerp_0_short;
             break;
         case InterpMethod.dec_quadratic:
             interpFtn = qerp_1;
-            cyclicInterpFtn = cyclicQerp_1;
+            cyclicInterpFtn = longRoute ? cyclicQerp_1_long : cyclicQerp_1_short;
+            break;
         case InterpMethod.cubic:
-            interpFtn = cubicInterp_derivBased;
-            cyclicInterpFtn = cyclicCubicInterp_derivBased;
+            interpFtn = cubicInterp_deriv;
+            cyclicInterpFtn = longRoute ? (t, a, b, cycles) => cyclicCubicInterp_deriv_long(t, a, b, 0, 0, cycles) : (t, a, b, cycles) => cyclicCubicInterp_deriv_short(t, a, b, 0, 0, cycles);
             break;
         default:
             throw new Error("That interpolation method is not yet supported within this function");
@@ -380,7 +536,6 @@ function fromCXM(hueRegion, chroma, X, m) {
 function fromHex(hex) {
     // remove any leading formatting characters
     hex = hex.replace("#", "").replace("0x", "");
-
     const colorValue = Number.parseInt(hex, 16);
     let r;
     let g;
@@ -429,15 +584,15 @@ function fromHex(hex) {
 }
 exports.fromHex = fromHex;
 //#endregion
-//#region text coloring helpers
+//#region text coloring
 // calculates the number of characters within the given string that may be colored
-function getColorableCount(logMsg) {
+function getColorableCount(text) {
     let colorableCount = 0;
-    for (let i = 0; i < logMsg.length; i++) {
-        if (logMsg[i] == '\u001B') {
+    for (let i = 0; i < text.length; i++) {
+        if (text[i] == '\u001B') {
             do {
                 i++;
-            } while (logMsg[i] != 'm');
+            } while (text[i] != 'm');
             i++;
         }
         colorableCount++;
@@ -497,13 +652,11 @@ function gradientColorText(text, gradient, isBg = false) {
     }
     return result;
 }
-
 exports.gradientColorText = gradientColorText;
 // color a given string using multiple consecutive gradients defined using segments
 function manyGradientColorText(text, isBg = false, startingColor, ...segments) {
     text = text.replace(exports.resetToken, "");
     // determine the length of the entire expression & create the gradients for each segment
-
     let totalLength = 0;
     let gradients = [];
     let lengths = [];
@@ -555,23 +708,50 @@ function manyGradientColorText(text, isBg = false, startingColor, ...segments) {
     return result + exports.resetToken;
 }
 exports.manyGradientColorText = manyGradientColorText;
-// color a given string of text in a rainbow style
-function rainbow(logMsg, isBg = false, speed = 0.05) {
+function manyGradientColorText_2(text, isBg = false, ...gradients) {
+    text = text.replace(exports.resetToken, "");
+    let colorableCount = getColorableCount(text);
     let result = "";
-    logMsg = logMsg.replace(exports.resetToken, "");
-    let h = 0;
-    for (let i = 0; i < logMsg.length; i++) {
-        if (logMsg[i] == '\u001B') {
+    let gt = 0;
+    const increment = gradients.length / colorableCount;
+    for (let i = 0; i < text.length; i++) {
+        // skip characters used for recoloring
+        if (text[i] == '\u001B') {
             do {
-                result += logMsg[i];
+                result += text[i];
                 i++;
-            } while (logMsg[i] != 'm');
-            result += logMsg[i];
+            } while (text[i] != 'm');
+            result += text[i];
+            i++;
+        }
+        let lt = gt % 1;
+        let gradIndex = Math.trunc(gt);
+        const color = gradients[gradIndex].getAt(lt);
+        result += isBg ? colorBGToken(color) : colorFGToken(color);
+        result += text[i];
+        gt += increment;
+    }
+    return result + exports.resetToken;
+}
+exports.manyGradientColorText_2 = manyGradientColorText_2;
+// color a given string of text in a rainbow style
+/** @deprecated */
+function rainbow(text, isBg = false, speed = 0.05) {
+    let result = "";
+    text = text.replace(exports.resetToken, "");
+    let h = 0;
+    for (let i = 0; i < text.length; i++) {
+        if (text[i] == '\u001B') {
+            do {
+                result += text[i];
+                i++;
+            } while (text[i] != 'm');
+            result += text[i];
             i++;
         }
         const color = fromHSV((h * speed) % 1, 1, 1);
         result += isBg ? colorBGToken(color) : colorFGToken(color);
-        result += logMsg[i];
+        result += text[i];
         h++;
     }
     result += exports.resetToken;
@@ -581,18 +761,13 @@ exports.rainbow = rainbow;
 //#endregion
 //#region test
 if (process.argv[1] == __filename) {
-    let myColor;
-    let myGradient;
-    let msg;
-    myColor = new Color(0.33, 0.22, 0.37);
-    msg = colorText("Hello World!", myColor, true);
-    console.log(msg);
-    msg = cycleColorText("This has multiple colors!", 3, false, Color.MAGENTA, Color.ORANGE, Color.CYAN);
-    console.log(msg);
-    myGradient = new Gradient(Color.GREEN, Color.RED, ColorSpace.HSV);
-    msg = gradientColorText("This has a smooth gradient!", myGradient, false);
-    console.log(msg);
-    msg = manyGradientColorText("This uses multiple gradients combined together!", true, Color.BLACK, { color: Color.BLUE, interpMethod: InterpMethod.inc_quadratic }, { color: Color.PURPLE, length: 2 }, { color: Color.PINK, colorSpace: ColorSpace.HSV, interpMethod: InterpMethod.dec_quadratic });
-    console.log(msg);
+    let a = new Color(Math.random(), Math.random(), Math.random());
+    let b = new Color(Math.random(), Math.random(), Math.random());
+    let gradient = new Gradient(a, b, Math.floor(4 * Math.random()), Math.floor(4 * Math.random()), Math.random() < 0.5, Math.floor(-Math.log(Math.random())));
+    let msg = gradientColorText("In order to find reasonable combinations, much experimentation is recommended", gradient, false);
+    a = new Color(Math.random(), Math.random(), Math.random());
+    b = new Color(Math.random(), Math.random(), Math.random());
+    gradient = new Gradient(a, b, Math.floor(4 * Math.random()), Math.floor(4 * Math.random()), Math.random() < 0.5, Math.floor(-Math.log(Math.random())));
+    console.log(gradientColorText(msg, gradient, true));
 }
 //#endregion
