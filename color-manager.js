@@ -1,25 +1,24 @@
 const colors = require('./colors');
 
-const color = colors.Color;
-const black = color.BLACK;
-const gray = color.GRAY;
-const white = color.WHITE;
-const red = color.RED;
-const green = color.GREEN;
-const blue = color.BLUE;
-const cyan = color.CYAN;
-const magenta = color.MAGENTA;
-const yellow = color.YELLOW;
-const gold = color.GOLD;
-const orange = color.ORANGE;
-const brown = color.BROWN;
-const purple = color.PURPLE;
-const silver = color.SILVER;
-const pink = color.PINK;
+const Color = colors.Color;
+const black = Color.BLACK;
+const gray = Color.GRAY;
+const white = Color.WHITE;
+const red = Color.RED;
+const green = Color.GREEN;
+const blue = Color.BLUE;
+const cyan = Color.CYAN;
+const magenta = Color.MAGENTA;
+const yellow = Color.YELLOW;
+const gold = Color.GOLD;
+const orange = Color.ORANGE;
+const brown = Color.BROWN;
+const purple = Color.PURPLE;
+const silver = Color.SILVER;
+const pink = Color.PINK;
 
 const log = console.log;
-const text = colors.colorFG;
-const bg = colors.colorBG;
+const text = colors.colorText;
 
 function customCol(hex) {
     return colors.fromHex(hex)
@@ -33,31 +32,23 @@ function rainbow(msg, val = 0.1, isBg = false) {
     }
 };
 
-/*function fire(msg, isBg = false, colSpace = colors.ColorSpace.HSV) {
-    if (isBg) {
-        return log(colors.gradient(text(msg, black), red, yellow, true, colSpace))
-    } else {
-        return log(colors.gradient(msg, red, yellow, false, colSpace))
-    }
-};*/
-
 function fire(msg, isBg = false) {
     if (isBg) {
-        return log(colors.segmentedGradient(text(msg, black), true, red, {
-            endCol: orange,
-            InterpolationMethod: colors.InterpolationMethod.cubic,
+        return log(colors.manyGradientColorText(text(msg, black), true, red, {
+            color: orange,
+            InterpMethod: colors.InterpMethod.cubic,
             length: 2
         }, {
-            endCol: yellow,
+            color: yellow,
             colorSpace: colors.ColorSpace.HSV
         }))
     } else {
-        return log(colors.segmentedGradient(msg, false, red, {
-            endCol: orange,
-            InterpolationMethod: colors.InterpolationMethod.linear,
+        return log(colors.manyGradientColorText(msg, false, red, {
+            color: orange,
+            InterpMethod: colors.InterpMethod.linear,
             length: 2
         }, {
-            endCol: yellow,
+            color: yellow,
             colorSpace: colors.ColorSpace.HSV
         }))
     }
@@ -65,31 +56,31 @@ function fire(msg, isBg = false) {
 
 function ice(msg, isBg = false) {
     if (isBg) {
-        return log(colors.gradient(text(msg, black), customCol("#086fff"), white, true, colors.ColorSpace.RGB))
+        return log(colors.gradientColorText(text(msg, black), customCol("#086fff"), white, colors.ColorSpace.RGB, true))
     } else {
-        return log(colors.gradient(msg, customCol("#086fff"), white, false, colors.ColorSpace.RGB))
+        return log(colors.gradientColorText(msg, customCol("#086fff"), white, colors.ColorSpace.RGB, false))
     }
 }
 
 function custGrad(msg, stCol = white, edCol = white, colSpace = colors.ColorSpace.HSV, isBg = false) {
     if (isBg) {
-        return log(colors.gradient(msg, stCol, edCol, true, colSpace))
+        return log(colors.gradientColorText(msg, stCol, edCol, colSpace, true))
     } else {
-        return log(colors.gradient(msg, stCol, edCol, false, colSpace))
+        return log(colors.gradientColorText(msg, stCol, edCol, colSpace, false))
     }
 };
 
 function custSGrad(msg, isBg = false, stCol = white, ...segments) {
     if (isBg) {
-        return log(colors.segmentedGradient(msg, true, stCol, ...segments))
+        return log(colors.manyGradientColorText(msg, true, stCol, ...segments))
     } else {
-        return log(colors.segmentedGradient(msg, false, stCol, ...segments))
+        return log(colors.manyGradientColorText(msg, false, stCol, ...segments))
     }
 }
 
 function customLog(msg, tcolor = pink, isBg = false, bcolor = black) {
     if (isBg) {
-        return log(text(bg(msg, bcolor), tcolor))
+        return log(text(text(msg, bcolor), tcolor))
     } else {
         return log(text(msg, tcolor))
     }
@@ -97,7 +88,7 @@ function customLog(msg, tcolor = pink, isBg = false, bcolor = black) {
 
 function blacklog(msg, isBg = false) {
     if (isBg) {
-        return log(text(bg(msg, black), white))
+        return log(text(text(msg, black), white))
     } else {
         return log(text(msg, black))
     }
@@ -105,7 +96,7 @@ function blacklog(msg, isBg = false) {
 
 function graylog(msg, isBg = false) {
     if (isBg) {
-        return log(text(bg(msg, gray), black))
+        return log(text(text(msg, gray), black))
     } else {
         return log(text(msg, gray))
     }
@@ -113,7 +104,7 @@ function graylog(msg, isBg = false) {
 
 function whitelog(msg, isBg = false) {
     if (isBg) {
-        return log(text(bg(msg, white), black))
+        return log(text(text(msg, white), black))
     } else {
         return log(text(msg, white))
     }
@@ -121,14 +112,14 @@ function whitelog(msg, isBg = false) {
 
 function redlog(msg, isBg = false) {
     if (isBg) {
-        return log(text(bg(msg, red), black))
+        return log(text(text(msg, red), black))
     }
         return log(text(msg, red))
 };
 
 function greenlog(msg, isBg = false) {
     if (isBg) {
-        return log(text(bg(msg, green), black))
+        return log(text(text(msg, green), black))
     } else {
         return log(text(msg, green))
     }
@@ -136,7 +127,7 @@ function greenlog(msg, isBg = false) {
 
 function bluelog(msg, isBg = false) {
     if (isBg) {
-        return log(text(bg(msg, blue), white))
+        return log(text(text(msg, blue), white))
     } else {
         return log(text(msg, blue))
     }
@@ -144,7 +135,7 @@ function bluelog(msg, isBg = false) {
 
 function cyanlog(msg, isBg = false) {
     if (isBg) {
-        return log(text(bg(msg, cyan), black))
+        return log(text(text(msg, cyan), black))
     } else {
         return log(text(msg, cyan))
     }
@@ -152,7 +143,7 @@ function cyanlog(msg, isBg = false) {
 
 function magentalog(msg, isBg = false) {
     if (isBg) {
-        return log(text(bg(msg, magenta), black))
+        return log(text(text(msg, magenta), black))
     } else {
         return log(text(msg, magenta))
     }
@@ -160,7 +151,7 @@ function magentalog(msg, isBg = false) {
 
 function yellowlog(msg, isBg = false) {
     if (isBg) {
-        return log(text(bg(msg, yellow), black))
+        return log(text(text(msg, yellow), black))
     } else {
         return log(text(msg, yellow))
     }
@@ -168,7 +159,7 @@ function yellowlog(msg, isBg = false) {
 
 function goldlog(msg, isBg = false) {
     if (isBg) {
-        return log(text(bg(msg, gold), black))
+        return log(text(text(msg, gold), black))
     } else {
         return log(text(msg, gold))
     }
@@ -176,7 +167,7 @@ function goldlog(msg, isBg = false) {
 
 function orangelog(msg, isBg = false) {
     if (isBg) {
-        return log(text(bg(msg, orange), black))
+        return log(text(text(msg, orange), black))
     } else {
         return log(text(msg, orange))
     }
@@ -184,7 +175,7 @@ function orangelog(msg, isBg = false) {
 
 function brownlog(msg, isBg = false) {
     if (isBg) {
-        return log(text(bg(msg, brown), white))
+        return log(text(text(msg, brown), white))
     } else {
         return log(text(msg, brown))
     }
@@ -192,7 +183,7 @@ function brownlog(msg, isBg = false) {
 
 function purplelog(msg, isBg = false) {
     if (isBg) {
-        return log(text(bg(msg, purple), white))
+        return log(text(text(msg, purple), white))
     } else {
         return log(text(msg, purple))
     }
@@ -200,7 +191,7 @@ function purplelog(msg, isBg = false) {
 
 function silverlog(msg, isBg = false) {
     if (isBg) {
-        return log(text(bg(msg, silver), black))
+        return log(text(text(msg, silver), black))
     } else {
         return log(text(msg, silver))
     }
@@ -208,7 +199,7 @@ function silverlog(msg, isBg = false) {
 
 function pinklog(msg, isBg = false) {
     if (isBg) {
-        return log(text(bg(msg, pink), black))
+        return log(text(text(msg, pink), black))
     } else {
         return log(text(msg, pink))
     }
@@ -219,8 +210,8 @@ module.exports.colors = {
     HSL: colors.ColorSpace.HSL,
     HSV: colors.ColorSpace.HSV,
     HSI: colors.ColorSpace.HSI,
-    Cubic: colors.InterpolationMethod.cubic,
-    Linear: colors.InterpolationMethod.linear,
+    Cubic: colors.InterpMethod.cubic,
+    Linear: colors.InterpMethod.linear,
     hex: customCol,
     black,
     gray,
