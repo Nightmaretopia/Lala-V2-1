@@ -8,7 +8,7 @@ module.exports = {
     async execute(message) {
 
         if (message.author.bot) return;
-        if (!message.guild.member(message.author).roles.cache.has('850113696155566161')) return;
+        if (!message.guild.members.cache.get(message.author.id).roles.cache.has('850113696155566161')) return;
 
         let addxp = Math.floor(Math.random() * (30 - 15)) + 15;
         let user = message.author

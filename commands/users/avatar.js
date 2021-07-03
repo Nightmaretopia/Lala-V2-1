@@ -14,7 +14,7 @@ module.exports = {
                     .setTitle(`Avatar de ${user.tag}`)
                     .setURL(user.avatarURL({size: 2048, dynamic: true}))
                     .setImage(user.avatarURL({size: 2048, dynamic: true}));
-                message.channel.send(embed[index]);
+                message.channel.send({ embeds: [embed[index]] });
                 index++
             })
         }else{
@@ -22,7 +22,7 @@ module.exports = {
                 .setColor("#0000FF")
                 .setURL(message.author.avatarURL({size: 2048, dynamic: true}))
                 .setImage(message.author.avatarURL({size: 2048, dynamic: true}));
-            return message.channel.send(embed)
+            return message.channel.send({ embeds: [embed] })
         }
         
     }
