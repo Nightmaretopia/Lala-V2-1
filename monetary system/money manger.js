@@ -1,5 +1,4 @@
 const mongo = require('../mongo');
-const logs = require('./month-logs.json');
 
 function coinVal(num) {
     return num = 1

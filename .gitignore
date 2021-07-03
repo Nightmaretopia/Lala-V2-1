@@ -1,4 +1,3 @@
-/config.json
 /node_modules
 /package-lock.json
 /StartBot.bat
@@ -10,3 +9,4 @@
 /rainbow-try.js
 /currency test.txt
 /xp.json
+/config.json
