@@ -31,13 +31,12 @@ for (const file of moneyFiles) {
 }
 
 client.on('ready', async () => {
-    logs.rainbow(`${client.user.username} iniciou em ${client.guilds.cache.size} servidore(s).`);
+    logs.fire(`${client.user.username} iniciou em ${client.guilds.cache.size} servidore(s).`);
     client.user.setActivity("To Love-Ru", {type: "WATCHING"});
 
     await mongo().then((mongoose) => {
         try {
             logs.ice(`${client.user.username} Connected to MONGODB`)
-            //logs.gradient(`${client.user.username} Connected to MONGODB`, colors.hex("#1ca800"), colors.hex("#a4faa2"), colors.RGB);
         } finally {
             mongoose.connection.close();
         }

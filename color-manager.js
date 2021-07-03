@@ -36,7 +36,7 @@ function fire(msg, isBg = false) {
     if (isBg) {
         return log(colors.manyGradientColorText(text(msg, black), true, red, {
             color: orange,
-            InterpMethod: colors.InterpMethod.cubic,
+            InterpMethod: colors.InterpMethod.inc_quadratic,
             length: 2
         }, {
             color: yellow,
@@ -45,7 +45,7 @@ function fire(msg, isBg = false) {
     } else {
         return log(colors.manyGradientColorText(msg, false, red, {
             color: orange,
-            InterpMethod: colors.InterpMethod.linear,
+            InterpMethod: colors.InterpMethod.inc_quadratic,
             length: 2
         }, {
             color: yellow,
@@ -55,18 +55,38 @@ function fire(msg, isBg = false) {
 }
 
 function ice(msg, isBg = false) {
+    let ice = new colors.Gradient(customCol("#086fff"), white, colors.ColorSpace.RGB, colors.InterpMethod.inc_quadratic)
     if (isBg) {
-        return log(colors.gradientColorText(text(msg, black), customCol("#086fff"), white, colors.ColorSpace.RGB, true))
+        return log(colors.gradientColorText(text(msg, black), ice, true))
     } else {
-        return log(colors.gradientColorText(msg, customCol("#086fff"), white, colors.ColorSpace.RGB, false))
+        return log(colors.gradientColorText(msg, ice, false))
     }
 }
 
-function custGrad(msg, stCol = white, edCol = white, colSpace = colors.ColorSpace.HSV, isBg = false) {
+function zebra(msg, isBg = false) {
     if (isBg) {
-        return log(colors.gradientColorText(msg, stCol, edCol, colSpace, true))
+        msg = colors.cycleColorText(msg, 1, true, white, black)
+        log(colors.cycleColorText(msg, 1, false, black, white))
     } else {
-        return log(colors.gradientColorText(msg, stCol, edCol, colSpace, false))
+        log(colors.cycleColorText(msg, 1, false, white, black))
+    }
+};
+
+function custZebra(msg, leng = 1, isBg = false, ...cols) {
+    if (isBg) {
+        let c_msg = text(msg, black)
+        return log(colors.cycleColorText(c_msg, leng, true, ...cols))
+    } else {
+        return log(colors.cycleColorText(msg, leng, false, ...cols))
+    }
+};
+
+function custGrad(msg, stCol = white, edCol = white, colSpace = colors.ColorSpace.HSV, isBg = false) {
+    let c_grad = new colors.Gradient(stCol, edCol, colSpace)
+    if (isBg) {
+        return log(colors.gradientColorText(msg, c_grad, true))
+    } else {
+        return log(colors.gradientColorText(msg, c_grad, false))
     }
 };
 
@@ -234,8 +254,10 @@ module.exports.logs = {
     rainbow,
     fire,
     ice,
+    zebra,
+    c_zebra: custZebra,
     gradient: custGrad,
-    sgradient: custSGrad,
+    c_gradient: custSGrad,
     costum: customLog,
     black: blacklog,
     gray: graylog,
