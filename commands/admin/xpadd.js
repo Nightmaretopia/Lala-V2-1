@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const fs = require('fs');
-const { getXp, getLvL } = require('../../manager');
+const { getXp, getLvL } = require('../../utils/manager');
 const xp = require('../../xp.json');
 
 module.exports = {

@@ -2,8 +2,8 @@ const Discord = require('discord.js');
 const { prefix, token, Owner, Coder } = require('./config.json');
 const mongo = require('./mongo');
 const fs = require('fs');
-const manager = require('./manager')
-const { logs, colors } = require('./color-manager');
+const manager = require('./utils/manager')
+const { logs, colors } = require('./utils/color-manager');
 
 const client = new Discord.Client({intents: [Discord.Intents.ALL], partials: ['MESSAGE', 'REACTION']});
 client.commands = new Discord.Collection();
@@ -30,7 +30,12 @@ for (const file of moneyFiles) {
     client.commands.set(monetary.name, monetary)
 }
 
+const lang = require('./utils/langs/EN')
+
 client.on('ready', async () => {
+
+    console.log(lang(client, "bot_start"))
+
     logs.fire(`${client.user.username} iniciou em ${client.guilds.cache.size} servidore(s).`);
     client.user.setActivity("To Love-Ru", {type: "WATCHING"});
 

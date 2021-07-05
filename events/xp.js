@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const xpManager = require('../manager');
+const xpManager = require('../utils/manager');
 const fs = require('fs');
 const xp = require('../xp.json');
 

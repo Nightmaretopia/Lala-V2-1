@@ -1,5 +1,5 @@
-const xp = require('./xp.json');
-const mongo = require('./mongo');
+const xp = require('../xp.json');
+const mongo = require('../mongo');
 
 function reason(reason) {
     if (!reason) {
