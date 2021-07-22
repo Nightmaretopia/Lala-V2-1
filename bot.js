@@ -5,7 +5,7 @@ const fs = require('fs');
 const manager = require('./utils/manager')
 const { logs, colors } = require('./utils/color-manager');
 
-const client = new Discord.Client({intents: [Discord.Intents.ALL], partials: ['MESSAGE', 'REACTION']});
+const client = new Discord.Client({intents: [Discord.Intents.ALL], partials: ['USER', 'REACTION', 'MESSAGE', 'GUILD_MEMBER', 'CHANNEL']});
 client.commands = new Discord.Collection();
 const commandsFolder = fs.readdirSync('./commands');
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
