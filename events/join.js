@@ -31,7 +31,7 @@ module.exports = {
             .setTimestamp();
 
         wmch.send(Welcomemsg);
-        client.channels.cache.get('454111723872321536').send(Welcomelog);
+        client.channels.cache.get('454111723872321536').send({embeds: [Welcomelog]});
         member.roles.add('746381043623395359');
     }
 }

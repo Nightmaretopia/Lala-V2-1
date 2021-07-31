@@ -17,6 +17,6 @@ module.exports = {
             .setFooter(`${oldMsg.author.username} ID: ${oldMsg.author.id} | ID da Mensagem: ${oldMsg.id}`)
             .setTimestamp();
 
-        client.channels.cache.get('454111723872321536').send(editembed);    
+        client.channels.cache.get('454111723872321536').send({embeds: [editembed]});    
     }
 }

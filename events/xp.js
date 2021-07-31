@@ -31,7 +31,7 @@ module.exports = {
             xp[message.author.id].level = curlvl + 1
             let lvlupemb = new Discord.MessageEmbed()
                 .setDescription(`<@${message.author.id}> alcançou o nivel **${curlvl + 1}**`)
-            message.channel.send(lvlupemb)
+            message.channel.send({embeds: [lvlupemb]})
                 .catch(err => {
                     console.log(err)
                 })

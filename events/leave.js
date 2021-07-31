@@ -20,6 +20,6 @@ module.exports = {
             .setTimestamp();
 
         bbch.send(Leavemsg);
-        client.channels.cache.get('454111723872321536').send(Leavelog);
+        client.channels.cache.get('454111723872321536').send({embeds: [Leavelog]});
     }
 }
