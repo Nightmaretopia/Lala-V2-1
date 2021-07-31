@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const money = require('./money manger');
 
 module.exports = {
-    name: 'message',
+    name: 'messageCreate',
     execute(message, client) {
         /*
             need to save every use on the db and delete it per month/save in a different form
@@ -18,6 +18,6 @@ module.exports = {
                 a = base
             }
         */
-       console.log(money.coinVal())
+       //console.log(money.coinVal())
     }
 }

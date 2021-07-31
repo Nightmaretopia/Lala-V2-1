@@ -7,7 +7,7 @@ module.exports = {
     name: 'xpadd',
     description: 'Adiciona xp a um utilizador',
     execute({message, args, target}) {
-        if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.send("Você não tem permissão para usar este comando");
+        if (!message.member.permissions.has('MANAGE_GUILD')) return message.channel.send("Você não tem permissão para usar este comando");
         if (!args) return;
         let amount = parseFloat(args.slice(1).join().replace(/,/g, ""));
         if (!amount) return message.channel.send("Você não especificou o utilizador");

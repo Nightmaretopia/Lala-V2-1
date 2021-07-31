@@ -4,7 +4,7 @@ module.exports = {
     name: 'kick',
     description: 'Kicka o membro mencionado',
     execute({message, target, reasonarg, client}) {
-        if (!message.member.hasPermission('KICK_MEMBERS')) return message.channel.send('Você não tem permissão para usar este comando');
+        if (!message.member.permissions.has('KICK_MEMBERS')) return message.channel.send('Você não tem permissão para usar este comando');
         if (!target) return message.channel.send('Você não disse quem quer kickar');
         if (target.roles.highest.position > message.guild.members.resolve(client.user).roles.highest.position) return message.channel.send('Você não pode banir um moderador');        
         if (message.guild.member(target)) {
