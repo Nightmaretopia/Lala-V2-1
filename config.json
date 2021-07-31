@@ -1,6 +1,0 @@
-{
-        "prefix": "Your-prefix-here",
-        "token": "Your-token-here",
-        "mongoPath": "Your-mongodb-path-here",
-        "Owner": "Server-Owner-Id OR Your-ID"
-}
