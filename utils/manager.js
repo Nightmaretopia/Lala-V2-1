@@ -2,11 +2,7 @@ const xp = require('../xp.json');
 const mongo = require('../mongo');
 
 function reason(reason) {
-    if (!reason) {
-        return "Unknown"
-    } else {
-        return reason
-    }
+    return (!reason ? "Unknown" : reason)
 };
 
 function sleeptime(ms) {
@@ -33,9 +29,11 @@ function lastLvL(userID) {
     return -(nextLvL(userID));
 };
 
-module.exports.reason = reason;
-module.exports.sleep = sleeptime;
-module.exports.getXp = getXp;
-module.exports.getLvL = getLvL;
-module.exports.nextLvL = nextLvL;
-module.exports.lastLvL = lastLvL;
+module.exports = {
+    reason,
+    sleep: sleeptime,
+    getxp: getXp,
+    getlvl: getLvL,
+    nextlvl: nextLvL,
+    lastlvl: lastLvL,
+}
