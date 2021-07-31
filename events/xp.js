@@ -4,7 +4,7 @@ const fs = require('fs');
 const xp = require('../xp.json');
 
 module.exports = {
-    name: 'message',
+    name: 'messageCreate',
     async execute(message) {
 
         if (message.author.bot) return;
