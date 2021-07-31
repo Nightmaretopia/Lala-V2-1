@@ -1,8 +1,6 @@
 {
-    "lang": "EN",
-    "prefix":"!",
-    "token": "ODMxMjYyMjcwMjM4ODgzOTMw.YHSrUQ._cGtXYjgy9-P71Wi5NoOOJyQtTI",
-    "mongoPath": "mongodb+srv://Lala:GOckWR9RniZiSvBq@infinite.ifing.mongodb.net/LalaV2?retryWrites=true&w=majority",
-    "Owner": "",
-    "Coder": "336185079850074113"
+        "prefix": "Your-prefix-here",
+        "token": "Your-token-here",
+        "mongoPath": "Your-mongodb-path-here",
+        "Owner": "Server-Owner-Id OR Your-ID"
 }
