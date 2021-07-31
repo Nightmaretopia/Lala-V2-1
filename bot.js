@@ -7,9 +7,10 @@ const { logs, colors } = require('./utils/color-manager');
 
 const client = new Discord.Client({intents: ['DIRECT_MESSAGES', 'DIRECT_MESSAGE_REACTIONS', 'DIRECT_MESSAGE_TYPING', 'GUILDS', 'GUILD_BANS', 'GUILD_EMOJIS_AND_STICKERS', 'GUILD_INTEGRATIONS', 'GUILD_INVITES', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_MESSAGE_TYPING', 'GUILD_PRESENCES', 'GUILD_VOICE_STATES', 'GUILD_WEBHOOKS'], partials: ['USER', 'REACTION', 'MESSAGE', 'GUILD_MEMBER', 'CHANNEL']});
 client.commands = new Discord.Collection();
+client.events = new Discord.Collection();
 const commandsFolder = fs.readdirSync('./commands');
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
-const moneyFiles = fs.readdirSync('./monetary system').filter(file => file.endsWith('.js'));
+//const moneyFiles = fs.readdirSync('./monetary system').filter(file => file.endsWith('.js'));
 
 for (const folder of commandsFolder) {
     const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
@@ -21,14 +22,18 @@ for (const folder of commandsFolder) {
 
 for (const file of eventFiles) {
     const event = require(`./events/${file}`);
-    client.on(event.name, (...args) => event.execute(...args, client));
+    client.on(event.event, (...args) => {
+        if (event.enable == 0) return;
+        event.execute(...args, client)
+    });
+    client.events.set(event.name, event)
 }
 
-for (const file of moneyFiles) {
+/*for (const file of moneyFiles) {
     const monetary = require(`./monetary system/${file}`);
     client.on(monetary.name, (...args) => monetary.execute(...args, client));
     client.commands.set(monetary.name, monetary)
-}
+}*/
 
 const lang = require('./utils/langs/EN')
 
@@ -63,11 +68,32 @@ client.on('messageCreate', async (message) => {
                 .then(message => client.destroy())
                 .then(() => client.login(token))
                 .then(async () => await message.channel.send("`Reiniciada com sucesso!!!`"))
+        };
+
+        if (cmd === "enable") {
+            //Gets the value of the `enable` in the command/event and sets it to 1
+            if (!message.member.permissions.has('ADMINISTRATOR')) return logs.red('Failed');
+            if (!args[0]) return message.reply('Dumb Fuck');
+            if (!client.commands.map(({name}) => name).includes(args[0])) return message.channel.send(`\`${args[0]}\` não é um comando válido`) && console.log('Retard');
+            client.commands.get(args[0]).enable = 1;
+        };
+
+        if (cmd === "disable") {
+            /*
+            Gets the value of the `enable` in the command/event and sets it to 0
+            Maybe I could do a switch... TODO"
+            
+            if (!message.member.permissions.has('ADMINISTRATOR')) return logs.red('Failed');
+            if (!args[0]) return message.reply('Dumb Fuck');
+            if (!client.commands.map(({name}) => name).includes(args[0])) return message.channel.send(`\`${args[0]}\` não é um comando válido`) && console.log('Retard');
+            client.commands.get(args[0]).enable = 0;
+            */
         }
 
         if (!client.commands.has(cmd)) return;
 
         try {
+            if (client.commands.get(cmd).enable == 0) return logs.red('Disabled');
             client.commands.get(cmd).execute({message, args, target, reasonarg, client});
         } catch (err) {
             console.error(err);

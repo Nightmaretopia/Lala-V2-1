@@ -2,7 +2,8 @@ const Discord = require('discord.js');
 const moment = require('moment');
 
 module.exports = {
-    name: 'guildMemberAdd',
+    event: 'guildMemberAdd',
+    name: 'Join',
     execute(member, client) {
         let a = moment();
         let b = moment(member.user.createdAt);

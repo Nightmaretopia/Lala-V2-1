@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 
 module.exports = {
-    name: 'messageUpdate',
+    event: 'messageUpdate',
+    name: 'Message Updates',
     execute(oldMsg, newMsg, client) {
         if (!oldMsg.guild) return;
         if (!oldMsg.content) return;

@@ -2,7 +2,9 @@ const { logs } = require('../utils/color-manager');
 const { Coder } = require('../config.json')
 
 module.exports = {
-    name: 'messageCreate',
+    event: 'messageCreate',
+    name: 'Annoy Toushiro',
+    enable: 0,
     async execute(message) {
         let toushiro = '826306764320407554';
         if (message.author.bot) return;

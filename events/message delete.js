@@ -2,7 +2,8 @@ const Discord = require('discord.js');
 const { prefix } = require('../config.json');
 
 module.exports = {
-    name: 'messageDelete',
+    event: 'messageDelete',
+    name: 'Message Delete',
     execute(message, client) {
         if (message.channel.type == "dm") return;
         if (message.channel.id === '826862921405300786') return;

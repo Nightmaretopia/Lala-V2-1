@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 
 module.exports = {
-    name: 'guildMemberRemove',
+    event: 'guildMemberRemove',
+    name: 'Leave',
     execute(member, client) {
         let bbch = client.channels.cache.get('831258860857589832');
         let Leavelog = new Discord.MessageEmbed()
