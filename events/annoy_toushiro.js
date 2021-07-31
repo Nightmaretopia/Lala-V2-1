@@ -4,12 +4,12 @@ const { Coder } = require('../config.json')
 module.exports = {
     name: 'messageCreate',
     async execute(message) {
-        //let toushiro = '';
+        let toushiro = '826306764320407554';
         if (message.author.bot) return;
-        if (message.author.id !== Coder) {
-            return logs.red('rip');
+        if (message.author.id !== toushiro) {
+            //return logs.red('rip');
         } else {
-        message.reply('1')
+            message.react('854359427570466817')
         }
     }
 }
