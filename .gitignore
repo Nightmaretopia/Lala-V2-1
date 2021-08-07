@@ -1,14 +1,13 @@
-/node_modules
-/package-lock.json
-/StartBot.bat
-/to do list.txt
-/currency teste.txt
-/comandos/minigames
-/data.json
-/math-test.js
-/rainbow-try.js
-/currency test.txt
-/xp.json
-/config.json
+node_modules
+package-lock.json
+StartBot.bat
+to do list.txt
+currency teste.txt
+comandos/minigames
+data.json
+math-test.js
+rainbow-try.js
+currency test.txt
 config.json
 xp.json
+README.md
