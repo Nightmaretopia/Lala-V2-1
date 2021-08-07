@@ -98,6 +98,7 @@ client.on('interactionCreate', async int => {
     if (!client.slcommands.has(int.commandName)) return;
 
     try {
+        if (client.slcommands.get(int.commandName).enable == 0) return logs.red('Disabled')
         await client.slcommands.get(int.commandName).execute({int, client})
     } catch (err) {
         console.log(err);
