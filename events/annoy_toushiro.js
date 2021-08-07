@@ -1,6 +1,3 @@
-const { logs } = require('../utils/color-manager');
-const { Coder } = require('../config.json')
-
 module.exports = {
     event: 'messageCreate',
     name: 'Annoy Toushiro',
