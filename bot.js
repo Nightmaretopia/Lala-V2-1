@@ -88,9 +88,21 @@ client.on('messageCreate', async (message) => {
             client.commands.get(cmd).execute({message, args, target, reasonarg, client});
         } catch (err) {
             console.error(err);
-            message.reply('F')
+            message.reply({content: 'F'})
         };
     }
 });
+
+client.on('interactionCreate', async int => {
+    if (!int.isCommand()) return;
+    if (!client.slcommands.has(int.commandName)) return;
+
+    try {
+        await client.slcommands.get(int.commandName).execute({int, client})
+    } catch (err) {
+        console.log(err);
+        await interaction.reply({ content: 'F'});
+    }
+})
 
 client.login(token);
