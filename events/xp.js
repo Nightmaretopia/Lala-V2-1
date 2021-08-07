@@ -22,9 +22,9 @@ module.exports = {
             }
         }
 
-        let curxp = xpManager.getXp(user.id)
-        let curlvl = xpManager.getLvL(user.id)
-        let nextlvl = xpManager.nextLvL(user.id)
+        let curxp = xpManager.getxp(user.id)
+        let curlvl = xpManager.getlvl(user.id)
+        let nextlvl = xpManager.nextlvl(user.id)
 
         xp[message.author.id].xp = curxp + addxp
 

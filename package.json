@@ -4,9 +4,9 @@
   "description": "Infinite BOT",
   "main": "bot.js",
   "dependencies": {
-    "discord.js": "^13.0.0-dev.56b5b7e.1625313788",
+    "discord.js": "^13.0.0-dev.t1628165339.3eb4140",
     "moment": "^2.29.1",
-    "mongoose": "^5.12.13"
+    "mongoose": "^5.13.5"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
