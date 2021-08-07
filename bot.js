@@ -9,13 +9,12 @@ const client = new Discord.Client({intents: ['DIRECT_MESSAGES', 'DIRECT_MESSAGE_
 client.commands = new Discord.Collection();
 client.events = new Discord.Collection();
 client.slcommands = new Discord.Collection();
-const commandsFolder = fs.readdirSync('./commands').filter(f => f.endsWith('.js'));
+const commandsFolder = fs.readdirSync('./commands')
 const eventFiles = fs.readdirSync('./events').filter(f => f.endsWith('.js'));
-const slcommandsFolder = fs.readdirSync('./slash-commands').filter(f => f.endsWith('.js'))
-//const moneyFiles = fs.readdirSync('./monetary system').filter(file => file.endsWith('.js'));
+const slcommandsFolder = fs.readdirSync('./slash-commands')
 
 for (const folder of commandsFolder) {
-    const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
+    const commandFiles = fs.readdirSync(`./commands/${folder}`);
     for (const file of commandFiles) {
         const command = require(`./commands/${folder}/${file}`);
         client.commands.set(command.name, command);
@@ -32,18 +31,12 @@ for (const file of eventFiles) {
 };
 
 for (const folder of slcommandsFolder) {
-    const slCommandsFiles = fs.readdirSync(`./slash-commands/${folder}`).filter(f => f.endsWith('.js'));
+    const slCommandsFiles = fs.readdirSync(`./slash-commands/${folder}`);
     for (const file of slCommandsFiles) {
         const slCommand = require(`./slash-commands/${folder}/${file}`);
         client.slcommands.set(slCommand.name, slCommand);
     }
 };
-
-/*for (const file of moneyFiles) {
-    const monetary = require(`./monetary system/${file}`);
-    client.on(monetary.name, (...args) => monetary.execute(...args, client));
-    client.commands.set(monetary.name, monetary)
-}*/
 
 const lang = require('./utils/langs/EN')
 
@@ -65,7 +58,7 @@ client.on('ready', async () => {
 
 client.on('messageCreate', async (message) => {
     if (message.author.bot || message.channel.type == "dm") return;
-    
+
     const args = message.content.slice(prefix.length).trim().split(/ /g);
     const cmd = args.shift().toLowerCase();
     const target = message.mentions.users.first();
@@ -88,19 +81,7 @@ client.on('messageCreate', async (message) => {
             client.commands.get(args[0]).enable = 1;
         };
 
-        if (cmd === "disable") {
-            /*
-            Gets the value of the `enable` in the command/event and sets it to 0
-            Maybe I could do a switch... TODO"
-            
-            if (!message.member.permissions.has('ADMINISTRATOR')) return logs.red('Failed');
-            if (!args[0]) return message.reply('Dumb Fuck');
-            if (!client.commands.map(({name}) => name).includes(args[0])) return message.channel.send(`\`${args[0]}\` não é um comando válido`) && console.log('Retard');
-            client.commands.get(args[0]).enable = 0;
-            */
-        }
-
-        if (!client.commands.has(cmd)) return;
+        if (!client.commands.has(cmd)) return console.log('F');
 
         try {
             if (client.commands.get(cmd).enable == 0) return logs.red('Disabled');
@@ -111,12 +92,5 @@ client.on('messageCreate', async (message) => {
         };
     }
 });
-
-/*
-client.on('interactionCreate', async interaction => {
-    if (!interaction.isCommand()) return;
-    //if (!client.slcommands.has('doubt')) return;
-});
-*/
 
 client.login(token);
