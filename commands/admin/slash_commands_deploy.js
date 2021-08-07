@@ -41,7 +41,7 @@ module.exports = {
 
         const ban = {
             name: "ban",
-            description: "bans the mentioned user",
+            description: "Bans the mentioned user",
             options: [
                 {  
                     name: "target",
@@ -85,7 +85,39 @@ module.exports = {
             ]
         }
 
-        /*const command = */await client.guilds.cache.get('209700044763430912')?.commands.create(kick && ban && unban);
+        const mute = {
+            name: "mute",
+            description: "Mutes the user",
+            options: [
+                {
+                    name: "mention",
+                    description: "Mention the user to mute",
+                    type: "USER",
+                    required: true
+                }
+            ]
+        }
+
+        const tempmute = {
+            name: "tempmute",
+            description: "Temporarly mutes a user",
+            options: [
+                {
+                    name: "mention",
+                    description: "Mention the user to temporarly mute",
+                    type: "USER",
+                    required: true
+                },
+                {
+                    name: "time",
+                    description: "Time that the user will be muted (in seconds)",
+                    type: "NUMBER",
+                    required: true
+                }
+            ]
+        }
+
+        /*const command = */await client.guilds.cache.get('209700044763430912')?.commands.create(kick && ban && unban && mute && tempmute);
         //console.log(command)
 
         message.channel.send('**Slash Commands Deployed!**')
