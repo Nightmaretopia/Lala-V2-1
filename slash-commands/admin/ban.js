@@ -7,7 +7,7 @@ module.exports = {
     enable: 1,
     async execute({int, client}) {
 
-        if (!int.member.permissions.has('ADMINISTRATOR')) return int.reply({ content: "You don't have permission to use this command" })
+        if (!int.member.permissions.has('BAN_MEMBERS')) return int.reply({ content: "You don't have permission to use this command" })
 
         const embed = new MessageEmbed()
             .setColor("#FF0000")
