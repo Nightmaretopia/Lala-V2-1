@@ -11,12 +11,12 @@ module.exports = {
             description: "Kicks the mentioned user",
             options: [
                 {  
-                    name: "target",
+                    name: "mention",
                     description: "Mention the user you want to kick",
                     type: "SUB_COMMAND",
                     options: [
                         {
-                        name: "mention",
+                        name: "target",
                         description: "Mention the user you want to kick",
                         type: "USER",
                         required: true
@@ -44,12 +44,12 @@ module.exports = {
             description: "Bans the mentioned user",
             options: [
                 {  
-                    name: "target",
+                    name: "mention",
                     description: "Mention the user you want to ban",
                     type: "SUB_COMMAND",
                     options: [
                         {
-                        name: "mention",
+                        name: "target",
                         description: "Mention the user you want to ban",
                         type: "USER",
                         required: true
@@ -90,7 +90,7 @@ module.exports = {
             description: "Mutes the user",
             options: [
                 {
-                    name: "mention",
+                    name: "target",
                     description: "Mention the user to mute",
                     type: "USER",
                     required: true
@@ -103,7 +103,7 @@ module.exports = {
             description: "Temporarly mutes a user",
             options: [
                 {
-                    name: "mention",
+                    name: "target",
                     description: "Mention the user to temporarly mute",
                     type: "USER",
                     required: true
@@ -117,7 +117,32 @@ module.exports = {
             ]
         }
 
-        /*const command = */await client.guilds.cache.get('209700044763430912')?.commands.create(kick && ban && unban && mute && tempmute);
+        const avatar = {
+            name: "avatar",
+            description: "Envia o avatar da(s) pessoa(s) mencionada(s)",
+            options: [
+                {
+                    name: "target",
+                    description: "User to get the avatar",
+                    type: "USER",
+                    required: false
+                },
+                {
+                    name: "target2",
+                    description: "User to get the avatar",
+                    type: "USER",
+                    required: false
+                },
+                {
+                    name: "target3",
+                    description: "User to get the avatar",
+                    type: "USER",
+                    required: false
+                }
+            ]
+        }
+
+        /*const command = */await client.guilds.cache.get('209700044763430912')?.commands.create(kick && ban && unban && mute && tempmute && avatar);
         //console.log(command)
 
         message.channel.send('**Slash Commands Deployed!**')

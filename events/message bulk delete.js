@@ -8,6 +8,9 @@ module.exports = {
             .setColor(0xfc5603)
             .setAuthor("Purge")
             .setDescription(`Apagadas **${message.size}** mensagens`);
+
+        // message.each(({message}) => message)
+        console.log(message.clone())
             
         client.channels.cache.get('454111723872321536').send({embeds: [bulkembed]});
     }

@@ -81,14 +81,14 @@ client.on('messageCreate', async (message) => {
             client.commands.get(args[0]).enable = 1;
         };
 
-        if (!client.commands.has(cmd)) return console.log('F');
+        if (!client.commands.has(cmd)) return;
 
         try {
             if (client.commands.get(cmd).enable == 0) return logs.red('Disabled');
             client.commands.get(cmd).execute({message, args, target, reasonarg, client});
         } catch (err) {
             console.error(err);
-            message.reply({content: 'F'})
+            message.reply({content: 'There was an error trying to execute this command'})
         };
     }
 });
