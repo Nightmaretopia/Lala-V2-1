@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
     event: 'guildMemberRemove',
     name: 'Leave',
+    enable: 0,
     execute(member, client) {
         let bbch = client.channels.cache.get('831258860857589832');
         let Leavelog = new Discord.MessageEmbed()
@@ -20,7 +21,7 @@ module.exports = {
             .setImage('https://cdn.discordapp.com/attachments/846471009950367824/846471370489069628/Lala_Tchau.gif')
             .setTimestamp();
 
-        bbch.send(Leavemsg);
-        client.channels.cache.get('454111723872321536').send({embeds: [Leavelog]});
+        bbch.send({ embeds: [Leavemsg] });
+        client.channels.cache.get('454111723872321536').send({ embeds: [Leavelog] });
     }
 }

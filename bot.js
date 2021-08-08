@@ -104,6 +104,6 @@ client.on('interactionCreate', async (int) => {
         console.log(err);
         await interaction.reply({ content: 'There was an error trying to execute this command'});
     }
-})
+});
 
 client.login(token);

@@ -4,6 +4,7 @@ const moment = require('moment');
 module.exports = {
     event: 'guildMemberAdd',
     name: 'Join',
+    enable: 0,
     execute(member, client) {
         let a = moment();
         let b = moment(member.user.createdAt);
@@ -31,7 +32,7 @@ module.exports = {
             .setImage('https://cdn.discordapp.com/attachments/846471009950367824/846471210391830609/Lala_Bem-vindo.gif')
             .setTimestamp();
 
-        wmch.send(Welcomemsg);
+        wmch.send({ embeds: [Welcomemsg] });
         client.channels.cache.get('454111723872321536').send({embeds: [Welcomelog]});
         member.roles.add('746381043623395359');
     }
