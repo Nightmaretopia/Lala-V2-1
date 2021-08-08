@@ -85,15 +85,15 @@ client.on('messageCreate', async (message) => {
 
         try {
             if (client.commands.get(cmd).enable == 0) return logs.red('Disabled');
-            client.commands.get(cmd).execute({message, args, target, reasonarg, client});
+            await client.commands.get(cmd).execute({message, args, target, reasonarg, client});
         } catch (err) {
             console.error(err);
-            message.reply({content: 'There was an error trying to execute this command'})
+            await message.reply({content: 'There was an error trying to execute this command'})
         };
     }
 });
 
-client.on('interactionCreate', async int => {
+client.on('interactionCreate', async (int) => {
     if (!int.isCommand()) return;
     if (!client.slcommands.has(int.commandName)) return;
 
@@ -102,7 +102,7 @@ client.on('interactionCreate', async int => {
         await client.slcommands.get(int.commandName).execute({int, client})
     } catch (err) {
         console.log(err);
-        await interaction.reply({ content: 'F'});
+        await interaction.reply({ content: 'There was an error trying to execute this command'});
     }
 })
 
