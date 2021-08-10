@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
     event: 'guildMemberRemove',
     name: 'Leave',
-    enable: 0,
+    enable: 1,
     execute(member, client) {
         let bbch = client.channels.cache.get('831258860857589832');
         let Leavelog = new Discord.MessageEmbed()

@@ -4,7 +4,7 @@ const moment = require('moment');
 module.exports = {
     event: 'guildMemberAdd',
     name: 'Join',
-    enable: 0,
+    enable: 1,
     execute(member, client) {
         let a = moment();
         let b = moment(member.user.createdAt);
