@@ -38,18 +38,17 @@ for (const folder of slcommandsFolder) {
     }
 };
 
-const lang = require('./utils/langs/EN')
-
 client.on('ready', async () => {
 
-    console.log(lang(client, "bot_start"))
+    logs.fire(manager.logger("bot_start", client))
 
-    logs.fire(`${client.user.username} iniciou em ${client.guilds.cache.size} servidore(s).`);
+    //logs.fire(`${client.user.username} iniciou em ${client.guilds.cache.size} servidore(s).`);
     client.user.setActivity("To Love-Ru", {type: "WATCHING"});
 
     await mongo().then((mongoose) => {
         try {
-            logs.ice(`${client.user.username} Connected to MONGODB`)
+            //logs.ice(`${client.user.username} Connected to MONGODB`)
+            logs.ice(manager.logger("bot_mongo_connect", client))
         } finally {
             mongoose.connection.close();
         }
