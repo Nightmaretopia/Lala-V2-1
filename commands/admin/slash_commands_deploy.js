@@ -146,11 +146,55 @@ module.exports = {
                         required: false
                     }
                 ]
+            },
+            {
+                name: "icon",
+                description: "Gets the server icon",
+            },
+            {
+                name: "status",
+                description: "Set the bot status",
+                options: [
+                    {
+                        name: "status",
+                        description: "Choose the status for the bot",
+                        type: "STRING"
+                    },
+                    {
+                        name: "type",
+                        description: "Playing 🠖 0   Streaming 🠖 1   Listening 🠖 2   Watching 🠖 3    Custom 🠖 4  Competing 🠖 5",
+                        type: "STRING"
+                    }
+                ]
+            },
+            {
+                name: "join",
+                description: "Fakes a join",
+                defaultPermission: false,
+                options: [
+                    {
+                        name: "target",
+                        description: "The user you want to use on the fake",
+                        type: "USER"
+                    }
+                ]
+            },
+            {
+                name: "leave",
+                description: "Fakes a leave",
+                defaultPermission: false,
+                options: [
+                    {
+                        name: "target",
+                        description: "The user you want to use on the fake",
+                        type: "USER"
+                    }
+                ]
             }
         ];
 
-        /*const command = */await client.guilds.cache.get('209700044763430912')?.commands.set(data);
-        //console.log(command)
+        const command = await client.guilds.cache.get('209700044763430912')?.commands.set(data);
+        console.log(command)
 
         message.channel.send('**Slash Commands Deployed!**');
 
