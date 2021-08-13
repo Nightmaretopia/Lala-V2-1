@@ -10,11 +10,10 @@ module.exports = {
                 await client.emit('guildMemberRemove', message[users]);
                 users++
             });
-            await int.followUp({ content: 'Fake leave deployed', ephemeral: true })
+            await int.followUp({ content: 'Fake leave deployed' })
         } else {
             await client.emit('guildMemberRemove', int.member);
             await int.reply({ content: 'Fake leave deployed', ephemeral: true })
-            await int.followUp({ content: int.id })
         }
     }
 }

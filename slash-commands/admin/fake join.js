@@ -8,7 +8,6 @@ module.exports = {
         } else {
             await client.emit('guildMemberAdd', int.member);
             await int.reply({ content: 'Fake join deployed', ephemeral: true })
-            await int.followUp({ content: int.id })
         }
     }
 }
