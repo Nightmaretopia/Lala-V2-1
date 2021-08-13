@@ -4,11 +4,13 @@ const { prefix } = require('../config.json');
 module.exports = {
     event: 'messageDelete',
     name: 'Message Delete',
+    enable: 1,
     async execute(message, client) {
         if (message.channel.type == "dm") return;
         if (message.channel.id === '826862921405300786') return;
-        if (await message.content.startsWith(prefix)) return;
-
+        if (message.partial) return;
+        if (message.author.bot) return;
+        if (message.content.startsWith(prefix)) return;
         let deletembed = new Discord.MessageEmbed()
             .setColor("#d442f5")
             .setAuthor(message.author.tag, message.author.displayAvatarURL())
