@@ -1,18 +1,26 @@
 {
-  "name": "lala",
-  "version": "2.0.0",
-  "description": "Infinite BOT",
-  "main": "bot.js",
   "dependencies": {
-    "discord.js": "^13.0.1",
+    "canvas": "^2.8.0",
+    "discord.js": "^13.1.0",
     "moment": "^2.29.1",
-    "mongoose": "^5.13.5"
+    "mongoose": "^5.13.7"
   },
+  "name": "lala-v2",
+  "version": "2.5.1",
+  "main": "bot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "pm2": "pm2",
     "start": "pm2 start ./bot.js --name \"Lala V2\""
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Infinite-Fansub/Lala-V2.git"
+  },
   "author": "DidaS",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Infinite-Fansub/Lala-V2/issues"
+  },
+  "homepage": "https://github.com/Infinite-Fansub/Lala-V2#readme"
 }
