@@ -11,13 +11,17 @@ const numb = {
 };
 
 const profileSchema = mongoose.Schema({
-    _id: reqString,
+    _id: reqString, // future fuild id
+    // _v: reqString, // future user id
     name: reqString,
-    warns: numb,
     xp: numb,
     level: numb,
     reputation: numb,
+    warns: numb,
     gifts: numb
+},
+{
+    versionKey: false
 });
 
-module.exports = mongoose.model('XP', profileSchema);
+module.exports = mongoose.model('Profile', profileSchema);
