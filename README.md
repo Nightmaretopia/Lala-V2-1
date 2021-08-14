@@ -1,5 +1,5 @@
 ### TODO:
-- [ ] Fix the Slahs Commands interaction response
+- [x] Fix the Slahs Commands interaction response
 - [ ] Private message options
 - [ ] Fix mute
 - [ ] Update the tempute to v13
@@ -10,7 +10,8 @@
 - [ ] Twitch integration
 - [ ] Youtube integration
 - [ ] RSS
-- [ ] Fix the XP system (only the math left)
+- [x] Recode the XP sistem
+- [ ] Fix the XP math
 - [ ] Maybe make xp harder / balance it
 - [ ] Fix xpadd and port it to use MongoDB
 - [ ] Add new ways to get xp
