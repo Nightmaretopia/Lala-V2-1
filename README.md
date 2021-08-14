@@ -28,6 +28,7 @@
 //if rage = 90 (days) every account that its newer than 90 days will get banned//
 - [ ] Currency convertion (usage: <prefix>convert <ammout> <original currency> <currency to convert>) 
 //or maybe make it detect the coin based on the ammount//
+- [ ] Fully translate the bot
 
 ### Future Plans & Ideas:
 **V3:**
