@@ -1,6 +1,5 @@
 const { language } = require('../config.json');
 const profileSchema = require('./schemas/profile-schema');
-const mongo = require('../mongo');
 
 async function getXp(userID) {
     return await profileSchema.findOne({ _id: userID })
