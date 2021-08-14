@@ -28,7 +28,13 @@
 - [ ] Currency convertion (usage: <prefix>convert <ammout> <original currency> <currency to convert>) 
 //or maybe make it detect the coin based on the ammount//
 
-### Ideas:
+### Future Plans & Ideas:
+**V3:**
+- [ ] Recode all to add costumization to everything and website integration
+- [ ] Change database to SQL
+
 **WEB:**
 - [ ]  Instance/Host page to let anyone create his own bot with lala's (no name for now) code, and host it if needed.
 
+**V4:**
+- [ ] Recode all in Typescript
