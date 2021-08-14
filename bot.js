@@ -40,11 +40,11 @@ for (const folder of slcommandsFolder) {
 
 client.on('ready', async () => {
 
-    logs.fire(manager.logger("bot_start", client))
+    logs.time.fire(manager.logger("bot_start", client))
     client.user.setActivity("To Love-Ru", {type: "WATCHING"});
 
     await mongo().then(async (mongoose) => {
-        logs.ice(`${client.user.username} is ${manager.logger(`bot_mongo_state_${mongoose.connection.readyState}`)}`)
+        logs.time.ice(`${client.user.username} is ${manager.logger(`bot_mongo_state_${mongoose.connection.readyState}`)}`)
     })
 });
 

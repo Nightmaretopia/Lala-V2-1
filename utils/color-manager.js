@@ -506,7 +506,7 @@ module.exports.logs = {
     purple: purplelog,
     silver: silverlog,
     pink: pinklog,
-    temp: {
+    time: {
         rainbow: rainbowTemp,
         fire: fireTemp,
         ice: iceTemp,
