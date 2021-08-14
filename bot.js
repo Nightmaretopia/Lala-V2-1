@@ -41,22 +41,10 @@ for (const folder of slcommandsFolder) {
 client.on('ready', async () => {
 
     logs.fire(manager.logger("bot_start", client))
-
-    //logs.fire(`${client.user.username} iniciou em ${client.guilds.cache.size} servidore(s).`);
     client.user.setActivity("To Love-Ru", {type: "WATCHING"});
 
     await mongo().then(async (mongoose) => {
-        //logs.ice(`${client.user.username} Connected to MONGODB`)
-        // logs.ice(manager.logger("bot_mongo_connect", client))
-        logs.ice(`${client.user.username} is ${getDBState()}`)
-        function getDBState() {
-            switch (mongoose.connection.readyState) {
-                case 0: return "Disconnected from MongoDB"
-                case 1: return "Connected to MongoDB"
-                case 2: return "Connecting to MongoDB"
-                case 3: return "Disconnecting from MongoDB"
-            }
-        }
+        logs.ice(`${client.user.username} is ${manager.logger(`bot_mongo_state_${mongoose.connection.readyState}`)}`)
     })
 });
 
@@ -70,17 +58,17 @@ client.on('messageCreate', async (message) => {
     if (message.content.startsWith(prefix)) {
         
         if (cmd === "restart") {
-            if (!Coder || !Owner) return message.channel.send("Você não tem permissão para usar este comando");
-            message.channel.send("Reiniciando...")
+            if (!Coder || !Owner) return message.channel.send(manager.logger("missing_permissions"));
+            message.channel.send(manager.logger("restarting"))
                 .then(message => client.destroy())
-                .then(() => client.login(token))
-                .then(async () => await message.channel.send("`Reiniciada com sucesso!!!`"))
+                .then(() => client.login(token) && client.emit('ready'))
+                .then(async () => await message.channel.send(manager.logger("sucefully_restarted")))
         };
 
         if (cmd === "enable") {
             if (!message.member.permissions.has('ADMINISTRATOR')) return logs.red('Failed');
             if (!args[0]) return message.reply('Dumb Fuck');
-            if (!client.commands.map(({name}) => name).includes(args[0])) return message.channel.send(`\`${args[0]}\` não é um comando válido`) && console.log('Retard');
+            if (!client.commands.map(({name}) => name).includes(args[0])) return message.channel.send(manager.logger("not_valid")) && console.log('Retard');
             client.commands.get(args[0]).enable = 1;
         };
 
@@ -91,7 +79,7 @@ client.on('messageCreate', async (message) => {
             await client.commands.get(cmd).execute({message, args, target, reasonarg, client});
         } catch (err) {
             console.error(err);
-            await message.reply({content: 'There was an error trying to execute this command'})
+            await message.reply({content: manager.logger("error_exec")})
         };
     }
 });
@@ -105,7 +93,7 @@ client.on('interactionCreate', async (int) => {
         await client.slcommands.get(int.commandName).execute({int, client})
     } catch (err) {
         console.log(err);
-        await interaction.reply({ content: 'There was an error trying to execute this command'});
+        await interaction.reply({ content: manager.logger("error_exec")});
     }
 });
 

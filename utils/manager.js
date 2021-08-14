@@ -43,7 +43,7 @@ module.exports.pfManager = {
     lastlvl: lastLvL
 }
 
-function logger(log, cl) {
+function logger(log, cl, args) {
 
     let langToUse;
     
@@ -64,7 +64,7 @@ function logger(log, cl) {
 
     const langPath = require(`./langs/${langToUse}`);
 
-    return langPath(log, cl)
+    return langPath(log, cl, args)
 }
 
 function reason(reason) {
