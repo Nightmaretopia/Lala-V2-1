@@ -6,6 +6,7 @@ module.exports = {
     execute(oldMsg, newMsg, client) {
         if (!oldMsg.guild) return;
         if (!oldMsg.content) return;
+        if (oldMsg.username.bot) return;
         if (newMsg.content === oldMsg.content) return;
     
         let pfimage = newMsg.author.displayAvatarURL()
