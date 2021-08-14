@@ -2,53 +2,46 @@ const { language } = require('../config.json');
 const profileSchema = require('./schemas/profile-schema');
 const mongo = require('../mongo');
 
-mongo().then(async mongoose => {
+async function getXp(userID) {
+    return await profileSchema.findOne({ _id: userID })
+        .then(user => {
+            return user.xp
+        })
+        .catch(err => {
+            console.log(err)
+        })
+};
 
-    try {
-        async function getXp(userID) {
-            return await profileSchema.findOne({ _id: userID })
-                .then(user => {
-                    return user.xp
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        };
+async function getLvL(userID) {
+    return await profileSchema.findOne({ _id: userID })
+        .then(user => {
+            return user.level
+        })
+        .catch(err => {
+            console.log(err)
+        })
+};
 
-        async function getLvL(userID) {
-            return await profileSchema.findOne({ _id: userID })
-                .then(user => {
-                    return user.level
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        };
+function nextLvL(userID) {
+    return getLvL(userID)
+        .then(level => {
+            return level === 0 ? 300 : (300 * Math.round(-2 + 4 * level))
+        })
+        .catch(err => {
+            console.log(err)
+        })
+};
 
-        function nextLvL(userID) {
-            return getLvL(userID)
-                .then(level => {
-                    return (level === 0 ? 300 : 300 * Math.round(-2 + 4 * level))
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        };
+async function lastLvL(userID) {
+    return -(await nextLvL(userID));
+};
 
-        async function lastLvL(userID) {
-            return -(await nextLvL(userID));
-        };
-
-        module.exports.pfManager = {
-            getxp: getXp,
-            getlvl: getLvL,
-            nextlvl: nextLvL,
-            lastlvl: lastLvL
-        }
-    } finally {
-        mongoose.connection.close()
-    }
-})
+module.exports.pfManager = {
+    getxp: getXp,
+    getlvl: getLvL,
+    nextlvl: nextLvL,
+    lastlvl: lastLvL
+}
 
 function logger(log, cl) {
 

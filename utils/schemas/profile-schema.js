@@ -12,7 +12,7 @@ const num = {
 
 const profileSchema = mongoose.Schema({
     _id: reqString, // future fuild id
-    // _v: reqString, // future user id
+    // userID: // pretty self explanatory
     name: reqString,
     xp: num,
     level: num,

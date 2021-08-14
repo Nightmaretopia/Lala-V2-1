@@ -45,12 +45,17 @@ client.on('ready', async () => {
     //logs.fire(`${client.user.username} iniciou em ${client.guilds.cache.size} servidore(s).`);
     client.user.setActivity("To Love-Ru", {type: "WATCHING"});
 
-    await mongo().then((mongoose) => {
-        try {
-            //logs.ice(`${client.user.username} Connected to MONGODB`)
-            logs.ice(manager.logger("bot_mongo_connect", client))
-        } finally {
-            mongoose.connection.close();
+    await mongo().then(async (mongoose) => {
+        //logs.ice(`${client.user.username} Connected to MONGODB`)
+        // logs.ice(manager.logger("bot_mongo_connect", client))
+        logs.ice(`${client.user.username} is ${getDBState()}`)
+        function getDBState() {
+            switch (mongoose.connection.readyState) {
+                case 0: return "Disconnected from MongoDB"
+                case 1: return "Connected to MongoDB"
+                case 2: return "Connecting to MongoDB"
+                case 3: return "Disconnecting from MongoDB"
+            }
         }
     })
 });
