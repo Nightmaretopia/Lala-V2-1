@@ -7,7 +7,7 @@ module.exports = {
         if (oldMsg.partial) return;
         if (!oldMsg.guild) return;
         if (!oldMsg.content) return;
-        if (oldMsg.username.bot) return;
+        if (oldMsg.user.bot) return;
         if (newMsg.content === oldMsg.content) return;
     
         let pfimage = newMsg.author.displayAvatarURL()
