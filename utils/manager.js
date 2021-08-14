@@ -46,11 +46,11 @@ function logger(log, client, args, userid, level) {
 
     let langToUse;
     
-    let eng_ps = ["en", "eng", "english", "ingles"];
-    let pt_ps = ["pt", "pt-pt", "portuguese", "portugues"];
-    let br_ps = ["br", "pt-br", "brazilian", "brazileiro"];
-    let jp_ps = ["jp", "japanese", "japones"];
-    let langs = language.toLowerCase()
+    const eng_ps = ["en", "eng", "english", "ingles"];
+    const pt_ps = ["pt", "pt-pt", "portuguese", "portugues"];
+    const br_ps = ["br", "pt-br", "brazilian", "brazileiro"];
+    const jp_ps = ["jp", "japanese", "japones"];
+    const langs = language.toLowerCase()
     if (eng_ps.includes(langs)) {
         langToUse = "EN"
     } else if (pt_ps.includes(langs)) {
