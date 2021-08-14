@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const { prefix, token, Owner, Coder } = require('./config.json');
 const mongo = require('./mongo');
 const fs = require('fs');
-const manager = require('./utils/manager')
+const { manager } = require('./utils/manager')
 const { logs, colors } = require('./utils/color-manager');
 
 const client = new Discord.Client({intents: ['DIRECT_MESSAGES', 'DIRECT_MESSAGE_REACTIONS', 'DIRECT_MESSAGE_TYPING', 'GUILDS', 'GUILD_BANS', 'GUILD_EMOJIS_AND_STICKERS', 'GUILD_INTEGRATIONS', 'GUILD_INVITES', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_MESSAGE_TYPING', 'GUILD_PRESENCES', 'GUILD_VOICE_STATES', 'GUILD_WEBHOOKS'], partials: ['USER', 'REACTION', 'MESSAGE', 'GUILD_MEMBER', 'CHANNEL']});
@@ -57,7 +57,6 @@ client.on('ready', async () => {
 
 client.on('messageCreate', async (message) => {
     if (message.author.bot || message.channel.type == "dm") return;
-
     const args = message.content.slice(prefix.length).trim().split(/ /g);
     const cmd = args.shift().toLowerCase();
     const target = message.mentions.users.first();
