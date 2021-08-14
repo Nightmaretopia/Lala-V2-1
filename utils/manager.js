@@ -25,7 +25,7 @@ async function getLvL(userID) {
 function nextLvL(userID) {
     return getLvL(userID)
         .then(level => {
-            return level === 0 ? 300 : (300 * Math.round(-2 + 4 * level))
+            return level <= 1 ? 300 * (level + 1) : (300 * Math.round(-2 + 4 * level))
         })
         .catch(err => {
             console.log(err)
