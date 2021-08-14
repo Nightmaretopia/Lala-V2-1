@@ -42,7 +42,7 @@ module.exports = {
             level++
 
             const lvlupemb = new MessageEmbed()
-                .setDescription(manager.logger("level_up"))
+                .setDescription(manager.logger("level_up", null, null, userId, level))
             message.channel.send({embeds: [lvlupemb]})
 
             await profileSchema.updateOne(

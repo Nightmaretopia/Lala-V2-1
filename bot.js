@@ -61,14 +61,14 @@ client.on('messageCreate', async (message) => {
             if (!Coder || !Owner) return message.channel.send(manager.logger("missing_permissions"));
             message.channel.send(manager.logger("restarting"))
                 .then(message => client.destroy())
-                .then(() => client.login(token) && client.emit('ready'))
+                .then(() => client.login(token) && logs.rainbow(manager.logger("restarted")))
                 .then(async () => await message.channel.send(manager.logger("sucefully_restarted")))
         };
 
         if (cmd === "enable") {
             if (!message.member.permissions.has('ADMINISTRATOR')) return logs.red('Failed');
             if (!args[0]) return message.reply('Dumb Fuck');
-            if (!client.commands.map(({name}) => name).includes(args[0])) return message.channel.send(manager.logger("not_valid")) && console.log('Retard');
+            if (!client.commands.map(({name}) => name).includes(args[0])) return message.channel.send(manager.logger("not_valid", null, args)) && console.log('Retard');
             client.commands.get(args[0]).enable = 1;
         };
 

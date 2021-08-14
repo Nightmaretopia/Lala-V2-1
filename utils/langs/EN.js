@@ -6,13 +6,14 @@ const data = {
     bot_mongo_state_3: "Disconnecting from MongoDB",
     error_exec: "There was an error trying to execute this command",
     restarting: "Restaring...",
+    restarted: "The bot was restarted",
     sucefully_restarted: "```Sucefully Restarted!!!```",
     missing_permissions: "You don't have permission to use this command",
     not_valid: "`$args` is not a valid command",
     level_up: "<@$userID> reached level $level"
 }
 
-module.exports = (event, client, args) => {
+module.exports = (event, client, args, userid, level) => {
     if(data[event] == undefined || data[event] == null || data[event] == "")
         return;
 
@@ -28,7 +29,7 @@ module.exports = (event, client, args) => {
         message = message.replace("$args", args[0]);
 
     if (message.indexOf("$userID") >= 0)
-        message = message.replace("$userID", message.author.id);
+        message = message.replace("$userID", userid);
 
     if (message.indexOf("$level") >= 0)
         message = message.replace("$level", level);
