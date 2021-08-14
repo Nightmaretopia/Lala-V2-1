@@ -30,6 +30,7 @@
 
 ### Future Plans & Ideas:
 **V3:**
+- [ ] Get a name for the Bot
 - [ ] Recode all to add costumization to everything and website integration
 - [ ] Change database to SQL
 
