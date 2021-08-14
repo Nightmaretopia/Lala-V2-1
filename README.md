@@ -1,4 +1,4 @@
-## TODO:
+# TODO:
 - [ ] Fix the Slahs Commands interaction response
 - [ ] Private message options
 - [ ] Fix mute
@@ -27,7 +27,7 @@
 - [ ] Currency convertion (usage: <prefix>convert <ammout> <original currency> <currency to convert>) 
 //or maybe make it detect the coin based on the ammount//
 
-## Ideas:
-# WEB:
+# Ideas:
+WEB:
 - [ ]  Instance/Host page to let anyone create his own bot with lala's (no name for now) code, and host it if needed.
 
