@@ -5,7 +5,7 @@ const reqString = {
     require: true,
 };
 
-const numb = {
+const num = {
     type: Number,
     default: 0
 };
@@ -14,11 +14,11 @@ const profileSchema = mongoose.Schema({
     _id: reqString, // future fuild id
     // _v: reqString, // future user id
     name: reqString,
-    xp: numb,
-    level: numb,
-    reputation: numb,
-    warns: numb,
-    gifts: numb
+    xp: num,
+    level: num,
+    reputation: num,
+    warns: num,
+    gifts: num
 },
 {
     versionKey: false
