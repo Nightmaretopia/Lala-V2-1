@@ -4,6 +4,7 @@ module.exports = {
     event: 'messageUpdate',
     name: 'Message Updates',
     execute(oldMsg, newMsg, client) {
+        if (oldMsg.partial) return;
         if (!oldMsg.guild) return;
         if (!oldMsg.content) return;
         if (oldMsg.username.bot) return;
