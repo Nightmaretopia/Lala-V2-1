@@ -10,10 +10,12 @@ const data = {
     sucefully_restarted: "```Sucefully Restarted!!!```",
     missing_permissions: "You don't have permission to use this command",
     not_valid: "`$args` is not a valid command",
-    level_up: "<@$userID> reached level $level"
+    level_up: "<@$userID> reached level $level",
+    avatar: "$usertag's Avatar",
+    icon: "$guildname's Icon"
 }
 
-module.exports = (event, client, args, userid, level) => {
+module.exports = (event, client, args, guild, user, level) => {
     if(data[event] == undefined || data[event] == null || data[event] == "")
         return;
 
@@ -28,8 +30,14 @@ module.exports = (event, client, args, userid, level) => {
     if (message.indexOf("$args") >= 0)
         message = message.replace("$args", args[0]);
 
+    if (message.indexOf("$guildname") >= 0)
+        message = message.replace("$guildname", guild.name)
+
     if (message.indexOf("$userID") >= 0)
-        message = message.replace("$userID", userid);
+        message = message.replace("$userID", user.id);
+
+    if (message.indexOf("$usertag") >= 0)
+        message = message.replace("$usertag", user.tag)
 
     if (message.indexOf("$level") >= 0)
         message = message.replace("$level", level);

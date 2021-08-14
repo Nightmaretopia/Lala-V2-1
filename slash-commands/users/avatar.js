@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js')
+const { manager } = require('../../utils/manager')
 
 module.exports = {
     name: "avatar",
@@ -12,7 +13,7 @@ module.exports = {
             await int.options.data.map(({user}) => user).forEach(user => {
                 embed[i] = new MessageEmbed()
                     .setColor(0x0000FF)
-                    .setTitle(`Avatar de ${user.tag}`)
+                    .setTitle(manager.logger("avatar", null, null, null, user))
                     .setURL(user.avatarURL({size: 2048, dynamic: true}))
                     .setImage(user.avatarURL({size: 2048, dynamic: true}));
                 int.followUp({ embeds: [embed[i]] })
