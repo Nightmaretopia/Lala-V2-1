@@ -16,9 +16,9 @@ const profileSchema = mongoose.Schema({
     name: reqString,
     xp: num,
     level: num,
-    reputation: num,
     warns: num,
-    gifts: num
+    isMuted: Boolean,
+    mutedTime: num
 },
 {
     versionKey: false
