@@ -1,5 +1,6 @@
 ### TODO:
 - [ ] _**Add new roles on RR (Console, MMORPG, RPG, FPS, Honaki Impact, New World)**_
+- [ ] Add the rest of the logs (roles & user updates)
 - [x] Fix the Slahs Commands interaction response
 - [ ] Private message options
 - [ ] Fix mute
