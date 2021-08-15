@@ -30,6 +30,7 @@
 - [ ] Currency convertion (usage: <prefix>convert <ammout> <original currency> <currency to convert>) 
 //or maybe make it detect the coin based on the ammount//
 - [ ] Fully translate the bot
+- [ ] Fully get rid of message based commands
 
 ### Future Plans & Ideas:
 **V3:**
