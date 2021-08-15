@@ -16,6 +16,8 @@ const profileSchema = mongoose.Schema({
     name: reqString,
     xp: num,
     level: num,
+    ignoreRoles: Array,
+    roles: Array,
     warns: num,
     isMuted: Boolean,
     mutedTime: num
