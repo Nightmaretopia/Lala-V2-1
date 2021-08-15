@@ -10,15 +10,14 @@ const data = {
     sucefully_restarted: "```Sucefully Restarted!!!```",
     missing_permissions: "You don't have permission to use this command",
     not_valid: "`$args` is not a valid command",
-    level_up: "<@$user.id> reached level $level",
+    level_up: "<@$user.id> reached level **$level**",
     bulk_delete: "Deleted **$message.size** messages",
     avatar: "$user.tag's Avatar",
     icon: "$guild.name's Icon"
 }
 
 module.exports = (event, client, args, guild, user, level, message) => {
-    if(data[event] == undefined || data[event] == null || data[event] == "")
-        return;
+    if(data[event] == undefined || data[event] == null || data[event] == "") return;
 
     let eventMessage = data[event].toString();
 

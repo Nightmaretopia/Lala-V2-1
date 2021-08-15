@@ -8,9 +8,6 @@ module.exports = {
     enable: 1,
     async execute(message, client) {
         if (message.author.bot) return;
-        // Temporary closed beta for xp
-        if (!message.guild.members.cache.get(message.author.id).roles.cache.has('850113696155566161')) return;
-        //
 
         const user = message.author;
         const userName = message.author.username
@@ -55,6 +52,6 @@ module.exports = {
                 }
             )
         }
-        console.log(`---------------\nUser: ${name}\nXP: ${xp}\nLevel: ${level}\nNextLvL: ${needed}\nLastLvL: ${await pfManager.lastlvl(userId)}\n---------------`)
+        console.log(`---------------\nUser: ${name}\nAdded: ${addxp}\nXP: ${xp}\nLevel: ${level}\nNextLvL: ${needed}\nLastLvL: ${await pfManager.lastlvl(userId)}\n---------------`)
     }
 }
