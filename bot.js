@@ -93,7 +93,7 @@ client.on('interactionCreate', async (int) => {
         await client.slcommands.get(int.commandName).execute({int, client})
     } catch (err) {
         console.log(err);
-        await interaction.reply({ content: manager.logger("error_exec")});
+        await int.reply({ content: manager.logger("error_exec")});
     }
 });
 

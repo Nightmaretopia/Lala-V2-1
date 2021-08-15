@@ -10,6 +10,11 @@ const num = {
     default: 0
 };
 
+const bool = {
+    type: Boolean,
+    default: false
+}
+
 const profileSchema = mongoose.Schema({
     _id: reqString, // will be removed
     // guildID // pretty self explanatory
@@ -20,7 +25,7 @@ const profileSchema = mongoose.Schema({
     ignoreRoles: Array,
     roles: Array,
     warns: num,
-    isMuted: Boolean,
+    isMuted: bool,
     mutedTime: num
 },
 {
