@@ -90,7 +90,12 @@ module.exports = {
                         description: "Insert the ID here",
                         type: "STRING",
                         required: true
-                    }
+                    },
+                    {
+                        name: "reason",
+                        description: "Reason to ban the user",
+                        type: "STRING"
+                    } 
                 ]
             },
             {
@@ -102,7 +107,12 @@ module.exports = {
                         description: "Mention the user to mute",
                         type: "USER",
                         required: true
-                    }
+                    },
+                    {
+                        name: "reason",
+                        description: "Reason to ban the user",
+                        type: "STRING"
+                    }  
                 ]
             },
             {
