@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const Profile = require("../../utils/schemas/profile-schema");
 
 module.exports = {
     name: 'mute',
@@ -10,6 +11,7 @@ module.exports = {
         const muteTarget = int.options.getMember('target');
         const muteRole = int.guild.roles.cache.find(role => role.name === "Lala Mute") || await createMuteRole(int.guild);
 
+        await Profile.findOneAndUpdate({ userID: muteTarget.id }).exec();
         await muteTarget.roles.add(muteRole);
 
         int.channel.send({
