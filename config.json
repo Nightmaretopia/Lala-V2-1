@@ -1,0 +1,9 @@
+{
+    "_comment1": "Default language is EN but you can change to others (documentation on that soon)",
+    "language": "EN",
+    "prefix":"your-prefix-here",
+    "token": "your-bot-token",
+    "mongoPath": "the-path-for-your-mongodb (can be a local one)",
+    "_comment2": "This should be set to yourself or the owner of the server the clone will be used in. For now its only required to use the restart command",
+    "Owner": "",
+}
