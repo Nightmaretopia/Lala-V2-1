@@ -17,7 +17,7 @@ const data = {
 }
 
 module.exports = (event, client, args, guild, user, level, message) => {
-    if(data[event] == undefined || data[event] == null || data[event] == "") return;
+    if(!data[event]) return;
 
     let eventMessage = data[event].toString();
 
