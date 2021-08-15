@@ -11,7 +11,8 @@ const num = {
 };
 
 const profileSchema = mongoose.Schema({
-    _id: reqString, // future guild id
+    _id: reqString, // will be removed
+    // guildID // pretty self explanatory
     // userID: // pretty self explanatory
     name: reqString,
     xp: num,
@@ -24,6 +25,7 @@ const profileSchema = mongoose.Schema({
 },
 {
     versionKey: false
+    //_id: false
 });
 
 module.exports = mongoose.model('Profile', profileSchema);
