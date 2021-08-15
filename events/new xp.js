@@ -6,7 +6,7 @@ module.exports = {
     event: "messageCreate",
     name: "XP New",
     enable: 1,
-    async execute(message, client) {
+    async execute(message) {
         if (message.author.bot) return;
 
         const user = message.author;
