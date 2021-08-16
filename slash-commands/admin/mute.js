@@ -5,7 +5,7 @@ const { manager } = require('../../utils/manager');
 module.exports = {
     name: 'mute',
     enable: 0,
-    async execute({int, client}) {
+    async execute({int}) {
         if (!int.member.permissions.has('MUTE_MEMBERS')) return int.reply({ content: "You don't have permission to use this command" });
 
         const muteTarget = int.options.getMember('target');
@@ -16,7 +16,7 @@ module.exports = {
             }
         );
 
-        const pos = int.guild.members.resolve(client.user).roles.highest.position;
+        const pos = int.guild.me.roles.highest.position;
         if (!muteRole) {
             int.guild.roles.create(
                 {

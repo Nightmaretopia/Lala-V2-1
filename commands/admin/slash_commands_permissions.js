@@ -2,7 +2,7 @@ module.exports= {
     name: "permissions",
     description: "Sets the permissions for the slash commands",
     enable: 1,
-    async execute({message, client}) {
+    async execute({message}) {
 
         const fullPermissions = [
             {
@@ -27,7 +27,7 @@ module.exports= {
             }
         ]
 
-        await client.guilds.cache.get('209700044763430912')?.commands.permissions.set({ fullPermissions });
+        await message.client.guilds.cache.get('209700044763430912')?.commands.permissions.set({ fullPermissions });
 
         message.channel.send('**Slash Commands Permissions Updated!**');
     }

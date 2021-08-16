@@ -2,9 +2,9 @@ const { Coder } = require('../../config.json')
 
 module.exports = {
     name: "deploy",
-    async execute({message, client}) {
+    async execute({message}) {
         if (message.author != Coder)
-        if (!client.application?.owner) await client.application?.fetch();
+        if (!message.client.application?.owner) await message.client.application?.fetch();
 
         const data = [
             {
@@ -203,7 +203,7 @@ module.exports = {
             }
         ];
 
-        const command = await client.guilds.cache.get('209700044763430912')?.commands.set(data);
+        const command = await message.client.guilds.cache.get('209700044763430912')?.commands.set(data);
         console.log(command)
 
         message.channel.send('**Slash Commands Deployed!**');
