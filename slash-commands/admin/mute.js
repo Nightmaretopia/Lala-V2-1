@@ -5,36 +5,18 @@ const { manager } = require('../../utils/manager');
 module.exports = {
     name: 'mute',
     enable: 0,
-    async execute({int, client}) {
+    async execute({ int, client }) {
         if (!int.member.permissions.has('MUTE_MEMBERS')) return int.reply({ content: "You don't have permission to use this command" });
 
         const muteTarget = int.options.getMember('target');
-        const muteRole = int.guild.roles.cache.find(role => role.name === "Zero Mute") // || get guild's mute role id **upcoming**
         const profile = await profileSchema.findOne(
             {
                 _id: muteTarget.id,
             }
         );
+        let muteRole = int.guild.roles.cache.find(role => role.name === "Zero Mute") // || get guild's mute role id **upcoming**
 
-        const pos = int.guild.members.resolve(client.user).roles.highest.position;
-        if (!muteRole) {
-            int.guild.roles.create(
-                {
-                    name: "Zero Mute",
-                    position: pos - 1,
-                    color: 0x242424
-                }
-            ).then(async r => {
-                await int.guild.channels.cache.each(channel => {
-                    channel.permissionOverwrite.edit(r, {
-                        SEND_MESSAGES: false
-                    })
-                })
-            })
-        }
-
-        const { isMuted } = await profile || false;
-        if (isMuted == null) {
+        if (profile === null) {
             await profileSchema.findOneAndUpdate(
                 {
                     _id: muteTarget.id
@@ -48,29 +30,36 @@ module.exports = {
                     setDefaultsOnInsert: true
                 }
             )
+            await profileSchema.save()
         }
-        async function isUserMuted(){
-            if (isMuted || muteTarget.roles.cache.has(muteRole)){
-                if (muteTarget.roles.cache.has(muteRole) && isMuted == false) {
-                    await profileSchema.updateOne(
-                        {
-                            _id: muteTarget.id
-                        },
-                        {
-                            isMuted: true
-                        }
-                    )
-                }
-                int.reply({ content: "This user is already muted" });
-                return true
-            } else {
-                return false
+
+        if (!muteRole) {
+            muteRole = await int.guild.roles.create({
+                name: "Zero Mute",
+                position: int.guild.me.roles.highest.position - 1,
+                color: 0x242424
+            })
+            await int.guild.channels.cache.each(channel => {
+                channel.permissionOverwrites.edit(muteRole, {
+                    SEND_MESSAGES: false
+                })
+            })
+        }
+
+        if (profile.isMuted || muteTarget.roles.cache.has(muteRole)) {
+            if (muteTarget.roles.cache.has(muteRole) && isMuted === false) {
+                await profileSchema.updateOne(
+                    {
+                        _id: muteTarget.id
+                    },
+                    {
+                        isMuted: true
+                    }
+                )
             }
-        }
-
-        if(isUserMuted() === false) {
-            muteTarget.roles.add(muteRole);
-
+            int.reply({content: "This user is already muted"});
+        } else {
+            await muteTarget.roles.add(muteRole);
             await profileSchema.updateOne(
                 {
                     _id: muteTarget.id
@@ -79,6 +68,7 @@ module.exports = {
                     isMuted: true
                 }
             )
+            await profileSchema.save()
             await int.reply({
                 embeds: [
                     new Discord.MessageEmbed()
