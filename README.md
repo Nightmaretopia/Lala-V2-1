@@ -27,7 +27,7 @@
 - [ ] Annonymous messages
 - [ ] Cleanup command, bans every account in a certain range, range being when the acc was created (usage: <prefix>cleanup <range in days>)
 //if rage = 90 (days) every account that its newer than 90 days will get banned//
-- [ ] Currency convertion (usage: <prefix>convert <ammout> <original currency> <currency to convert>) 
+- [ ] Currency convertion (usage: !convert ammout original currency currency to convert) 
 //or maybe make it detect the coin based on the ammount//
 - [ ] Fully translate the bot
 - [ ] Fully get rid of message based commands
