@@ -3,20 +3,20 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'tempmute',
     description: 'Muta temporariamente o membro mencionado',
-    async execute({message, args, target, reasonarg, client}) {
+    async execute({message, args, target, reasonarg}) {
         if (!message.member.permissions.has('MUTE_MEMBERS')) return message.channel.send('Você não tem permissão para usar este comando');
         if (!target) return message.channel.send("Você não especificou quem quer mutar")
             .then(message => {
                 message.delete({timeout: 3000})
             });
-        if (message.guild.member(target).roles.highest.position > message.guild.members.resolve(client.user).roles.highest.position) return message.channel.send('Você não pode mutar um moderador');
+        if (message.guild.member(target).roles.highest.position > message.guild.me.roles.highest.position) return message.channel.send('Você não pode mutar um moderador');
         let tempo = parseFloat(args[1]);
         if (!tempo) return message.channel.send('Você não falou por quanto tempo quer mutar o utilizador (em minutos)')
             .then(message => {
                 message.delete({timeout: 3000})
             });
         const muterole = message.guild.roles.cache.find(r => r.name == "Lala Mute");
-        const pos = message.guild.members.resolve(client.user).roles.highest.position;
+        const pos = message.guild.me.roles.highest.position;
         if (!muterole) {
             message.guild.roles.create({ data: { name: "Lala Mute", permissions: ['VIEW_CHANNEL', 'READ_MESSAGE_HISTORY'], position: pos-1, color: 0x242424}})
                 .then(async r => {
