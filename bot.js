@@ -76,7 +76,7 @@ client.on('messageCreate', async (message) => {
 
         try {
             if (client.commands.get(cmd).enable == 0) return logs.red('Disabled');
-            await client.commands.get(cmd).execute({message, args, target, reasonarg, client});
+            await client.commands.get(cmd).execute({message, args, target, reasonarg});
         } catch (err) {
             console.error(err);
             await message.reply({content: manager.logger("error_exec")})
@@ -90,7 +90,7 @@ client.on('interactionCreate', async (int) => {
 
     try {
         if (client.slcommands.get(int.commandName).enable == 0) return logs.red('Disabled')
-        await client.slcommands.get(int.commandName).execute({int, client})
+        await client.slcommands.get(int.commandName).execute({int})
     } catch (err) {
         console.log(err);
         await int.reply({ content: manager.logger("error_exec")});
