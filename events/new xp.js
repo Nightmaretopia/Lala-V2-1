@@ -27,7 +27,8 @@ module.exports = {
             },
             {
                 upsert: true,
-                new: true
+                new: true,
+                setDefaultsOnInsert: true
             }
         )
 
@@ -52,6 +53,6 @@ module.exports = {
                 }
             )
         }
-        console.log(`---------------\nUser: ${name}\nAdded: ${addxp}\nXP: ${xp}\nLevel: ${level}\nNextLvL: ${needed}\nLastLvL: ${await pfManager.lastlvl(userId)}\n---------------`)
+        console.log(`---------------\nUser: ${name}\nAdded: ${addxp}\nXP: ${xp}\nLevel: ${level}\nNextLvL: ${needed}\n---------------`)
     }
 }

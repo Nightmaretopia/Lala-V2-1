@@ -24,22 +24,17 @@ async function getLvL(userID) {
 function nextLvL(userID) {
     return getLvL(userID)
         .then(level => {
-            return level <= 1 ? 300 * (level + 1) : (300 * Math.round(-2 + 4 * level))
+            return 150 * level * level + 450 * level + 300
         })
         .catch(err => {
             console.log(err)
         })
 };
 
-async function lastLvL(userID) {
-    return -(await nextLvL(userID));
-};
-
 module.exports.pfManager = {
     getxp: getXp,
     getlvl: getLvL,
     nextlvl: nextLvL,
-    lastlvl: lastLvL
 }
 
 function logger(log, client, args, guild, userid, level, message) {
