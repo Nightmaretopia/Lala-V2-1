@@ -5,7 +5,7 @@ const { manager } = require('../../utils/manager');
 module.exports = {
     name: 'mute',
     enable: 0,
-    async execute({ int, client }) {
+    async execute({ int }) {
         if (!int.member.permissions.has('MUTE_MEMBERS')) return int.reply({ content: "You don't have permission to use this command" });
 
         const muteTarget = int.options.getMember('target');
