@@ -30,7 +30,6 @@ module.exports = {
                     setDefaultsOnInsert: true
                 }
             )
-            await profileSchema.save()
         }
 
         if (!muteRole) {
@@ -68,7 +67,6 @@ module.exports = {
                     isMuted: true
                 }
             )
-            await profileSchema.save()
             await int.reply({
                 embeds: [
                     new Discord.MessageEmbed()
