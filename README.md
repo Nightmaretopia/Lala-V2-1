@@ -5,23 +5,24 @@
 - [ ] Private message options
 - [ ] Fix mute
 - [ ] Update the tempute to v13
-- [ ] Warning sistem
-- [ ] Sugestion sistem
+- [ ] Warning system
+- [ ] Sugestion system
 - [ ] Add configurable anti-spam
 - [ ] Add the anti-raid levels
 - [ ] Twitch integration
 - [ ] Youtube integration
 - [ ] RSS
-- [x] Recode the XP sistem
-- [ ] Fix the XP math
-- [ ] Maybe make xp harder / balance it
+- [x] Recode the XP system
+- [x] Fix the XP math
+- [x] Maybe make xp harder / balance it
 - [ ] Fix xpadd and port it to use MongoDB
 - [ ] Add new ways to get xp
 - [ ] Fix the rank and auto ranking
 - [ ] Add blacklist for people and words
 - [ ] Add chat filter
-- [ ] Create a monetary sistem that will have more then 1 coin
-- [ ] Store, inventory and trade sistem
+- [ ] Create a simple monetary system
+- [ ] Create a realistic monetary system
+- [ ] Store, inventory and trade system
 - [ ] Add profile and whois
 - [ ] Add music (yt, ytmusic, spotify, soundcloud, applemusic, deezer)
 - [ ] Annonymous messages
