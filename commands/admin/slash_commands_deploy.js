@@ -162,6 +162,30 @@ module.exports = {
                 description: "Gets the server icon",
             },
             {
+                name: "emoji",
+                description: "",
+                options: [
+                    {
+                        name: "emoji",
+                        description: "The emoji to get the image from",
+                        type: "STRING"
+                    },
+                    {
+                        name: "id",
+                        description: "Use the id of an emoji to get his image",
+                        type: "SUB_COMMAND",
+                        options: [
+                            {
+                                name: "id",
+                                description: "Insert the ID here",
+                                type: "STRING",
+                                required: true
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
                 name: "status",
                 description: "Set the bot status",
                 options: [

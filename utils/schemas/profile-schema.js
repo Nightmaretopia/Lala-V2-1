@@ -26,7 +26,8 @@ const profileSchema = mongoose.Schema({
     roles: Array,
     warns: num,
     isMuted: bool,
-    mutedTime: num
+    mutedTime: num,
+    marriedTo: String
 },
 {
     versionKey: false

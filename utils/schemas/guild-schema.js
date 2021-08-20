@@ -10,9 +10,15 @@ const num = {
     default: 0
 };
 
+const pref = {
+    type: String,
+    default: "!"
+};
+
 const guildSchema = mongoose.Schema({
     _id: reqString,
     name: reqString,
+    prefix: pref,
     ignoreChannels: Array,
     logChannels: Array,
     welcomeChannel: String,
