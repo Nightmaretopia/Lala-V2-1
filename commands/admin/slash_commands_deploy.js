@@ -1,4 +1,4 @@
-const { Coder } = require('../../config.json');
+const { Owner } = require('../../config.json');
 const { manager } = require('../../utils/manager');
 
 module.exports = {
