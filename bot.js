@@ -62,7 +62,7 @@ client.on('messageCreate', async (message) => {
             message.channel.send(manager.logger("restarting"))
                 .then(message => client.destroy())
                 .then(() => client.login(token) && logs.rainbow(manager.logger("restarted")))
-                .then(async () => await message.channel.send(manager.logger("sucefully_restarted")))
+                .then(async () => await message.channel.send(manager.logger("sucefully_restarted") && logs.time.rainbow('Bot Restarted')))
         };
 
         if (cmd === "enable") {

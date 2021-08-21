@@ -1,9 +1,10 @@
-const { Coder } = require('../../config.json')
+const { Coder } = require('../../config.json');
+const { manager } = require('../../utils/manager');
 
 module.exports = {
     name: "deploy",
     async execute({message}) {
-        if (message.author.id != Coder) return;
+        if (message.author != Coder) return message.reply(manager.logger("missing_premissions"));
         if (!message.client.application?.owner) await message.client.application?.fetch();
 
         const data = [
