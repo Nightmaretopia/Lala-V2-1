@@ -3,7 +3,7 @@ const { Coder } = require('../../config.json')
 module.exports = {
     name: "deploy",
     async execute({message}) {
-        if (message.author != Coder)
+        if (message.author.id != Coder) return;
         if (!message.client.application?.owner) await message.client.application?.fetch();
 
         const data = [
