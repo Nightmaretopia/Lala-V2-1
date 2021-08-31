@@ -77,7 +77,7 @@ class logger {
     time() {
         return colors.text(colors.text(`[${new Date().toLocaleTimeString()}]`, colors.white, true), colors.black)
     };
-    defaultPrint(log, mem) {
+    defaultPrint(log, mem = false) {
         if (mem) {
             console.log(`${colors.text(memory(), this.color)} ${this.time()} ${this.emoji} ${colors.text(log, this.color)}`)
         } else {
@@ -88,34 +88,37 @@ class logger {
     costumPrint(log) {
         return log
     };
-    error(log) {
-        console.log(`${this.time()} ${this.errorEmoji} ${colors.text(log, this.errorColor)}`)
+    error(log, mem = true) {
+        if (mem) {
+            console.log(`${colors.text(memory(), this.errorColor)} ${this.time()} ${this.errorEmoji} ${colors.text(log, this.errorColor)}`)
+        } else {
+            console.log(`${this.time()} ${this.errorEmoji} ${colors.text(log, this.errorColor)}`)
+        }
     };
 }
 
 class BotLogger extends logger {
-    translations(log) {
-        return this.languageFolder(log)
-    };
     commands = (file, location, isMem = false) => this.defaultPrint(`Loaded ${file} from ${location}`, isMem);
-
     events = (file, isMem = false) => this.defaultPrint(`Loaded ${file} event`, isMem);
 }
 
 class log extends logger {
     bot = {
-        login: client => ({ event: "bot_start", client: client }),
-        mongo: (client, state) => ({ event: `bot_mongo_state_${state}`, client: client }),
-        test: { event: "login" },
-        restarting: { event: "restarting" },
-        restart: { event: "restarted" },
-        restarted: { event: "sucefully_restarted" }
+        login: client => this.languageFolder({ event: "bot_start", client: client }),
+        mongo: (client, state) => this.languageFolder({ event: `bot_mongo_state_${state}`, client: client }),
+        test: this.languageFolder({ event: "login" }),
+        restarting: this.languageFolder({ event: "restarting" }),
+        restart: this.languageFolder({ event: "restarted" }),
+        restarted: this.languageFolder({ event: "sucefully_restarted" })
     };
     errors = {
-        exec: { event: "error_exec" },
-        missing: { event: "missing_permission" },
-        invalid: args => ({ event: "not_valid", args: args }),
-        invalid_emoji: emoji => ({ event: "emoji_not_valid", emoji: emoji })
+        exec: this.languageFolder({ event: "error_exec" }),
+        missing: this.languageFolder({ event: "missing_permissions" }),
+        invalid: args => this.languageFolder({ event: "not_valid", args: args }),
+        invalid_emoji: emoji => this.languageFolder({ event: "emoji_not_valid", emoji: emoji })
+    };
+    messages = {
+        level: level => this.languageFolder({event: "level_up", level: level})
     };
 }
 

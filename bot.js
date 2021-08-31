@@ -11,13 +11,13 @@ client.events = new Discord.Collection();
 client.slcommands = new Discord.Collection();
 
 client.on('ready', async () => {
-    console.log(colors.customGrad(bot.translations(log.bot.test), colors.color("#0048ff"), colors.color("#b300ff"), colors.HSI, colors.Quadratic))
-    colors.time(colors.fire(bot.translations(log.bot.login(client))))
+    console.log(colors.customGrad(log.bot.test, colors.color("#0048ff"), colors.color("#b300ff"), colors.hsi, colors.inc_quadratic))
+    colors.time(colors.fire(log.bot.login(client)))
 
     client.user.setActivity("To Love-Ru", {type: "WATCHING"});
 
     await mongo().then(async mongoose => {
-        colors.time(colors.ice(bot.translations(log.bot.mongo(client, mongoose.connection.readyState))))
+        colors.time(colors.ice(log.bot.mongo(client, mongoose.connection.readyState)))
     })
 
     // await new Promise(resolve => setTimeout(resolve, 600))
@@ -63,35 +63,27 @@ client.on('messageCreate', async (message) => {
     if (message.content.startsWith(prefix)) {
         
         if (cmd === "restart") {
-            if (!Coder || !Owner) return message.channel.send(bot.translations(log.errors.missing));
-            message.channel.send(bot.translations(log.bot.restarting))
+            if (!Coder || !Owner) return message.channel.send(log.errors.missing);
+            message.channel.send(log.bot.restarting)
                 .then(() => client.destroy())
-                .then(() => client.login(token) && console.log(colors.rainbow(bot.translations(log.bot.restart))))
-                .then(async () => await message.channel.send(bot.translations(log.bot.restarted)) && colors.time(colors.rainbow('Bot Restarted')))
+                .then(() => client.login(token) && console.log(colors.rainbow(log.bot.restart)))
+                .then(async () => await message.channel.send(log.bot.restarted)) && colors.time(colors.rainbow('Bot Restarted'))
         };
 
         if (cmd === "switch") {
             if (!message.member.permissions.has('ADMINISTRATOR')) return;
             if (!args[0]) return message.reply('Dumb Fuck');
-            if (!client.commands.map(({name}) => name).includes(args[0])) return message.channel.send(bot.translations(log.errors.invalid(args)));
+            if (!client.commands.map(({name}) => name).includes(args[0])) return message.channel.send(log.errors.invalid(args));
             const currentState = client.commands.get(args[0]).enable;
             const currentName = client.commands.get(args[0]).name;
-            switch (currentState) {
-                case 0: currentState = 1
-                    message.channel.send(`\`${currentName}\` was enabled`);
-                break
-                case 1: currentState = 0
-                    message.channel.send(`\`${currentName}\` was disabled`);
-                break
-                default: logger.error("Error")
-                break
-            }
+            currentState = !currentState;
+            message.channel.send(`\`${currentName}\` was ${currentState ? "enabled" : "disabled"}`);
         };
 
         if (cmd === "state") {
             if (!message.member.permissions.has('ADMINISTRATOR')) return;
             if (!args[0]) return message.reply('Dumb Fuck');
-            if (!client.commands.map(({name}) => name).includes(args[0])) return message.channel.send(bot.translations(log.errors.invalid(args)));
+            if (!client.commands.map(({name}) => name).includes(args[0])) return message.channel.send(log.errors.invalid(args));
             message.channel.send(client.commands.get(args[0]).enable)
         }
 
@@ -99,11 +91,11 @@ client.on('messageCreate', async (message) => {
         const command = client.commands.get(cmd) || client.commands.aliases.get(cmd)
 
         try {
-            if (command.enable == 0) return logger.error("Disabled");
+            if (command.enable === false) return logger.error("Disabled");
             await command.execute({message, args, target, reasonarg});
         } catch (err) {
-            console.error(err);
-            await message.reply({content: bot.translations(log.bot.exec)})
+            logger.error(String(err));
+            await message.reply({content: log.errors.exec})
         };
     }
 });
@@ -113,11 +105,11 @@ client.on('interactionCreate', async (int) => {
     if (!client.slcommands.has(int.commandName)) return;
 
     try {
-        if (client.slcommands.get(int.commandName).enable == 0) return logger.error("Disabled")
+        if (client.slcommands.get(int.commandName).enable === false) return logger.error("Disabled")
         await client.slcommands.get(int.commandName).execute({int})
     } catch (err) {
-        console.log(err);
-        await int.reply({ content: bot.translations(log.bot.exec)});
+        logger.error(String(err));
+        await int.reply({ content: log.errors.exec});
     }
 });
 

@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const profileSchema = require('../utils/schemas/profile-schema');
-const { pfManager, manager } = require('../utils/manager');
+const { pfManager, log } = require('../utils/manager');
 
 module.exports = {
     event: "messageCreate",
@@ -41,7 +41,7 @@ module.exports = {
 
             const lvlupemb = new MessageEmbed()
                 .setColor(message.member.displayHexColor)
-                .setDescription(manager.logger("level_up", null, null, null, user, level))
+                .setDescription(log.messages.level)
             await message.channel.send({embeds: [lvlupemb]})
 
             await profileSchema.updateOne(
