@@ -3,12 +3,11 @@ const { manager } = require('../../utils/manager');
 const fetch = require('node-fetch');
 
 module.exports = {
-    name: "emoji",
+    name: "emoji-id",
     async execute({int}){
         int.deferReply();
         const emoji = int.options.getString('emoji');
-        const emojID = emoji.replace(/^<a?:\w+:(\d+)>$/, '$1');
-        const eurl = `https://cdn.discordapp.com/emojis/${emojID}`;
+        const eurl = `https://cdn.discordapp.com/emojis/${emoji}`;
 
         const response = await fetch(eurl)
             .catch(err => console.log(err.message))
