@@ -1,51 +1,56 @@
 const Discord = require('discord.js');
-const { prefix, token, Owner, Coder } = require('./config.json');
 const mongo = require('./mongo');
 const fs = require('fs');
-const { manager } = require('./utils/manager')
-const { logs, colors } = require('./utils/color-manager');
+const { prefix, token, Owner, Coder } = require('./config.json');
+const { manager, logger, bot, log } = require('./utils/manager');
+const { colors } = require('./utils/color-manager');
 
-const client = new Discord.Client({intents: ['DIRECT_MESSAGES', 'DIRECT_MESSAGE_REACTIONS', 'DIRECT_MESSAGE_TYPING', 'GUILDS', 'GUILD_BANS', 'GUILD_EMOJIS_AND_STICKERS', 'GUILD_INTEGRATIONS', 'GUILD_INVITES', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_MESSAGE_TYPING', 'GUILD_PRESENCES', 'GUILD_VOICE_STATES', 'GUILD_WEBHOOKS'], partials: ['USER', 'REACTION', 'MESSAGE', 'GUILD_MEMBER', 'CHANNEL']});
+const client = new Discord.Client({intents: 32511, partials: ['USER', 'REACTION', 'MESSAGE', 'GUILD_MEMBER', 'CHANNEL']});
 client.commands = new Discord.Collection();
 client.events = new Discord.Collection();
 client.slcommands = new Discord.Collection();
-const commandsFolder = fs.readdirSync('./commands')
-const eventFiles = fs.readdirSync('./events').filter(f => f.endsWith('.js'));
-const slcommandsFolder = fs.readdirSync('./slash-commands')
-
-for (const folder of commandsFolder) {
-    const commandFiles = fs.readdirSync(`./commands/${folder}`);
-    for (const file of commandFiles) {
-        const command = require(`./commands/${folder}/${file}`);
-        client.commands.set(command.name, command);
-    }
-};
-
-for (const file of eventFiles) {
-    const event = require(`./events/${file}`);
-    client.on(event.event, (...args) => {
-        if (event.enable == 0) return;
-        event.execute(...args, client)
-    });
-    client.events.set(event.name, event);
-};
-
-for (const folder of slcommandsFolder) {
-    const slCommandsFiles = fs.readdirSync(`./slash-commands/${folder}`);
-    for (const file of slCommandsFiles) {
-        const slCommand = require(`./slash-commands/${folder}/${file}`);
-        client.slcommands.set(slCommand.name, slCommand);
-    }
-};
 
 client.on('ready', async () => {
+    console.log(colors.customGrad(bot.translations(log.bot.test), colors.color("#0048ff"), colors.color("#b300ff"), colors.HSI, colors.Quadratic))
+    colors.time(colors.fire(bot.translations(log.bot.login(client))))
 
-    logs.time.fire(manager.logger("bot_start", client))
     client.user.setActivity("To Love-Ru", {type: "WATCHING"});
 
-    await mongo().then(async (mongoose) => {
-        logs.time.ice(`${client.user.username} is ${manager.logger(`bot_mongo_state_${mongoose.connection.readyState}`)}`)
+    await mongo().then(async mongoose => {
+        colors.time(colors.ice(bot.translations(log.bot.mongo(client, mongoose.connection.readyState))))
     })
+
+    // await new Promise(resolve => setTimeout(resolve, 600))
+    await manager.sleep(600)
+
+    function setBot(location, cmdType, isEvents = false) {
+        const folders = fs.readdirSync(`./${location}`)
+        if (!isEvents) {
+            for (const folder of folders) {
+                const cmdFiles = fs.readdirSync(`./${location}/${folder}`);
+                for (const file of cmdFiles) {
+                    const command = require(`./${location}/${folder}/${file}`)
+                    bot.commands(file, location, true)
+                    cmdType.set(command.name, command)
+                }
+            }
+        } else {
+            for (const file of folders) {
+                const event = require(`./${location}/${file}`);
+                bot.events(file, true)
+                client.on(event.event, (...args) => {
+                    if (event.enable == 0) return;
+                    event.execute(...args, client)
+                });
+                cmdType.set(event.name, event);
+            };
+        }
+    }
+    
+    setBot('commands', client.commands);
+    setBot('slash-commands', client.slcommands)
+    setBot('events', client.events, true)
+
 });
 
 client.on('messageCreate', async (message) => {
@@ -58,28 +63,47 @@ client.on('messageCreate', async (message) => {
     if (message.content.startsWith(prefix)) {
         
         if (cmd === "restart") {
-            if (!Coder || !Owner) return message.channel.send(manager.logger("missing_permissions"));
-            message.channel.send(manager.logger("restarting"))
-                .then(message => client.destroy())
-                .then(() => client.login(token) && logs.rainbow(manager.logger("restarted")))
-                .then(async () => await message.channel.send(manager.logger("sucefully_restarted") && logs.time.rainbow('Bot Restarted')))
+            if (!Coder || !Owner) return message.channel.send(bot.translations(log.errors.missing));
+            message.channel.send(bot.translations(log.bot.restarting))
+                .then(() => client.destroy())
+                .then(() => client.login(token) && console.log(colors.rainbow(bot.translations(log.bot.restart))))
+                .then(async () => await message.channel.send(bot.translations(log.bot.restarted)) && colors.time(colors.rainbow('Bot Restarted')))
         };
 
-        if (cmd === "enable") {
-            if (!message.member.permissions.has('ADMINISTRATOR')) return logs.red('Failed');
+        if (cmd === "switch") {
+            if (!message.member.permissions.has('ADMINISTRATOR')) return;
             if (!args[0]) return message.reply('Dumb Fuck');
-            if (!client.commands.map(({name}) => name).includes(args[0])) return message.channel.send(manager.logger("not_valid", null, args)) && console.log('Retard');
-            client.commands.get(args[0]).enable = 1;
+            if (!client.commands.map(({name}) => name).includes(args[0])) return message.channel.send(bot.translations(log.errors.invalid(args)));
+            const currentState = client.commands.get(args[0]).enable;
+            const currentName = client.commands.get(args[0]).name;
+            switch (currentState) {
+                case 0: currentState = 1
+                    message.channel.send(`\`${currentName}\` was enabled`);
+                break
+                case 1: currentState = 0
+                    message.channel.send(`\`${currentName}\` was disabled`);
+                break
+                default: logger.error("Error")
+                break
+            }
         };
 
-        if (!client.commands.has(cmd)) return;
+        if (cmd === "state") {
+            if (!message.member.permissions.has('ADMINISTRATOR')) return;
+            if (!args[0]) return message.reply('Dumb Fuck');
+            if (!client.commands.map(({name}) => name).includes(args[0])) return message.channel.send(bot.translations(log.errors.invalid(args)));
+            message.channel.send(client.commands.get(args[0]).enable)
+        }
+
+        if (!client.commands.has(cmd)) return;// || !client.commands.aliases.has(cmd)) return;
+        const command = client.commands.get(cmd) || client.commands.aliases.get(cmd)
 
         try {
-            if (client.commands.get(cmd).enable == 0) return logs.red('Disabled');
-            await client.commands.get(cmd).execute({message, args, target, reasonarg});
+            if (command.enable == 0) return logger.error("Disabled");
+            await command.execute({message, args, target, reasonarg});
         } catch (err) {
             console.error(err);
-            await message.reply({content: manager.logger("error_exec")})
+            await message.reply({content: bot.translations(log.bot.exec)})
         };
     }
 });
@@ -89,11 +113,11 @@ client.on('interactionCreate', async (int) => {
     if (!client.slcommands.has(int.commandName)) return;
 
     try {
-        if (client.slcommands.get(int.commandName).enable == 0) return logs.red('Disabled')
+        if (client.slcommands.get(int.commandName).enable == 0) return logger.error("Disabled")
         await client.slcommands.get(int.commandName).execute({int})
     } catch (err) {
         console.log(err);
-        await int.reply({ content: manager.logger("error_exec")});
+        await int.reply({ content: bot.translations(log.bot.exec)});
     }
 });
 
