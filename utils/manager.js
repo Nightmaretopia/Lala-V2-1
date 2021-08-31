@@ -1,4 +1,5 @@
 const { language } = require('../config.json');
+const { colors } = require('./color-manager');
 const profileSchema = require('./schemas/profile-schema');
 
 async function getXp(userID) {
@@ -31,13 +32,7 @@ function nextLvL(userID) {
         })
 };
 
-module.exports.pfManager = {
-    getxp: getXp,
-    getlvl: getLvL,
-    nextlvl: nextLvL,
-}
-
-function logger(log, client, args, guild, userid, level, message) {
+function lang() {
 
     let langToUse;
     
@@ -56,9 +51,72 @@ function logger(log, client, args, guild, userid, level, message) {
         langToUse = "JP"
     }
 
-    const langPath = require(`./langs/${langToUse}`);
+    return langToUse
+}
 
-    return langPath(log, client, args, guild, userid, level, message)
+function memory() {
+    const memory = process.memoryUsage();
+    const used = memory.heapUsed / 1000 / 1000;
+    const total = memory.heapTotal / 1000 / 1000;
+
+    const usedPadded = used < 100 ? "0" + used.toFixed(2) : used.toFixed(2);
+    const totalPadded = total < 100 ? "0" + total.toFixed(2) : total.toFixed(2);
+
+    return `${usedPadded}/${totalPadded}MB`;
+}
+
+class logger {
+    constructor() {
+        this.language = lang()
+        this.languageFolder = require(`./langs/${this.language}`)
+        this.color = colors.pink
+        this.emoji = "🌸"
+        this.errorColor = colors.red
+        this.errorEmoji = "❌"
+    }
+    time() {
+        return colors.text(colors.text(`[${new Date().toLocaleTimeString()}]`, colors.white, true), colors.black)
+    };
+    defaultPrint(log, mem) {
+        if (mem) {
+            console.log(`${colors.text(memory(), this.color)} ${this.time()} ${this.emoji} ${colors.text(log, this.color)}`)
+        } else {
+            console.log(`${this.time()} ${this.emoji} ${colors.text(log, this.color)}`)
+        }
+        
+    };
+    costumPrint(log) {
+        return log
+    };
+    error(log) {
+        console.log(`${this.time()} ${this.errorEmoji} ${colors.text(log, this.errorColor)}`)
+    };
+}
+
+class BotLogger extends logger {
+    translations(log) {
+        return this.languageFolder(log)
+    };
+    commands = (file, location, isMem = false) => this.defaultPrint(`Loaded ${file} from ${location}`, isMem);
+
+    events = (file, isMem = false) => this.defaultPrint(`Loaded ${file} event`, isMem);
+}
+
+class log extends logger {
+    bot = {
+        login: client => ({ event: "bot_start", client: client }),
+        mongo: (client, state) => ({ event: `bot_mongo_state_${state}`, client: client }),
+        test: { event: "login" },
+        restarting: { event: "restarting" },
+        restart: { event: "restarted" },
+        restarted: { event: "sucefully_restarted" }
+    };
+    errors = {
+        exec: { event: "error_exec" },
+        missing: { event: "missing_permission" },
+        invalid: args => ({ event: "not_valid", args: args }),
+        invalid_emoji: emoji => ({ event: "emoji_not_valid", emoji: emoji })
+    };
 }
 
 function reason(reason) {
@@ -69,8 +127,17 @@ function sleeptime(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 };
 
-module.exports.manager = {
-    logger,
-    reason,
-    sleep: sleeptime,
+module.exports = {
+    logger: new logger(),
+    bot: new BotLogger(),
+    log: new log(),
+    manager: {
+        reason,
+        sleep: sleeptime
+    },
+    pfManager: {
+        getxp: getXp,
+        getlvl: getLvL,
+        nextlvl: nextLvL
+    }
 }
