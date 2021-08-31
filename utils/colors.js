@@ -601,7 +601,7 @@ function getColorableCount(text) {
 }
 // color a given string of text a given color
 function colorText(text, color, isBg = false) {
-    text = text.replace(exports.resetToken, "");
+    text = text?.replace(exports.resetToken, "");
     return (isBg ? colorBGToken(color) : colorFGToken(color)) + text + exports.resetToken;
 }
 exports.colorText = colorText;

@@ -1,534 +1,112 @@
+"use strict";
 const colors = require('./colors');
 
-const Color = colors.Color;
-const black = Color.BLACK;
-const gray = Color.GRAY;
-const white = Color.WHITE;
-const red = Color.RED;
-const green = Color.GREEN;
-const blue = Color.BLUE;
-const cyan = Color.CYAN;
-const magenta = Color.MAGENTA;
-const yellow = Color.YELLOW;
-const gold = Color.GOLD;
-const orange = Color.ORANGE;
-const brown = Color.BROWN;
-const purple = Color.PURPLE;
-const silver = Color.SILVER;
-const pink = Color.PINK;
-
-const log = console.log;
-const time = console.time;
-const timelog = console.timeLog;
-const text = colors.colorText;
-
-function customCol(hex) {
-    return colors.fromHex(hex)
-}
-
-function rainbow(msg, val = 0.1, isBg = false) {
-    if (isBg) {
-        return log(text(colors.rainbow(msg, true, val), black))
-    } else {
-        return log(colors.rainbow(msg, false, val))
+class Colors {
+    constructor() {
+        this.times = console.time;
+        this.timeLog = console.timeLog;
+        this.text = colors.colorText;
+        this.reset = colors.resetToken;
+        this.black = colors.Color.BLACK;
+        this.gray = colors.Color.GRAY;
+        this.white = colors.Color.WHITE;
+        this.red = colors.Color.RED;
+        this.green = colors.Color.GREEN;
+        this.blue = colors.Color.BLUE;
+        this.cyan = colors.Color.CYAN;
+        this.magenta = colors.Color.MAGENTA;
+        this.yellow = colors.Color.YELLOW;
+        this.gold = colors.Color.GOLD;
+        this.orange = colors.Color.ORANGE;
+        this.brown = colors.Color.BROWN;
+        this.purple = colors.Color.PURPLE;
+        this.silver = colors.Color.SILVER;
+        this.pink = colors.Color.PINK;
+        this.hsv = colors.ColorSpace.HSV;
+        this.hsl = colors.ColorSpace.HSL;
+        this.hsi = colors.ColorSpace.HSI;
+        this.rgb = colors.ColorSpace.RGB;
+        this.linear = colors.InterpMethod.linear;
+        this.inc_quadratic = colors.InterpMethod.inc_quadratic;
+        this.dec_quadratic = colors.InterpMethod.dec_quadratic;
+        this.cubic = colors.InterpMethod.cubic
+        this.gradient = colors.Gradient;
+        this.gradientText = colors.gradientColorText;
+        this.gradientsText = colors.manyGradientColorText;
+        this.rainbowCreate = colors.rainbow;
+        this.cycleColor = colors.cycleColorText;
     }
-};
-
-function fire(msg, isBg = false) {
-    if (isBg) {
-        return log(colors.manyGradientColorText(text(msg, black), true, red, {
-            color: orange,
-            InterpMethod: colors.InterpMethod.inc_quadratic,
-            length: 2
-        }, {
-            color: yellow,
-            colorSpace: colors.ColorSpace.HSV
-        }))
-    } else {
-        return log(colors.manyGradientColorText(msg, false, red, {
-            color: orange,
-            InterpMethod: colors.InterpMethod.inc_quadratic,
-            length: 2
-        }, {
-            color: yellow,
-            colorSpace: colors.ColorSpace.HSV
-        }))
+    color(hex) {
+        return colors.fromHex(hex)
     }
-}
-
-function ice(msg, isBg = false) {
-    let ice = new colors.Gradient(customCol("#086fff"), white, colors.ColorSpace.RGB, colors.InterpMethod.inc_quadratic)
-    if (isBg) {
-        return log(colors.gradientColorText(text(msg, black), ice, true))
-    } else {
-        return log(colors.gradientColorText(msg, ice, false))
-    }
-}
-
-function zebra(msg, isBg = false) {
-    if (isBg) {
-        msg = colors.cycleColorText(msg, 1, true, white, black)
-        return log(colors.cycleColorText(msg, 1, false, black, white))
-    } else {
-        return log(colors.cycleColorText(msg, 1, false, white, black))
-    }
-};
-
-function custZebra(msg, leng = 1, isBg = false, ...cols) {
-    if (isBg) {
-        let c_msg = text(msg, black)
-        return log(colors.cycleColorText(c_msg, leng, true, ...cols))
-    } else {
-        return log(colors.cycleColorText(msg, leng, false, ...cols))
-    }
-};
-
-function custGrad(msg, stCol = white, edCol = white, colSpace = colors.ColorSpace.HSV, isBg = false) {
-    let c_grad = new colors.Gradient(stCol, edCol, colSpace)
-    if (isBg) {
-        return log(colors.gradientColorText(msg, c_grad, true))
-    } else {
-        return log(colors.gradientColorText(msg, c_grad, false))
-    }
-};
-
-function custSGrad(msg, isBg = false, stCol = white, ...segments) {
-    if (isBg) {
-        return log(colors.manyGradientColorText(msg, true, stCol, ...segments))
-    } else {
-        return log(colors.manyGradientColorText(msg, false, stCol, ...segments))
-    }
-}
-
-function customLog(msg, tcolor = pink, isBg = false, bcolor = black) {
-    if (isBg) {
-        return log(text(text(msg, bcolor), tcolor))
-    } else {
-        return log(text(msg, tcolor))
-    }
-} 
-
-function blacklog(msg, isBg = false) {
-    if (isBg) {
-        return log(text(text(msg, black), white))
-    } else {
-        return log(text(msg, black))
-    }
-};
-
-function graylog(msg, isBg = false) {
-    if (isBg) {
-        return log(text(text(msg, gray), black))
-    } else {
-        return log(text(msg, gray))
-    }
-}; 
-
-function whitelog(msg, isBg = false) {
-    if (isBg) {
-        return log(text(text(msg, white), black))
-    } else {
-        return log(text(msg, white))
-    }
-}; 
-
-function redlog(msg, isBg = false) {
-    if (isBg) {
-        return log(text(text(msg, red), black))
-    }
-        return log(text(msg, red))
-};
-
-function greenlog(msg, isBg = false) {
-    if (isBg) {
-        return log(text(text(msg, green), black))
-    } else {
-        return log(text(msg, green))
-    }
-};
-
-function bluelog(msg, isBg = false) {
-    if (isBg) {
-        return log(text(text(msg, blue), white))
-    } else {
-        return log(text(msg, blue))
-    }
-};
-
-function cyanlog(msg, isBg = false) {
-    if (isBg) {
-        return log(text(text(msg, cyan), black))
-    } else {
-        return log(text(msg, cyan))
-    }
-};
-
-function magentalog(msg, isBg = false) {
-    if (isBg) {
-        return log(text(text(msg, magenta), black))
-    } else {
-        return log(text(msg, magenta))
-    }
-};
-
-function yellowlog(msg, isBg = false) {
-    if (isBg) {
-        return log(text(text(msg, yellow), black))
-    } else {
-        return log(text(msg, yellow))
-    }
-};
-
-function goldlog(msg, isBg = false) {
-    if (isBg) {
-        return log(text(text(msg, gold), black))
-    } else {
-        return log(text(msg, gold))
-    }
-}; 
-
-function orangelog(msg, isBg = false) {
-    if (isBg) {
-        return log(text(text(msg, orange), black))
-    } else {
-        return log(text(msg, orange))
-    }
-}; 
-
-function brownlog(msg, isBg = false) {
-    if (isBg) {
-        return log(text(text(msg, brown), white))
-    } else {
-        return log(text(msg, brown))
-    }
-}; 
-
-function purplelog(msg, isBg = false) {
-    if (isBg) {
-        return log(text(text(msg, purple), white))
-    } else {
-        return log(text(msg, purple))
-    }
-};
-
-function silverlog(msg, isBg = false) {
-    if (isBg) {
-        return log(text(text(msg, silver), black))
-    } else {
-        return log(text(msg, silver))
-    }
-};
-
-function pinklog(msg, isBg = false) {
-    if (isBg) {
-        return log(text(text(msg, pink), black))
-    } else {
-        return log(text(msg, pink))
-    }
-};
-
-// Temp logs (show how many time it took to log)
-
-function rainbowTemp(msg, val = 0.1, isBg = false) {
-    if (isBg) {
-        return temp = (time(text(colors.rainbow(msg, true, val), black)), timelog((text(colors.rainbow(msg, true, val), black))))
-    } else {
-        return temp = (time(colors.rainbow(msg, false, val)), timelog(colors.rainbow(msg, false, val)))
-    }
-};
-
-function fireTemp(msg, isBg = false) {
-    if (isBg) {
-        return temp = (
-            time(colors.manyGradientColorText(text(msg, black), true, red, {
-                color: orange,
-                InterpMethod: colors.InterpMethod.inc_quadratic,
-                length: 2
-            },
-            {
-                color: yellow,
-                colorSpace: colors.ColorSpace.HSV
-            }
-            )),
-            timelog(colors.manyGradientColorText(text(msg, black), true, red, {
-                color: orange,
-                InterpMethod: colors.InterpMethod.inc_quadratic,
+    fire(msg ,isBg = false) {
+        if (isBg) {
+            return this.gradientsText(this.text(msg, this.black), true, this.red, {
+                color: this.orange,
+                InterpMethod: this.quadratic,
                 length: 2
             }, {
-                color: yellow,
-                colorSpace: colors.ColorSpace.HSV
-            }
-            ))
-        )
-    } else {
-        return temp = (
-            time(colors.manyGradientColorText(msg, false, red, {
-                color: orange,
-                InterpMethod: colors.InterpMethod.inc_quadratic,
+                color: this.yellow,
+                colorSpace: this.hsv
+            })
+        } else {
+            return this.gradientsText(msg, false, this.red, {
+                color: this.orange,
+                InterpMethod: this.quadratic,
                 length: 2
-            },
-            {
-                color: yellow,
-                colorSpace: colors.ColorSpace.HSV
-            }
-            )),
-            timelog(colors.manyGradientColorText(msg, false, red, {
-                color: orange,
-                InterpMethod: colors.InterpMethod.inc_quadratic,
-                length: 2
-            },
-            {
-                color: yellow,
-                colorSpace: colors.ColorSpace.HSV
-            }
-            ))
-        )
+            }, {
+                color: this.yellow,
+                colorSpace: this.hsv
+            })
+        }
     }
+    ice(msg, isBg = false) {
+        const ice = new this.gradient(this.color("#088fff"), this.white, this.rgb, this.quadratic)
+        if (isBg) {
+            return this.gradientText(this.text(msg, this.black), ice, true)
+        } else {
+            return this.gradientText(msg, ice, false)
+        }
+    }
+    rainbow(msg, isBg = false, val = 0.1) {
+        if (isBg) {
+            return this.text(this.rainbowCreate(msg, true, val), this.black)
+        } else {
+            return this.rainbowCreate(msg, false, val)
+        }
+    }
+    zebra(msg, isBg = false) {
+        if (isBg) {
+            msg = this.cycleColor(msg, 1, true, this.white, this.black)
+            return this.cycleColor(msg, 1, false, this.black, this.white)
+        } else {
+            return this.cycleColor(msg, 1, false, this.white, this.black)
+        }
+    }
+    customZebra(msg, leng = 1, isBg = false, textCol = this.black, ...cols) {
+        msg = this.text(msg, textCol)
+        return this.cycleColor(msg, leng, isBg, ...cols)
+    }
+    customGrad(msg, stCol = this.white, edCol = this.white, colSpace = this.hsv, inter = this.quadratic, isBg = false) {
+        const c_grad = new this.gradient(stCol, edCol, colSpace, inter)
+        return this.gradientText(msg, c_grad, isBg)
+    }
+    customManyGrad(msg, isBg = false, stCol = this.white, ...colors) {
+        return this.gradientsText(msg, isBg, stCol, ...colors)
+    }
+    time(log) {
+        const logs = (this.times(log), this.timeLog(log))
+        return logs
+    }
+    customLog(log, color, isBg = false, bgColor) {
+        if (isBg) {
+            return this.text(this.text(log, bgColor, true), color)
+        } else {
+            return this.text(log, color, false)
+        }
+    }
+};
+
+module.exports = {
+    colors: new Colors()
 }
-
-function iceTemp(msg, isBg = false) {
-    let ice = new colors.Gradient(customCol("#086fff"), white, colors.ColorSpace.RGB, colors.InterpMethod.inc_quadratic)
-    if (isBg) {
-        return temp = time(colors.gradientColorText(text(msg, black), ice, true)), timelog(colors.gradientColorText(text(msg, black), ice, true))
-    } else {
-        return temp = time(colors.gradientColorText(msg, ice, false)), timelog(colors.gradientColorText(msg, ice, false))
-    }
-}
-
-function zebraTemp(msg, isBg = false) {
-    if (isBg) {
-        msg = colors.cycleColorText(msg, 1, true, white, black)
-        return temp = time(colors.cycleColorText(msg, 1, false, black, white)), timelog(colors.cycleColorText(msg, 1, false, black, white))
-    } else {
-        return temp = time(colors.cycleColorText(msg, 1, false, white, black)), timelog(colors.cycleColorText(msg, 1, false, white, black))
-    }
-};
-
-function custZebraTemp(msg, leng = 1, isBg = false, ...cols) {
-    if (isBg) {
-        let c_msg = text(msg, black)
-        return temp = time(colors.cycleColorText(c_msg, leng, true, ...cols)), timelog(colors.cycleColorText(c_msg, leng, true, ...cols))
-    } else {
-        return temp = time(colors.cycleColorText(msg, leng, false, ...cols)), timelog(colors.cycleColorText(msg, leng, false, ...cols))
-    }
-};
-
-function custGradTemp(msg, stCol = white, edCol = white, colSpace = colors.ColorSpace.HSV, isBg = false) {
-    let c_grad = new colors.Gradient(stCol, edCol, colSpace)
-    if (isBg) {
-        return temp = time(colors.gradientColorText(msg, c_grad, true)), timelog(colors.gradientColorText(msg, c_grad, true))
-    } else {
-        return temp = time(colors.gradientColorText(msg, c_grad, false)), timelog(colors.gradientColorText(msg, c_grad, false))
-    }
-};
-
-function custSGradTemp(msg, isBg = false, stCol = white, ...segments) {
-    if (isBg) {
-        return temp = time(colors.manyGradientColorText(msg, true, stCol, ...segments)), timelog(colors.manyGradientColorText(msg, true, stCol, ...segments))
-    } else {
-        return temp = time(colors.manyGradientColorText(msg, false, stCol, ...segments)), timelog(colors.manyGradientColorText(msg, false, stCol, ...segments))
-    }
-}
-
-function customLogTemp(msg, tcolor = pink, isBg = false, bcolor = black) {
-    if (isBg) {
-        return temp = time(text(text(msg, bcolor), tcolor)), timelog(text(text(msg, bcolor), tcolor))
-    } else {
-        return temp = time(text(msg, tcolor)), timelog(text(msg, tcolor))
-    }
-} 
-
-function blacklogTemp(msg, isBg = false) {
-    if (isBg) {
-        return temp = time(text(text(msg, black), white)), timelog(text(text(msg, black), white))
-    } else {
-        return temp = time(text(msg, black)), timelog(text(msg, black))
-    }
-};
-
-function graylogTemp(msg, isBg = false) {
-    if (isBg) {
-        return temp = time(text(text(msg, gray), black)), timelog(text(text(msg, gray), black))
-    } else {
-        return temp = time(text(msg, gray)), timelog(text(msg, gray))
-    }
-}; 
-
-function whitelogTemp(msg, isBg = false) {
-    if (isBg) {
-        return temp = time(text(text(msg, white), black)), timelog(text(text(msg, white), black))
-    } else {
-        return temp = time(text(msg, white)), timelog(text(msg, white))
-    }
-}; 
-
-function redlogTemp(msg, isBg = false) {
-    if (isBg) {
-        return temp = time(text(text(msg, red), black)), timelog(text(text(msg, red), black))
-    }
-        return temp = time(text(msg, red)), timelog(text(msg, red))
-};
-
-function greenlogTemp(msg, isBg = false) {
-    if (isBg) {
-        return temp = time(text(text(msg, green), black)), timelog(text(text(msg, green), black))
-    } else {
-        return temp = time(text(msg, green)), timelog(text(text(msg, green), black))
-    }
-};
-
-function bluelogTemp(msg, isBg = false) {
-    if (isBg) {
-        return temp = time(text(text(msg, blue), white)), timelog(text(text(msg, blue), white))
-    } else {
-        return temp = time(text(msg, blue)), timelog(text(msg, blue))
-    }
-};
-
-function cyanlogTemp(msg, isBg = false) {
-    if (isBg) {
-        return temp = time(text(text(msg, cyan), black)), timelog(text(text(msg, cyan), black))
-    } else {
-        return temp = time(text(msg, cyan)), timelog(text(msg, cyan))
-    }
-};
-
-function magentalogTemp(msg, isBg = false) {
-    if (isBg) {
-        return temp = time(text(text(msg, magenta), black)), timelog(text(text(msg, magenta), black))
-    } else {
-        return temp = time(text(msg, magenta)), timelog(text(msg, magenta))
-    }
-};
-
-function yellowlogTemp(msg, isBg = false) {
-    if (isBg) {
-        return temp = time(text(text(msg, yellow), black)), timelog(text(text(msg, yellow), black))
-    } else {
-        return temp = time(text(msg, yellow)), timelog(text(msg, yellow))
-    }
-};
-
-function goldlogTemp(msg, isBg = false) {
-    if (isBg) {
-        return temp = time(text(text(msg, gold), black)), timelog(text(text(msg, gold), black))
-    } else {
-        return temp = time(text(msg, gold)), timelog(text(msg, gold))
-    }
-}; 
-
-function orangelogTemp(msg, isBg = false) {
-    if (isBg) {
-        return temp = time(text(text(msg, orange), black)), timelog(text(text(msg, orange), black))
-    } else {
-        return temp = time(text(msg, orange)), timelog(text(msg, orange))
-    }
-}; 
-
-function brownlogTemp(msg, isBg = false) {
-    if (isBg) {
-        return temp = time(text(text(msg, brown), white)), timelog(text(text(msg, brown), white))
-    } else {
-        return temp = time(text(msg, brown)), timelog(text(msg, brown))
-    }
-}; 
-
-function purplelogTemp(msg, isBg = false) {
-    if (isBg) {
-        return temp = time(text(text(msg, purple), white)), timelog(text(text(msg, purple), white))
-    } else {
-        return temp = time(text(msg, purple)), timelog(text(msg, purple))
-    }
-};
-
-function silverlogTemp(msg, isBg = false) {
-    if (isBg) {
-        return temp = time(text(text(msg, silver), black)), timelog(text(text(msg, silver), black))
-    } else {
-        return temp = time(text(msg, silver)), time(text(msg, silver))
-    }
-};
-
-function pinklogTemp(msg, isBg = false) {
-    if (isBg) {
-        return temp = time(text(text(msg, pink), black)), timelog(text(text(msg, pink), black))
-    } else {
-        return temp = time(text(msg, pink)), timelog(text(msg, pink))
-    }
-}
-
-module.exports.colors = {
-    RGB: colors.ColorSpace.RGB,
-    HSL: colors.ColorSpace.HSL,
-    HSV: colors.ColorSpace.HSV,
-    HSI: colors.ColorSpace.HSI,
-    Cubic: colors.InterpMethod.cubic,
-    Linear: colors.InterpMethod.linear,
-    hex: customCol,
-    black,
-    gray,
-    white,
-    red,
-    green,
-    blue,
-    cyan,
-    magenta,
-    yellow,
-    gold,
-    orange,
-    brown,
-    purple,
-    silver,
-    pink
-};
-
-module.exports.logs = {
-    rainbow,
-    fire,
-    ice,
-    zebra,
-    c_zebra: custZebra,
-    gradient: custGrad,
-    c_gradient: custSGrad,
-    costum: customLog,
-    black: blacklog,
-    gray: graylog,
-    white: whitelog,
-    red: redlog,
-    green: greenlog,
-    blue: bluelog,
-    cyan: cyanlog,
-    magenta: magentalog,
-    yellow: yellowlog,
-    gold: goldlog,
-    orange: orangelog,
-    brown: brownlog,
-    purple: purplelog,
-    silver: silverlog,
-    pink: pinklog,
-    time: {
-        rainbow: rainbowTemp,
-        fire: fireTemp,
-        ice: iceTemp,
-        zebra: zebraTemp,
-        c_zebra: custZebraTemp,
-        gradient: custGradTemp,
-        c_gradient: custSGradTemp,
-        costum: customLogTemp,
-        black: blacklogTemp,
-        gray: graylogTemp,
-        white: whitelogTemp,
-        red: redlogTemp,
-        green: greenlogTemp,
-        blue: bluelogTemp,
-        cyan: cyanlogTemp,
-        magenta: magentalogTemp,
-        yellow: yellowlogTemp,
-        gold: goldlogTemp,
-        orange: orangelogTemp,
-        brown: brownlogTemp,
-        purple: purplelogTemp,
-        silver: silverlogTemp,
-        pink: pinklogTemp,
-    }
-};
