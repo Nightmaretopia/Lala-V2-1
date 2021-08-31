@@ -118,7 +118,7 @@ class log extends logger {
         invalid_emoji: emoji => this.languageFolder({ event: "emoji_not_valid", emoji: emoji })
     };
     messages = {
-        level: level => this.languageFolder({event: "level_up", level: level})
+        level: (user ,level) => this.languageFolder({event: "level_up", user: user, level: level})
     };
 }
 

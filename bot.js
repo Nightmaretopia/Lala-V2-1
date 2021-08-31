@@ -39,7 +39,7 @@ client.on('ready', async () => {
                 const event = require(`./${location}/${file}`);
                 bot.events(file, true)
                 client.on(event.event, (...args) => {
-                    if (event.enable == 0) return;
+                    if (event.enable === false) return;
                     event.execute(...args, client)
                 });
                 cmdType.set(event.name, event);

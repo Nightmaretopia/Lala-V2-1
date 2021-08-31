@@ -41,7 +41,7 @@ module.exports = {
 
             const lvlupemb = new MessageEmbed()
                 .setColor(message.member.displayHexColor)
-                .setDescription(log.messages.level)
+                .setDescription(log.messages.level(user, level))
             await message.channel.send({embeds: [lvlupemb]})
 
             await profileSchema.updateOne(
