@@ -11,6 +11,7 @@ module.exports = {
 
         const user = message.author;
         const userName = message.author.username
+        const userTag = message.author.tag
         const userId = user.id
         let min = 15;
         let max = 30;
@@ -21,6 +22,7 @@ module.exports = {
             },
             {
                 name: userName,
+                tag: userTag,
                 $inc: {
                     xp: addxp
                 }
@@ -53,6 +55,6 @@ module.exports = {
                 }
             )
         }
-        console.log(`---------------\nUser: ${name}\nAdded: ${addxp}\nXP: ${xp}\nLevel: ${level}\nNextLvL: ${needed}\n---------------`)
+        console.log(`---------------\nUser: ${name}\nTag: ${userTag}\nAdded: ${addxp}\nXP: ${xp}\nLevel: ${level}\nNextLvL: ${needed}\n---------------`)
     }
 }

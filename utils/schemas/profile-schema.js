@@ -16,10 +16,11 @@ const bool = {
 }
 
 const profileSchema = mongoose.Schema({
-    _id: reqString, // will be removed
+    _id: reqString, // will be removed (or changed to incremented values from 1 to infinity)
     // guildID // pretty self explanatory
     // userID: // pretty self explanatory
     name: reqString,
+    tag: reqString,
     xp: num,
     level: num,
     ignoreRoles: Array,
