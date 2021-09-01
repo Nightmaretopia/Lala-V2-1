@@ -12,13 +12,8 @@ class SlashBuilder {
             this.options = this.constructor.normalizeOptions(data.options)
         }
     }
-    get getName() {
-        return this.map(({options}) => options)
-    }
-    get subCommandOptions() {
-        return this.options
-    }
     addSubCommand(name, description, options) {
+        name = name.toLowerCase()
         return this.addSubCommands({name, description, options})
     }
     addSubCommands(...options) {
@@ -26,6 +21,7 @@ class SlashBuilder {
         return this
     }
     addString(name, description, required) {
+        name = name.toLowerCase()
         return this.addStrings({name, description, required})
     }
     addStrings(...options) {
@@ -33,6 +29,7 @@ class SlashBuilder {
         return this
     }
     addInteger(name, description, required) {
+        name = name.toLowerCase()
         return this.addIntegers({name, description, required})
     }
     addIntegers(...options) {
@@ -40,6 +37,7 @@ class SlashBuilder {
         return this
     }
     addBoolean(name, description, required) {
+        name = name.toLowerCase()
         return this.addBooleans({name, description, required})
     }
     addBooleans(...options) {
@@ -47,6 +45,7 @@ class SlashBuilder {
         return this
     }
     addUser(name, description, required) {
+        name = name.toLowerCase()
         return this.addUsers({name, description, required})
     }
     addUsers(...options) {
@@ -54,6 +53,7 @@ class SlashBuilder {
         return this
     }
     addChannel(name, description, required) {
+        name = name.toLowerCase()
         return this.addChannels({name, description, required})
     }
     addChannels(...options) {
@@ -61,6 +61,7 @@ class SlashBuilder {
         return this
     }
     addRole(name, description, required) {
+        name = name.toLowerCase()
         return this.addRoles({name, description, required})
     }
     addRoles(...options) {
@@ -68,6 +69,7 @@ class SlashBuilder {
         return this
     }
     addMentionable(name, description, required) {
+        name = name.toLowerCase()
         return this.addMentionables({name, description, required})
     }
     addMentionables(...options) {
@@ -75,6 +77,7 @@ class SlashBuilder {
         return this
     }
     addNumber(name, description, required) {
+        name = name.toLowerCase()
         return this.addNumbers({name, description, required})
     }
     addNumbers(...options) {
@@ -82,6 +85,7 @@ class SlashBuilder {
         return this
     }
     addOption(name, description, type, required) {
+        name = name.toLowerCase()
         return this.addOptions({ name, description, type, required })
     }
     addOptions(...options) {
@@ -89,11 +93,16 @@ class SlashBuilder {
         return this
     }
     setName(name) {
+        name = name.toLowerCase()
         this.name = name;
         return this;
     }
     setDescription(description) {
         this.description = description;
+        return this;
+    }
+    setDefaultPermission(perm = true) {
+        this.defaultPremission = perm
         return this;
     }
     toJSON() {
