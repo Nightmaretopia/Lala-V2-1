@@ -61,7 +61,36 @@ class Colors {
         }
     }
     ice(msg, isBg = false) {
-        const ice = new this.gradient(this.color("#088fff"), this.white, this.rgb, this.quadratic)
+        const ice = new this.gradient(this.color("#088fff"), this.silver, this.rgb, this.quadratic)
+        if (isBg) {
+            return this.gradientText(this.text(msg, this.black), ice, true)
+        } else {
+            return this.gradientText(msg, ice, false)
+        }
+    }
+    invertedFire(msg, isBg = false) {
+        if (isBg) {
+            return this.gradientsText(this.text(msg, this.black), true, this.yellow, {
+                color: this.orange,
+                InterpMethod: this.quadratic,
+                length: 2
+            }, {
+                color: this.red,
+                colorSpace: this.hsv
+            })
+        } else {
+            return this.gradientsText(msg, false, this.yellow, {
+                color: this.orange,
+                InterpMethod: this.quadratic,
+                length: 2
+            }, {
+                color: this.red,
+                colorSpace: this.hsv
+            })
+        }
+    }
+    invertedIce(msg, isBg = false) {
+        const ice = new this.gradient(this.silver, this.color("#088fff"), this.rgb, this.quadratic)
         if (isBg) {
             return this.gradientText(this.text(msg, this.black), ice, true)
         } else {

@@ -11,7 +11,7 @@ client.events = new Discord.Collection();
 client.slcommands = new Discord.Collection();
 
 client.on('ready', async () => {
-    console.log(colors.customGrad(log.bot.test, colors.color("#0048ff"), colors.color("#b300ff"), colors.hsi, colors.inc_quadratic))
+    console.log(colors.customGrad(log.bot.logo, colors.color("#0048ff"), colors.color("#c603fc"), colors.hsi, colors.linear))
     colors.time(colors.fire(log.bot.login(client)))
 
     client.user.setActivity("To Love-Ru", {type: "WATCHING"});

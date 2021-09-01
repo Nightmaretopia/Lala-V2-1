@@ -2,35 +2,112 @@ const { language } = require('../config.json');
 const { colors } = require('./color-manager');
 const profileSchema = require('./schemas/profile-schema');
 
-async function getXp(userID) {
-    return await profileSchema.findOne({ _id: userID })
-        .then(user => {
-            return user.xp
-        })
-        .catch(err => {
-            console.log(err)
-        })
-};
+class logger {
+    constructor() {
+        this.language = lang();
+        this.languageFolder = require(`./langs/${this.language}`);
+        this.color = colors.color("#fc036b");
+        this.gradPrim = colors.color("#0048ff");
+        this.gradLast = colors.color("#c603fc");
+        this.emoji = "🌌";
+        this.errorColor = colors.red;
+        this.errorEmoji = "❌";
+    }
+    setColor(color) {
+        return this.color = color
+    }
+    setEmoji(emoji) {
+        return this.emoji = emoji
+    }
+    time() {
+        return colors.text(colors.text(`[${new Date().toLocaleTimeString()}]`, colors.white, true), colors.black)
+    };
+    defaultPrint(log, mem = false) {
+        if (mem) {
+            console.log(`${colors.customGrad(memory(), this.gradPrim, this.gradLast, colors.rgb, colors.cubic)} ${this.time()} ${this.emoji} ${colors.customGrad(log, this.gradLast, this.gradPrim, colors.rgb, colors.cubic)}`)
+        } else {
+            console.log(`${this.time()} ${this.emoji} ${colors.text(log, this.color)}`)
+        }
+        
+    };
+    costumPrint(log) {
+        return console.log(log)
+    };
+    error(log, mem = true) {
+        if (mem) {
+            console.log(`${colors.text(memory(), this.errorColor)} ${this.time()} ${this.errorEmoji} ${colors.text(log, this.errorColor)}`)
+        } else {
+            console.log(`${this.time()} ${this.errorEmoji} ${colors.text(log, this.errorColor)}`)
+        }
+    };
+}
 
-async function getLvL(userID) {
-    return await profileSchema.findOne({ _id: userID })
-        .then(user => {
-            return user.level
-        })
-        .catch(err => {
-            console.log(err)
-        })
-};
+class BotLogger extends logger {
+    commands = (file, location, isMem = false) => this.defaultPrint(`Loaded ${file} from ${location}`, isMem);
+    events = (file, isMem = false) => this.defaultPrint(`Loaded ${file} event`, isMem);
+}
 
-function nextLvL(userID) {
-    return getLvL(userID)
-        .then(level => {
-            return 150 * level * level + 450 * level + 300
-        })
-        .catch(err => {
-            console.log(err)
-        })
-};
+class log extends logger {
+    bot = {
+        login: client => this.languageFolder({ event: "bot_start", client: client }),
+        mongo: (client, state) => this.languageFolder({ event: `bot_mongo_state_${state}`, client: client }),
+        logo: this.languageFolder({ event: "login" }),
+        restarting: this.languageFolder({ event: "restarting" }),
+        restart: this.languageFolder({ event: "restarted" }),
+        restarted: this.languageFolder({ event: "sucefully_restarted" })
+    };
+    errors = {
+        exec: this.languageFolder({ event: "error_exec" }),
+        missing: this.languageFolder({ event: "missing_permissions" }),
+        invalid: args => this.languageFolder({ event: "not_valid", args: args }),
+        invalid_emoji: emoji => this.languageFolder({ event: "emoji_not_valid", emoji: emoji })
+    };
+    messages = {
+        level: (user ,level) => this.languageFolder({event: "level_up", user: user, level: level})
+    };
+    commands = {
+        kick:  {
+            description: this.languageFolder({ event: "kick" }),
+            target: this.languageFolder({ event: "kick_target" }),
+            mention: this.languageFolder({ event: "kick_mention" }),
+            id: this.languageFolder({ event: "kick_id" }),
+            reason: this.languageFolder({ event: "kick_reason" }),
+        },
+        ban: {
+            description: this.languageFolder({ event: "ban" }),
+            target: this.languageFolder({ event: "ban_target" }),
+            mention: this.languageFolder({ event: "ban_mention" }),
+            id: this.languageFolder({ event: "ban_id" }),
+            reason: this.languageFolder({ event: "ban_reason" }),
+        },
+        unban: {
+            description: this.languageFolder({ event: "unban" }),
+            id: this.languageFolder({ event: "unban_id" }),
+            reason: this.languageFolder({ event: "unban_reason" })
+        },
+        mute: {
+            description: this.languageFolder({ event: "mute" }),
+            target: this.languageFolder({ event: "mute_target" }),
+            reason: this.languageFolder({ event: "mute_reason" })
+        },
+        tempmute: {
+            description: this.languageFolder({ event: "tempmute" }),
+            target: this.languageFolder({ event: "tempmute_target" }),
+            reason: this.languageFolder({ event: "tempmute_reason" })
+        },
+        avatar: {
+            description: this.languageFolder({ event: "avatar" }),
+            targets: this.languageFolder({ event: "avatar_target" })
+        },
+        icon: this.languageFolder({ event: "icon" }),
+        emoji: {
+            description: this.languageFolder({ event: "emoji" }),
+            action: this.languageFolder({ event: "emoji_emoji" }),
+            id: this.languageFolder({ event: "emoji_id" }),
+            id_ac: this.languageFolder({ event: "emoji_id_id" })
+        },
+    };
+}
 
 function lang() {
 
@@ -65,62 +142,35 @@ function memory() {
     return `${usedPadded}/${totalPadded}MB`;
 }
 
-class logger {
-    constructor() {
-        this.language = lang()
-        this.languageFolder = require(`./langs/${this.language}`)
-        this.color = colors.pink
-        this.emoji = "🌸"
-        this.errorColor = colors.red
-        this.errorEmoji = "❌"
-    }
-    time() {
-        return colors.text(colors.text(`[${new Date().toLocaleTimeString()}]`, colors.white, true), colors.black)
-    };
-    defaultPrint(log, mem = false) {
-        if (mem) {
-            console.log(`${colors.text(memory(), this.color)} ${this.time()} ${this.emoji} ${colors.text(log, this.color)}`)
-        } else {
-            console.log(`${this.time()} ${this.emoji} ${colors.text(log, this.color)}`)
-        }
-        
-    };
-    costumPrint(log) {
-        return log
-    };
-    error(log, mem = true) {
-        if (mem) {
-            console.log(`${colors.text(memory(), this.errorColor)} ${this.time()} ${this.errorEmoji} ${colors.text(log, this.errorColor)}`)
-        } else {
-            console.log(`${this.time()} ${this.errorEmoji} ${colors.text(log, this.errorColor)}`)
-        }
-    };
-}
+async function getXp(userID) {
+    return await profileSchema.findOne({ _id: userID })
+        .then(user => {
+            return user.xp
+        })
+        .catch(err => {
+            console.log(err)
+        })
+};
 
-class BotLogger extends logger {
-    commands = (file, location, isMem = false) => this.defaultPrint(`Loaded ${file} from ${location}`, isMem);
-    events = (file, isMem = false) => this.defaultPrint(`Loaded ${file} event`, isMem);
-}
+async function getLvL(userID) {
+    return await profileSchema.findOne({ _id: userID })
+        .then(user => {
+            return user.level
+        })
+        .catch(err => {
+            console.log(err)
+        })
+};
 
-class log extends logger {
-    bot = {
-        login: client => this.languageFolder({ event: "bot_start", client: client }),
-        mongo: (client, state) => this.languageFolder({ event: `bot_mongo_state_${state}`, client: client }),
-        test: this.languageFolder({ event: "login" }),
-        restarting: this.languageFolder({ event: "restarting" }),
-        restart: this.languageFolder({ event: "restarted" }),
-        restarted: this.languageFolder({ event: "sucefully_restarted" })
-    };
-    errors = {
-        exec: this.languageFolder({ event: "error_exec" }),
-        missing: this.languageFolder({ event: "missing_permissions" }),
-        invalid: args => this.languageFolder({ event: "not_valid", args: args }),
-        invalid_emoji: emoji => this.languageFolder({ event: "emoji_not_valid", emoji: emoji })
-    };
-    messages = {
-        level: (user ,level) => this.languageFolder({event: "level_up", user: user, level: level})
-    };
-}
+function nextLvL(userID) {
+    return getLvL(userID)
+        .then(level => {
+            return 150 * level * level + 450 * level + 300
+        })
+        .catch(err => {
+            console.log(err)
+        })
+};
 
 function reason(reason) {
     return (!reason ? "Unknown" : reason)
