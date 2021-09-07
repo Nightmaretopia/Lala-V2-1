@@ -35,9 +35,9 @@ class logger {
     };
     error(log, mem = true) {
         if (mem) {
-            console.log(`${colors.text(memory(), this.errorColor)} ${this.time()} ${this.errorEmoji} ${colors.text(log, this.errorColor)}`)
+            console.error(`${colors.text(memory(), this.errorColor)} ${this.time()} ${this.errorEmoji} ${colors.text(log, this.errorColor)}`)
         } else {
-            console.log(`${this.time()} ${this.errorEmoji} ${colors.text(log, this.errorColor)}`)
+            console.error(`${this.time()} ${this.errorEmoji} ${colors.text(log, this.errorColor)}`)
         }
     };
 }
@@ -109,6 +109,8 @@ class log extends logger {
     };
 }
 
+const logs = new logger()
+
 function lang() {
 
     let langToUse;
@@ -142,33 +144,33 @@ function memory() {
     return `${usedPadded}/${totalPadded}MB`;
 }
 
-async function getXp(userID) {
-    return await profileSchema.findOne({ _id: userID })
+async function getXp(guildID, userID) {
+    return await profileSchema.findOne({ guildID: guildID, userID: userID })
         .then(user => {
             return user.xp
         })
         .catch(err => {
-            console.log(err)
+            logs.error(err.stack)
         })
 };
 
-async function getLvL(userID) {
-    return await profileSchema.findOne({ _id: userID })
+async function getLvL(guildID, userID) {
+    return await profileSchema.findOne({ guildID: guildID, userID: userID })
         .then(user => {
             return user.level
         })
         .catch(err => {
-            console.log(err)
+            logs.error(err.stack)
         })
 };
 
-function nextLvL(userID) {
-    return getLvL(userID)
+function nextLvL(guildID, userID) {
+    return getLvL(guildID, userID)
         .then(level => {
             return 150 * level * level + 450 * level + 300
         })
         .catch(err => {
-            console.log(err)
+            logs.error(err.stack)
         })
 };
 

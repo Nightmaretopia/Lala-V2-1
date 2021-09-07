@@ -9,6 +9,7 @@ module.exports = {
     async execute(message) {
         if (message.author.bot) return;
 
+        const guildId = message.guild.id
         const user = message.author;
         const userName = message.author.username
         const userTag = message.author.tag
@@ -18,7 +19,8 @@ module.exports = {
         const addxp = Math.floor(Math.random() * (max - min)) + min;
         const profile = await profileSchema.findOneAndUpdate(
             {
-                _id: userId
+                guildID: guildId,
+                userID: userId
             },
             {
                 name: userName,
@@ -36,7 +38,7 @@ module.exports = {
 
         let { xp, level, name } = profile;
 
-        let needed = await pfManager.nextlvl(userId)
+        let needed = await pfManager.nextlvl(guildId, userId)
 
         if (xp >= needed) {
             level++
