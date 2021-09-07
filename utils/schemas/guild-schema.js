@@ -19,6 +19,7 @@ const guildSchema = mongoose.Schema({
     _id: reqString,
     name: reqString,
     prefix: pref,
+    defaultRoleID: String,
     ignoreChannels: Array,
     logChannels: Array,
     welcomeChannel: String,

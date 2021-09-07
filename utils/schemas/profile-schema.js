@@ -16,9 +16,8 @@ const bool = {
 }
 
 const profileSchema = mongoose.Schema({
-    _id: reqString, // will be removed (or changed to incremented values from 1 to infinity)
-    // guildID // pretty self explanatory
-    // userID: // pretty self explanatory
+    guildID: reqString,
+    userID: reqString,
     name: reqString,
     tag: reqString,
     xp: num,
@@ -32,7 +31,6 @@ const profileSchema = mongoose.Schema({
 },
 {
     versionKey: false
-    //_id: false
 });
 
 module.exports = mongoose.model('Profile', profileSchema);
