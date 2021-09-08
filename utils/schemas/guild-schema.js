@@ -34,8 +34,8 @@ const guildSchema = mongoose.Schema({
     reactionEmojis: Array,
     ranks: Array
 },
-{
-    versionKey: false
-});
+    {
+        versionKey: false
+    });
 
 module.exports = mongoose.model('Guild', guildSchema);

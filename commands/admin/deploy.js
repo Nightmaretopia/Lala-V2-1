@@ -121,12 +121,22 @@ module.exports = {
             .setDefaultPermission(false)
             .addUser("Target", "The user to fake (LoL)")
 
+        const setGreetings = new SlashBuilder()
+            .setName("greetings")
+            .setDescription("set the welcome and goodbye channel")
+            .addChannel("channel", "the channel to set", true)
+
+        const setLogs = new SlashBuilder()
+            .setName("logs")
+            .setDescription("set the logs channel of the server")
+            .addChannel("channel", "channel of your choice", true)
+
         const play = new SlashBuilder()
             .setName("Play")
             .setDescription("Plays a song")
             .addString("link", "The link for the song (Youtube Only for now)", true)
 
-        const command = await message.client.guilds.cache.get(message.guild.id)?.commands.set([kick, ban, unban, mute, tempmute, avatar, icon, emoji, emojid, status, join, leave, play])
+        const command = await message.client.guilds.cache.get(message.guild.id)?.commands.set([kick, ban, unban, mute, tempmute, avatar, icon, emoji, emojid, status, join, leave, setGreetings, setLogs, play])
         // console.log(command)
 
         message.channel.send('**Slash Commands Deployed!**');

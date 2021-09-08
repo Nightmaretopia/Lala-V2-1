@@ -15,6 +15,9 @@ module.exports = {
             {
                 defaultRoleID,
                 welcomeChannel,
+            },
+            {
+                setDefaultsOnInsert: true
             }
         );
 
