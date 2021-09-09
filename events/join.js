@@ -8,24 +8,28 @@ module.exports = {
     async execute(member, client) {
         const guildId = member.guild.id;
         const userId = member.user.id;
+
         const guild = await guildModel.findOne(
             {
                 _id: guildId,
             },
             {
-                defaultRoleID,
-                welcomeChannel,
-            },
-            {
-                setDefaultsOnInsert: true
+                defaultRoleID: true,
+                welcomeChannel: true,
             }
         );
 
         const { defaultRoleID, welcomeChannel } = guild;
-        if (!(defaultRoleID || welcomeChannel)) {
+
+        if (!welcomeChannel) {
             return logger.error(
                 `${member.guild.name} doesn't have a welcomeChannel set`
             );
+        } else if (!defaultRoleID) {
+            return logger.error("No defualt role set")
+        } else {
+            const welcomEmbed = new MessageEmbed()
+                .setColor()
         }
     },
 };
