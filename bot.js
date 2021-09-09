@@ -5,7 +5,7 @@ const { prefix, token, Owner, Coder } = require('./config.json');
 const { manager, logger, bot, log } = require('./utils/manager');
 const { colors } = require('./utils/color-manager');
 
-const client = new Discord.Client({intents: 32511, partials: ['USER', 'REACTION', 'MESSAGE', 'GUILD_MEMBER', 'CHANNEL']});
+const client = new Discord.Client({ intents: 32511, partials: ['USER', 'REACTION', 'MESSAGE', 'GUILD_MEMBER', 'CHANNEL'] });
 client.commands = new Discord.Collection();
 client.events = new Discord.Collection();
 client.slcommands = new Discord.Collection();
@@ -14,7 +14,7 @@ client.on('ready', async () => {
     console.log(colors.customGrad(log.bot.logo, colors.color("#0048ff"), colors.color("#c603fc"), colors.hsi, colors.linear))
     colors.time(colors.fire(log.bot.login(client)))
 
-    client.user.setActivity("To Love-Ru", {type: "WATCHING"});
+    client.user.setActivity("To Love-Ru", { type: "WATCHING" });
 
     await mongo().then(async mongoose => {
         colors.time(colors.ice(log.bot.mongo(client, mongoose.connection.readyState)))
@@ -46,7 +46,7 @@ client.on('ready', async () => {
             };
         }
     }
-    
+
     setBot('commands', client.commands);
     setBot('slash-commands', client.slcommands)
     setBot('events', client.events, true)
@@ -61,7 +61,7 @@ client.on('messageCreate', async (message) => {
     const reasonarg = manager.reason(args.slice(1).join(" "));
 
     if (message.content.startsWith(prefix)) {
-        
+
         if (cmd === "restart") {
             if (!Coder || !Owner) return message.channel.send(log.errors.missing);
             message.channel.send(log.bot.restarting)
@@ -73,7 +73,7 @@ client.on('messageCreate', async (message) => {
         if (cmd === "switch") {
             if (!message.member.permissions.has('ADMINISTRATOR')) return;
             if (!args[0]) return message.reply('Dumb Fuck');
-            if (!client.commands.map(({name}) => name).includes(args[0])) return message.channel.send(log.errors.invalid(args));
+            if (!client.commands.map(({ name }) => name).includes(args[0])) return message.channel.send(log.errors.invalid(args));
             const currentState = client.commands.get(args[0]).enable;
             const currentName = client.commands.get(args[0]).name;
             currentState = !currentState;
@@ -83,7 +83,7 @@ client.on('messageCreate', async (message) => {
         if (cmd === "state") {
             if (!message.member.permissions.has('ADMINISTRATOR')) return;
             if (!args[0]) return message.reply('Dumb Fuck');
-            if (!client.commands.map(({name}) => name).includes(args[0])) return message.channel.send(log.errors.invalid(args));
+            if (!client.commands.map(({ name }) => name).includes(args[0])) return message.channel.send(log.errors.invalid(args));
             message.channel.send(client.commands.get(args[0]).enable)
         }
 
@@ -92,24 +92,26 @@ client.on('messageCreate', async (message) => {
 
         try {
             if (command.enable === false) return logger.error("Disabled");
-            await command.execute({message, args, target, reasonarg});
+            await command.execute({ message, args, target, reasonarg });
         } catch (err) {
             logger.error(String(err));
-            await message.reply({content: log.errors.exec})
+            await message.reply({ content: log.errors.exec })
         };
     }
 });
 
 client.on('interactionCreate', async (int) => {
+    const queue = new Map();
+    const guildQueue = queue.get(int.guild.id)
     if (!int.isCommand()) return;
     if (!client.slcommands.has(int.commandName)) return;
 
     try {
         if (client.slcommands.get(int.commandName).enable === false) return logger.error("Disabled")
-        await client.slcommands.get(int.commandName).execute({int})
+        await client.slcommands.get(int.commandName).execute({ int, queue, guildQueue })
     } catch (err) {
-        logger.error(String(err));
-        await int.reply({ content: log.errors.exec});
+        logger.error(err.stack);
+        await int.reply({ content: log.errors.exec });
     }
 });
 

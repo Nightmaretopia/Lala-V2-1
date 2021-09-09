@@ -1,4 +1,4 @@
-### TODO:
+### **TODO:**
 - [ ] Recode the RR (reaction roles)
 - [ ] Add the rest of the logs (roles & user updates)
 - [x] Fix the Slash Commands interaction response
@@ -17,7 +17,7 @@
 - [x] Maybe make xp harder / balance it
 - [ ] Fix xpadd and port it to use MongoDB
 - [ ] Add new ways to get xp
-- [ ] Fix the rank and auto ranking
+- [x] Fix the rank and auto ranking
 - [ ] Add blacklist for people and words
 - [ ] Add chat filter
 - [ ] Create a simple monetary system

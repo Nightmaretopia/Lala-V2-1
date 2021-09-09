@@ -4,7 +4,7 @@ const { Owner, Coder } = require('../../config.json');
 
 module.exports = {
     name: "deploy",
-    async execute({message}) {
+    async execute({ message }) {
         if (message.author != Owner && message.author != Coder) return message.reply(bot.translations(log.errors.missing));
         if (!message.client.application?.owner) await message.client.application?.fetch();
 
@@ -77,10 +77,10 @@ module.exports = {
             .addString("Reason", log.commands.mute.reason)
 
         const tempmute = new SlashBuilder()
-        .setName("Tempmute")
-        .setDescription(log.commands.tempmute.description)
-        .addUser("Tagret", log.commands.tempmute.target, true)
-        .addString("Reason", log.commands.tempmute.reason)
+            .setName("Tempmute")
+            .setDescription(log.commands.tempmute.description)
+            .addUser("Tagret", log.commands.tempmute.target, true)
+            .addString("Reason", log.commands.tempmute.reason)
 
         const avatar = new SlashBuilder()
             .setName("Avatar")
@@ -116,13 +116,28 @@ module.exports = {
             .addUser("Target", "The user to fake (LoL)")
 
         const leave = new SlashBuilder()
-        .setName("Leave")
-        .setDescription("Fakes a Leave")
-        .setDefaultPermission(false)
-        .addUser("Target", "The user to fake (LoL)")
+            .setName("Leave")
+            .setDescription("Fakes a Leave")
+            .setDefaultPermission(false)
+            .addUser("Target", "The user to fake (LoL)")
 
-        const command = await message.client.guilds.cache.get('209700044763430912')?.commands.set([kick, ban, unban, mute, tempmute, avatar, icon, emoji, emojid, status, join, leave])
-        console.log(command)
+        const setGreetings = new SlashBuilder()
+            .setName("greetings")
+            .setDescription("set the welcome and goodbye channel")
+            .addChannel("channel", "the channel to set", true)
+
+        const setLogs = new SlashBuilder()
+            .setName("logs")
+            .setDescription("set the logs channel of the server")
+            .addChannel("channel", "channel of your choice", true)
+
+        const play = new SlashBuilder()
+            .setName("Play")
+            .setDescription("Plays a song")
+            .addString("link", "The link for the song (Youtube Only for now)", true)
+
+        const command = await message.client.guilds.cache.get(message.guild.id)?.commands.set([kick, ban, unban, mute, tempmute, avatar, icon, emoji, emojid, status, join, leave, setGreetings, setLogs, play])
+        // console.log(command)
 
         message.channel.send('**Slash Commands Deployed!**');
     }

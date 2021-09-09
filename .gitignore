@@ -1,14 +1,8 @@
 node_modules
 package-lock.json
 StartBot.bat
-currency teste.txt
-comandos/minigames
-currency test.txt
 config.json
-xp.json
-debug.js
-rank test.js
-rank.js
 Old Stuff
 original.png
 teste.png
+.DS_Store

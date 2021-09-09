@@ -1,6 +1,6 @@
 const { language } = require('../config.json');
 const { colors } = require('./color-manager');
-const profileSchema = require('./schemas/profile-schema');
+const profileModel = require('./schemas/profile-schema');
 
 class logger {
     constructor() {
@@ -24,11 +24,11 @@ class logger {
     };
     defaultPrint(log, mem = false) {
         if (mem) {
-            console.log(`${colors.customGrad(memory(), this.gradPrim, this.gradLast, colors.rgb, colors.cubic)} ${this.time()} ${this.emoji} ${colors.customGrad(log, this.gradLast, this.gradPrim, colors.rgb, colors.cubic)}`)
+            console.log(`${colors.customGrad(memory(), this.gradPrim, this.gradLast, colors.rgb, colors.cubic)} ${this.time()} ${this.emoji} ${colors.customGrad(log, this.gradLast, this.gradPrim, colors.rgb, colors.cubic)} ${colors.reset}`)
         } else {
             console.log(`${this.time()} ${this.emoji} ${colors.text(log, this.color)}`)
         }
-        
+
     };
     costumPrint(log) {
         return console.log(log)
@@ -63,10 +63,10 @@ class log extends logger {
         invalid_emoji: emoji => this.languageFolder({ event: "emoji_not_valid", emoji: emoji })
     };
     messages = {
-        level: (user ,level) => this.languageFolder({event: "level_up", user: user, level: level})
+        level: (user, level) => this.languageFolder({ event: "level_up", user: user, level: level })
     };
     commands = {
-        kick:  {
+        kick: {
             description: this.languageFolder({ event: "kick" }),
             target: this.languageFolder({ event: "kick_target" }),
             mention: this.languageFolder({ event: "kick_mention" }),
@@ -114,7 +114,7 @@ const logs = new logger()
 function lang() {
 
     let langToUse;
-    
+
     const eng_ps = ["en", "eng", "english", "ingles"];
     const pt_ps = ["pt", "pt-pt", "portuguese", "portugues"];
     const br_ps = ["br", "pt-br", "brazilian", "brazileiro"];
@@ -145,7 +145,7 @@ function memory() {
 }
 
 async function getXp(guildID, userID) {
-    return await profileSchema.findOne({ guildID: guildID, userID: userID })
+    return await profileModel.findOne({ guildID: guildID, userID: userID })
         .then(user => {
             return user.xp
         })
@@ -155,7 +155,7 @@ async function getXp(guildID, userID) {
 };
 
 async function getLvL(guildID, userID) {
-    return await profileSchema.findOne({ guildID: guildID, userID: userID })
+    return await profileModel.findOne({ guildID: guildID, userID: userID })
         .then(user => {
             return user.level
         })

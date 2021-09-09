@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const profileSchema = require('../utils/schemas/profile-schema');
+const profileModel = require('../utils/schemas/profile-schema');
 const { pfManager, log } = require('../utils/manager');
 
 module.exports = {
@@ -17,7 +17,7 @@ module.exports = {
         let min = 15;
         let max = 30;
         const addxp = Math.floor(Math.random() * (max - min)) + min;
-        const profile = await profileSchema.findOneAndUpdate(
+        const profile = await profileModel.findOneAndUpdate(
             {
                 guildID: guildId,
                 userID: userId
@@ -38,7 +38,7 @@ module.exports = {
 
         let { xp, level, name } = profile;
 
-        let needed = await pfManager.nextlvl(guildId, userId)
+        const needed = await pfManager.nextlvl(guildId, userId)
 
         if (xp >= needed) {
             level++
@@ -46,11 +46,12 @@ module.exports = {
             const lvlupemb = new MessageEmbed()
                 .setColor(message.member.displayHexColor)
                 .setDescription(log.messages.level(user, level))
-            await message.channel.send({embeds: [lvlupemb]})
+            await message.channel.send({ embeds: [lvlupemb] })
 
-            await profileSchema.updateOne(
+            await profileModel.updateOne(
                 {
-                    _id: userId
+                    guildID: guildId,
+                    userID: userId
                 },
                 {
                     level,
