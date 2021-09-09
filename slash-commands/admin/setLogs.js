@@ -1,7 +1,7 @@
 const guildModel = require("../../utils/schemas/guild-schema")
 
 module.exports = {
-    name: "greetings",
+    name: "logs",
     async execute({ int }) {
         const channel = int.options.getChannel("channel")
         const guild = await guildModel.findOne(
@@ -9,7 +9,7 @@ module.exports = {
                 _id: int.guild.id
             },
             {
-                welcomeChannel: true,
+                logChannels: true,
             }
         )
         if (guild === null) {
@@ -23,24 +23,25 @@ module.exports = {
             )
             int.reply("Creating guild profile")
         } else {
-            const { welcomeChannel } = guild
-            if (!welcomeChannel) {
-                await guildModel.updateOne(
-                    {
-                        _id: int.guild.id
-                    },
-                    {
-                        welcomeChannel: channel.id
-                    },
-                    {
-                        upsert: true,
-                        new: true
+            const { logChannels } = guild
+            // if (!logChannels) {
+            await guildModel.updateOne(
+                {
+                    _id: int.guild.id
+                },
+                {
+                    $set: {
+                        logChannels: channel.id
                     }
-                )
-                int.reply({ content: `Channel set to <#${channel.id}>` })
-            } else if (welcomeChannel) {
-                int.reply(`Welcome channel already set to <#${welcomeChannel}>`)
-            }
+                },
+                {
+                    upsert: true,
+                    new: true
+                }
+            )
+            int.reply({ content: `Channel set to <#${channel.id}>` })
+            // }
         }
+        // int.reply("you failed")
     }
 }
