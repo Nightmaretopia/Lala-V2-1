@@ -94,7 +94,7 @@ client.on('messageCreate', async (message) => {
             if (command.enable === false) return logger.error("Disabled");
             await command.execute({ message, args, target, reasonarg });
         } catch (err) {
-            logger.error(String(err));
+            logger.error(err.stack);
             await message.reply({ content: log.errors.exec })
         };
     }
