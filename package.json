@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@discordjs/builders": "^0.6.0",
     "@discordjs/opus": "^0.6.0",
     "@discordjs/voice": "^0.6.0",
     "canvas": "^2.8.0",
@@ -8,6 +9,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "moment": "^2.29.1",
     "mongoose": "^5.13.7",
+    "nekos.life": "^2.0.7",
     "ytdl-core": "^4.9.1"
   },
   "name": "infinite-bot",

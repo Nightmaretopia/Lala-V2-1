@@ -14,7 +14,7 @@ class SlashBuilder {
     }
     addSubCommand(name, description, options) {
         name = name.toLowerCase()
-        return this.addSubCommands({name, description, options})
+        return this.addSubCommands({ name, description, options })
     }
     addSubCommands(...options) {
         this.options.push(...this.constructor.normalizeSubCommands(options))
@@ -22,7 +22,7 @@ class SlashBuilder {
     }
     addString(name, description, required) {
         name = name.toLowerCase()
-        return this.addStrings({name, description, required})
+        return this.addStrings({ name, description, required })
     }
     addStrings(...options) {
         this.options.push(...this.constructor.normalizeStrings(options))
@@ -30,7 +30,7 @@ class SlashBuilder {
     }
     addInteger(name, description, required) {
         name = name.toLowerCase()
-        return this.addIntegers({name, description, required})
+        return this.addIntegers({ name, description, required })
     }
     addIntegers(...options) {
         this.options.push(...this.constructor.normalizeIntegers(options))
@@ -38,7 +38,7 @@ class SlashBuilder {
     }
     addBoolean(name, description, required) {
         name = name.toLowerCase()
-        return this.addBooleans({name, description, required})
+        return this.addBooleans({ name, description, required })
     }
     addBooleans(...options) {
         this.options.push(...this.constructor.normalizeBooleans(options))
@@ -46,7 +46,7 @@ class SlashBuilder {
     }
     addUser(name, description, required) {
         name = name.toLowerCase()
-        return this.addUsers({name, description, required})
+        return this.addUsers({ name, description, required })
     }
     addUsers(...options) {
         this.options.push(...this.constructor.normalizeUsers(options))
@@ -54,7 +54,7 @@ class SlashBuilder {
     }
     addChannel(name, description, required) {
         name = name.toLowerCase()
-        return this.addChannels({name, description, required})
+        return this.addChannels({ name, description, required })
     }
     addChannels(...options) {
         this.options.push(...this.constructor.normalizeChannels(options))
@@ -62,7 +62,7 @@ class SlashBuilder {
     }
     addRole(name, description, required) {
         name = name.toLowerCase()
-        return this.addRoles({name, description, required})
+        return this.addRoles({ name, description, required })
     }
     addRoles(...options) {
         this.options.push(...this.constructor.normalizeRoles(options))
@@ -70,7 +70,7 @@ class SlashBuilder {
     }
     addMentionable(name, description, required) {
         name = name.toLowerCase()
-        return this.addMentionables({name, description, required})
+        return this.addMentionables({ name, description, required })
     }
     addMentionables(...options) {
         this.options.push(...this.constructor.normalizeMentionables(options))
@@ -78,7 +78,7 @@ class SlashBuilder {
     }
     addNumber(name, description, required) {
         name = name.toLowerCase()
-        return this.addNumbers({name, description, required})
+        return this.addNumbers({ name, description, required })
     }
     addNumbers(...options) {
         this.options.push(...this.constructor.normalizeNumbers(options))
@@ -124,9 +124,9 @@ class SlashBuilder {
     static normalizeSubCommands(...options) {
         return options
             .flat(2)
-            .map(option => 
-                    this.normalizeSubCommand(option.name, option.description, option.options)
-                )
+            .map(option =>
+                this.normalizeSubCommand(option.name, option.description, option.options)
+            )
     }
     static normalizeSubCommandGroup(name, description, required = false) {
         return {
@@ -139,7 +139,7 @@ class SlashBuilder {
     static normalizeSubCommandGroups(...options) {
         return options
             .flat(2)
-            .map(option => 
+            .map(option =>
                 this.normalizeSubCommandGroup(option.name, option.description, typeof option.required === 'boolean' ? option.required : false)
             );
     }
@@ -154,7 +154,7 @@ class SlashBuilder {
     static normalizeStrings(...options) {
         return options
             .flat(2)
-            .map(option => 
+            .map(option =>
                 this.normalizeString(option.name, option.description, typeof option.required === 'boolean' ? option.required : false)
             );
     }
@@ -169,7 +169,7 @@ class SlashBuilder {
     static normalizeIntegers(...options) {
         return options
             .flat(2)
-            .map(option => 
+            .map(option =>
                 this.normalizeInteger(option.name, option.description, typeof option.required === 'boolean' ? option.required : false)
             );
     }
@@ -184,7 +184,7 @@ class SlashBuilder {
     static normalizeBooleans(...options) {
         return options
             .flat(2)
-            .map(option => 
+            .map(option =>
                 this.normalizeBoolean(option.name, option.description, typeof option.required === 'boolean' ? option.required : false)
             );
     }
@@ -199,7 +199,7 @@ class SlashBuilder {
     static normalizeUsers(...options) {
         return options
             .flat(2)
-            .map(option => 
+            .map(option =>
                 this.normalizeUser(option.name, option.description, typeof option.required === 'boolean' ? option.required : false)
             );
     }
@@ -214,7 +214,7 @@ class SlashBuilder {
     static normalizeChannels(...options) {
         return options
             .flat(2)
-            .map(option => 
+            .map(option =>
                 this.normalizeChannel(option.name, option.description, typeof option.required === 'boolean' ? option.required : false)
             );
     }
@@ -229,7 +229,7 @@ class SlashBuilder {
     static normalizeRoles(...options) {
         return options
             .flat(2)
-            .map(option => 
+            .map(option =>
                 this.normalizeRole(option.name, option.description, typeof option.required === 'boolean' ? option.required : false)
             );
     }
@@ -244,7 +244,7 @@ class SlashBuilder {
     static normalizeMentionables(...options) {
         return options
             .flat(2)
-            .map(option => 
+            .map(option =>
                 this.normalizeMentionable(option.name, option.description, typeof option.required === 'boolean' ? option.required : false)
             );
     }
@@ -259,7 +259,7 @@ class SlashBuilder {
     static normalizeNumbers(...options) {
         return options
             .flat(2)
-            .map(option => 
+            .map(option =>
                 this.normalizeNumber(option.name, option.description, typeof option.required === 'boolean' ? option.required : false)
             );
     }
@@ -274,7 +274,7 @@ class SlashBuilder {
     static normalizeOptions(...options) {
         return options
             .flat(2)
-            .map(option => 
+            .map(option =>
                 this.normalizeOption(option.name, option.description, option.type, typeof option.required === 'boolean' ? option.required : false)
             );
     }

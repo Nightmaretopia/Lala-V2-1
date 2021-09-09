@@ -1,4 +1,5 @@
 const SlashBuilder = require('../../utils/slash-builder');
+const { SlashCommandBuilder } = require("@discordjs/builders")
 const { log } = require('../../utils/manager')
 const { Owner, Coder } = require('../../config.json');
 
@@ -136,7 +137,22 @@ module.exports = {
             .setDescription("Plays a song")
             .addString("link", "The link for the song (Youtube Only for now)", true)
 
-        const command = await message.client.guilds.cache.get(message.guild.id)?.commands.set([kick, ban, unban, mute, tempmute, avatar, icon, emoji, emojid, status, join, leave, setGreetings, setLogs, play])
+        const neko = new SlashCommandBuilder()
+            .setName('neko')
+            .setDescription("Sends a picture from nekos.life")
+            .addStringOption(option =>
+                option.setName("type")
+                    .setDescription("What type of neko to send")
+                    .setRequired(true)
+                    .addChoice("neko", "type_neko")
+                    .addChoice("smug", "type_smug")
+            )
+
+        const nekoGif = new SlashCommandBuilder()
+            .setName("neko-gif")
+            .setDescription("Sends a neko gif")
+
+        const command = await message.client.guilds.cache.get(message.guild.id)?.commands.set([kick, ban, unban, mute, tempmute, avatar, icon, emoji, emojid, status, join, leave, setGreetings, setLogs, play, neko, nekoGif])
         // console.log(command)
 
         message.channel.send('**Slash Commands Deployed!**');
