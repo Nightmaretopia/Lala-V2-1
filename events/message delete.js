@@ -7,11 +7,7 @@ module.exports = {
     name: 'Message Delete',
     enable: 1,
     async execute(message, client) {
-        if (message.channel.type == "dm") return;
-        if (message.channel.id === '826862921405300786' || message.channel.id === "884571957473968189") return;
-        if (message.partial) return;
-        if (message.author.bot) return;
-        if (message.content.startsWith(prefix)) return;
+        if (message.channel.type == "dm" || message.channel.id === '826862921405300786' || message.channel.id === "884571957473968189" || message.partial || message.author.bot || message.content.startsWith(prefix)) return;
 
         const guild = await guildModel.findOne(
             {

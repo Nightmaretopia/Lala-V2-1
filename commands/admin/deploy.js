@@ -95,12 +95,7 @@ module.exports = {
         const emoji = new SlashBuilder()
             .setName("Emoji")
             .setDescription(log.commands.emoji.description)
-            .addString("Emoji", log.commands.emoji.action)
-
-        const emojid = new SlashBuilder()
-            .setName("Emoji-id")
-            .setDescription(log.commands.emoji.id)
-            .addString("Id", log.commands.emoji.id_ac)
+            .addString("Emoji", log.commands.emoji.action, true)
 
         const status = new SlashBuilder()
             .setName("Status")
@@ -138,21 +133,29 @@ module.exports = {
             .addString("link", "The link for the song (Youtube Only for now)", true)
 
         const neko = new SlashCommandBuilder()
-            .setName('neko')
-            .setDescription("Sends a picture from nekos.life")
+            .setName("neko")
+            .setDescription("Sends a picture or gif from nekos.life")
             .addStringOption(option =>
                 option.setName("type")
-                    .setDescription("What type of neko to send")
+                    .setDescription("What type of image")
                     .setRequired(true)
-                    .addChoice("neko", "type_neko")
-                    .addChoice("smug", "type_smug")
+                    .addChoices([
+                        ["smug", "type_smug"],
+                        ["baka", "type_baka"],
+                        ["tickle", "type_tickle"],
+                        ["poke", "type_poke"],
+                        ["neko", "type_neko"],
+                        ["nekoGif", "type_nekoGif"],
+                        ["foxGirl", "type_foxGirl"],
+                        ["kemonomimi", "type_kemonomimi"],
+                        ["holo", "type_holo"],
+                        ["wallpaper", "type_wallpaper"],
+                        ["gecg", "type_gecg"],
+                        ["avatar", "type_avatar"],
+                    ])
             )
 
-        const nekoGif = new SlashCommandBuilder()
-            .setName("neko-gif")
-            .setDescription("Sends a neko gif")
-
-        const command = await message.client.guilds.cache.get(message.guild.id)?.commands.set([kick, ban, unban, mute, tempmute, avatar, icon, emoji, emojid, status, join, leave, setGreetings, setLogs, play, neko, nekoGif])
+        const command = await message.client.guilds.cache.get(message.guild.id)?.commands.set([kick, ban, unban, mute, tempmute, avatar, icon, emoji, status, join, leave, setGreetings, setLogs, play, neko])
         // console.log(command)
 
         message.channel.send('**Slash Commands Deployed!**');

@@ -5,11 +5,7 @@ module.exports = {
     event: 'messageUpdate',
     name: 'Message Updates',
     async execute(oldMsg, newMsg, client) {
-        if (oldMsg.partial) return;
-        if (!oldMsg.guild) return;
-        if (!oldMsg.content) return;
-        if (oldMsg.author.bot) return;
-        if (newMsg.content === oldMsg.content) return;
+        if (oldMsg.partial || !oldMsg.guild || !oldMsg.content || oldMsg.author.bot || newMsg.content === oldMsg.content) return;
 
         const guild = await guildModel.findOne(
             {
