@@ -209,7 +209,45 @@ module.exports = {
                         ["eroYuri", "type_eroYuri"],
                     ])
             )
-        const command = await message.client.guilds.cache.get(message.guild.id)?.commands.set([kick, ban, unban, mute, tempmute, avatar, icon, emoji, status, join, leave, setGreetings, setLogs, rank, play, neko, hentai, ero])
+
+        const hentaibomb = new SlashCommandBuilder()
+            .setName("hentaibomb")
+            .setDescription("Sends multiple hentai images")
+            .addIntegerOption(option =>
+                option.setName("amount")
+                    .setDescription("The amount of images to send")
+            )
+            .addStringOption(option =>
+                option.setName("type")
+                    .setDescription("what type of hentai")
+                    .addChoices([
+                        ["randomHentaiGif", "type_randomHentaiGif"],
+                        ["pussy", "type_pussy"],
+                        ["neko", "type_neko"],
+                        ["lesbian", "type_lesbian"],
+                        ["kuni", "type_kuni"],
+                        ["cumsluts", "type_cumsluts"],
+                        ["classic", "type_classic"],
+                        ["boobs", "type_boobs"],
+                        ["anal", "type_anal"],
+                        ["avatar", "type_avatar"],
+                        ["yuri", "type_yuri"],
+                        ["trap", "type_trap"],
+                        ["tits", "type_tits"],
+                        ["girlSolo", "type_girlSolo"],
+                        ["kemonomimi", "type_kemonomimi"],
+                        ["kitsune", "type_kitsune"],
+                        ["keta", "type_keta"],
+                        ["hentai", "type_hentai"],
+                        ["futanari", "type_futanari"],
+                        ["femdom", "type_femdom"],
+                        ["feet", "type_feet"],
+                        ["cumArts", "type_cumArts"],
+                        ["blowJob", "type_blowJob"],
+                    ])
+            )
+
+        const command = await message.client.guilds.cache.get(message.guild.id)?.commands.set([kick, ban, unban, mute, tempmute, avatar, icon, emoji, status, join, leave, setGreetings, setLogs, rank, play, neko, hentai, ero, hentaibomb])
         // console.log(command)
 
         message.channel.send('**Slash Commands Deployed!**');
