@@ -17,9 +17,7 @@ const data = {
          ╣╪╬┐                   ╒╦╨          ╩ ╚╩╩╬╪╢╦╕           ╓╤╘╘ ╪╪═ ╓╩
            ╩╪╬╥             ╖╦╩╨               ╩╬╪╪╪╪╪╪╪╪╪╪╬╬╬╪╪╪╪╪╬╩  ╘╪╬╨
               ╚╩╬╬╦╦╦╦╦╦╬╩╩╙                      ╙╩╬╪╪╪╪╪╪╪╪╪╪╪╪╪╪╪╬╪╩╙
-                                                      ┌ ╙╚╚╩╩╩╝╚╙
-                        Version: ${version}
-    
+                            Version: ${version}            ┌ ╙╚╚╩╩╩╝╚╙
     `),
     bot_start: "$bot.username started on $bot.servers.size server(s).",
     bot_mongo_state_0: "$bot.username is Disconnected from MongoDB",
@@ -66,13 +64,13 @@ const data = {
     emoji_id_id: "Emoji id to get the image from",
 }
 
-module.exports = ({event, client, args, guild, user, level, message, emoji}) => {
-    const events = {event}
+module.exports = ({ event, client, args, guild, user, level, message, emoji }) => {
+    const events = { event }
     let eventMessage = data[(events.event)]?.toString();
 
     if (eventMessage?.indexOf("$bot.username") >= 0)
         eventMessage = eventMessage?.replace("$bot.username", client.user.username);
-        
+
     if (eventMessage?.indexOf("$bot.servers.size") >= 0)
         eventMessage = eventMessage?.replace("$bot.servers.size", client.guilds.cache.size);
 
@@ -94,7 +92,7 @@ module.exports = ({event, client, args, guild, user, level, message, emoji}) => 
     if (eventMessage?.indexOf("$message.size") >= 0)
         eventMessage = eventMessage?.replace("$message.size", message.size)
 
-        if (eventMessage?.indexOf("$emoji") >= 0)
+    if (eventMessage?.indexOf("$emoji") >= 0)
         eventMessage = eventMessage?.replace("$emoji", emoji);
 
     return eventMessage
