@@ -5,13 +5,14 @@ const { manager } = require("../../utils/manager")
 module.exports = {
     name: "hentaibomb",
     async execute({ int }) {
+        if (!int.channel.nsfw) return int.reply("This command can only be used in nsfw channels")
         let type = int.options.getString("type");
         const amount = int.options.getInteger("amount");
         const neko = new nekoClient()
         const embed = new MessageEmbed()
             .setColor(0x9534eb)
-        int.deferReply()
         if (amount > 10) return int.reply("You can only send a max of 10 images");
+        int.deferReply()
         let x;
         !amount ? x = 3 : x = amount
 
