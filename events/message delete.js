@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const { prefix } = require('../config.json');
-const { guildModel } = require("../utils/schemas/guild-schema")
+const guildModel = require("../utils/schemas/guild-schema")
 
 module.exports = {
     event: 'messageDelete',

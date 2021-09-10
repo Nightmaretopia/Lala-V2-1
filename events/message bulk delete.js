@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const { manager } = require('../utils/manager');
+const guildModel = require("../utils/schemas/guild-schema")
 
 module.exports = {
     event: 'messageDeleteBulk',
