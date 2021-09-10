@@ -182,13 +182,49 @@ function sleeptime(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 };
 
+function hentaiLogic(type) {
+    if (type === "blowJob") {
+        const arr = ["bJ", "blowJob"]
+        const a = Math.round(Math.random())
+        type = arr[a]
+        return type
+
+    } else if (type === "neko") {
+        const arr = ["nekoGif", "neko"]
+        const a = Math.round(Math.random())
+        type = arr[a]
+        return type
+
+    } else if (type === "feet") {
+        const arr = ["feetGif", "feet"]
+        const a = Math.round(Math.random())
+        type = arr[a]
+        return type
+
+    } else if (type === "pussy") {
+        const arr = ["pussy", "pussyWankGif", "pussyArt"]
+        const a = Math.round(Math.random() * 2)
+        type = arr[a]
+        return type
+
+    } else if (type === "girlSolo") {
+        const arr = ["girlSolo", "girlSoloGif"]
+        const a = Math.round(Math.random())
+        type = arr[a]
+        return type
+    } else {
+        return undefined
+    }
+}
+
 module.exports = {
     logger: new logger(),
     bot: new BotLogger(),
     log: new log(),
     manager: {
         reason,
-        sleep: sleeptime
+        sleep: sleeptime,
+        hentaiLogic
     },
     pfManager: {
         getxp: getXp,
