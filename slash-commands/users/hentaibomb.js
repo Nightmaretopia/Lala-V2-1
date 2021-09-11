@@ -13,8 +13,7 @@ module.exports = {
             .setColor(0x9534eb)
         if (amount > 10) return int.reply("You can only send a max of 10 images");
         int.deferReply()
-        let x;
-        !amount ? x = 3 : x = amount
+        let x = amount ? amount : 3;
 
         if (!type) {
             const types = ["randomHentaiGif", "pussy", "neko", "lesbian", "kuni", "cumsluts", "classic", "boobs", "anal", "avatar", "yuri", "trap", "tits", "girlSolo", "kemonomimi", "kitsune", "keta", "hentai", "futanari", "femdom", "feet", "cumArts", "blowJob"]
