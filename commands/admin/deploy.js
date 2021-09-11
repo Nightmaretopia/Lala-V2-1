@@ -1,4 +1,5 @@
 const SlashBuilder = require('../../utils/slash-builder');
+const { SlashCommandBuilder } = require("@discordjs/builders")
 const { log } = require('../../utils/manager')
 const { Owner, Coder } = require('../../config.json');
 
@@ -94,12 +95,7 @@ module.exports = {
         const emoji = new SlashBuilder()
             .setName("Emoji")
             .setDescription(log.commands.emoji.description)
-            .addString("Emoji", log.commands.emoji.action)
-
-        const emojid = new SlashBuilder()
-            .setName("Emoji-id")
-            .setDescription(log.commands.emoji.id)
-            .addString("Id", log.commands.emoji.id_ac)
+            .addString("Emoji", log.commands.emoji.action, true)
 
         const status = new SlashBuilder()
             .setName("Status")
@@ -131,12 +127,127 @@ module.exports = {
             .setDescription("set the logs channel of the server")
             .addChannel("channel", "channel of your choice", true)
 
+        const rank = new SlashCommandBuilder()
+            .setName("rank")
+            .setDescription("Shows your current level and xp")
+
         const play = new SlashBuilder()
             .setName("Play")
             .setDescription("Plays a song")
             .addString("link", "The link for the song (Youtube Only for now)", true)
 
-        const command = await message.client.guilds.cache.get(message.guild.id)?.commands.set([kick, ban, unban, mute, tempmute, avatar, icon, emoji, emojid, status, join, leave, setGreetings, setLogs, play])
+        const neko = new SlashCommandBuilder()
+            .setName("neko")
+            .setDescription("Sends a picture or gif from nekos.life")
+            .addStringOption(option =>
+                option.setName("type")
+                    .setDescription("What type of image")
+                    .setRequired(true)
+                    .addChoices([
+                        ["smug", "type_smug"],
+                        ["baka", "type_baka"],
+                        ["tickle", "type_tickle"],
+                        ["poke", "type_poke"],
+                        ["neko", "type_neko"],
+                        ["foxGirl", "type_foxGirl"],
+                        ["kemonomimi", "type_kemonomimi"],
+                        ["holo", "type_holo"],
+                        ["wallpaper", "type_wallpaper"],
+                        ["gecg", "type_gecg"],
+                        ["avatar", "type_avatar"],
+                    ])
+            )
+
+        const hentai = new SlashCommandBuilder()
+            .setName("hentai")
+            .setDescription("Sends a hentai image/gif from nekos.life")
+            .addStringOption(option =>
+                option.setName("type")
+                    .setDescription("what type of hentai")
+                    .setRequired(true)
+                    .addChoices([
+                        ["randomHentaiGif", "type_randomHentaiGif"],
+                        ["pussy", "type_pussy"],
+                        ["neko", "type_neko"],
+                        ["lesbian", "type_lesbian"],
+                        ["kuni", "type_kuni"],
+                        ["cumsluts", "type_cumsluts"],
+                        ["classic", "type_classic"],
+                        ["boobs", "type_boobs"],
+                        ["anal", "type_anal"],
+                        ["avatar", "type_avatar"],
+                        ["yuri", "type_yuri"],
+                        ["trap", "type_trap"],
+                        ["tits", "type_tits"],
+                        ["girlSolo", "type_girlSolo"],
+                        ["kemonomimi", "type_kemonomimi"],
+                        ["kitsune", "type_kitsune"],
+                        ["keta", "type_keta"],
+                        ["hentai", "type_hentai"],
+                        ["futanari", "type_futanari"],
+                        ["femdom", "type_femdom"],
+                        ["feet", "type_feet"],
+                        ["cumArts", "type_cumArts"],
+                        ["blowJob", "type_blowJob"],
+                    ])
+            )
+
+        const ero = new SlashCommandBuilder()
+            .setName("ero")
+            .setDescription("Sends a ero image/gif from nekos.life")
+            .addStringOption(option =>
+                option.setName("type")
+                    .setDescription("what type of erotic image/gif")
+                    .setRequired(true)
+                    .addChoices([
+                        ["holoEro", "type_holoEro"],
+                        ["eroFeet", "type_eroFeet"],
+                        ["ero", "type_ero"],
+                        ["eroKitsune", "type_eroKitsune"],
+                        ["eroKemonomimi", "type_eroKemonomimi"],
+                        ["eroNeko", "type_eroNeko"],
+                        ["eroYuri", "type_eroYuri"],
+                    ])
+            )
+
+        const hentaibomb = new SlashCommandBuilder()
+            .setName("hentaibomb")
+            .setDescription("Sends multiple hentai images")
+            .addIntegerOption(option =>
+                option.setName("amount")
+                    .setDescription("The amount of images to send")
+            )
+            .addStringOption(option =>
+                option.setName("type")
+                    .setDescription("what type of hentai")
+                    .addChoices([
+                        ["randomHentaiGif", "type_randomHentaiGif"],
+                        ["pussy", "type_pussy"],
+                        ["neko", "type_neko"],
+                        ["lesbian", "type_lesbian"],
+                        ["kuni", "type_kuni"],
+                        ["cumsluts", "type_cumsluts"],
+                        ["classic", "type_classic"],
+                        ["boobs", "type_boobs"],
+                        ["anal", "type_anal"],
+                        ["avatar", "type_avatar"],
+                        ["yuri", "type_yuri"],
+                        ["trap", "type_trap"],
+                        ["tits", "type_tits"],
+                        ["girlSolo", "type_girlSolo"],
+                        ["kemonomimi", "type_kemonomimi"],
+                        ["kitsune", "type_kitsune"],
+                        ["keta", "type_keta"],
+                        ["hentai", "type_hentai"],
+                        ["futanari", "type_futanari"],
+                        ["femdom", "type_femdom"],
+                        ["feet", "type_feet"],
+                        ["cumArts", "type_cumArts"],
+                        ["blowJob", "type_blowJob"],
+                    ])
+            )
+
+        const command = await message.client.guilds.cache.get(message.guild.id)?.commands.set([kick, ban, unban, mute, tempmute, avatar, icon, emoji, status, join, leave, setGreetings, setLogs, rank, play, neko, hentai, ero, hentaibomb])
         // console.log(command)
 
         message.channel.send('**Slash Commands Deployed!**');
